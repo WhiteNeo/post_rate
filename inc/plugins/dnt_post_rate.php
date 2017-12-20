@@ -9,9 +9,12 @@ $plugins->add_hook('xmlhttp', 'dnt_post_rate_xmlhttp');
 
 function dnt_post_rate_info()
 {
+	global $mybb;
+	if(isset($mybb->settings['dnt_post_rate_active']))
+		$dpr_config = '<div style="float: right;"><a href="index.php?module=config&action=change&search=dnt_post_rate" style="color:#035488; background: url(../images/icons/brick.png) no-repeat 0px 18px; padding: 21px; text-decoration: none;">Configure</a></div>';
 	return array(
 		"name" => "Post Rate",
-		"description" => "Clasify your post by users rate",
+		"description" => "Clasify your post by users rate".$dpr_config,
 		"website" => "",
 		"author" => "Whiteneo",
 		"authorsite" => "https://soportemybb.es",
@@ -41,8 +44,10 @@ function dnt_post_rate_install()
   PRIMARY KEY  (`pcl_id`)
 ) DEFAULT CHARSET={$charset};";
 	$db->write_query($tables);
-
-	$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` ADD `pcl_total` int(10) NOT NULL DEFAULT '0';");
+	if(!$db->field_exists("pcl_total", "threads"))
+	{
+		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` ADD `pcl_total` int(10) NOT NULL DEFAULT '0';");
+	}
 }
 
 function dnt_post_rate_uninstall()
@@ -57,7 +62,7 @@ function dnt_post_rate_uninstall()
 	{
 		// Delete table where comments are saved
 		$db->write_query('DROP TABLE `'.TABLE_PREFIX.'dnt_post_rate`');
-		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` DROP `pcl_total`;");		
+		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` DROP `pcl_total`;");
 	}
 }
 
@@ -249,8 +254,7 @@ function dnt_post_rate_post_rates(&$post)
 		$pcl_see_me = false;		
 	}
 	else if($mybb->settings['dnt_post_rate_groups'] == "-1")
-		$pcl_see_me = true;
-	
+		$pcl_see_me = true;	
 	if($thread['uid'] == $mybb->user['uid'])
 	{
 		$pcl_see_me = false;
