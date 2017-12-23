@@ -34,7 +34,7 @@ function dnt_post_rate_info()
 		"website" => "",
 		"author" => "Whiteneo",
 		"authorsite" => "https://soportemybb.es",
-		"version" => "1.1",
+		"version" => "1.2",
 		"codename" => "dnt_post_rate_",
 		"compatibility" => "18*"
 	);
@@ -186,17 +186,17 @@ function dnt_post_rate_activate()
 	}
 
 	// Creating stylesheet...
-	$stylesheet_css = '.post_rate_list{position: absolute;z-index: 9999;background:#fff;margin-left: -120px;margin-top: -86px;border-radius: 40px;heigh: 52px;transition: opacity .15s;box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.15);}
+	$stylesheet_css = '.post_rate_list{position: absolute;z-index: 9999;border: 2px solid #0F5579;background:#fff;margin-left: -120px;margin-top: -86px;border-radius: 10px;}
 .post_rate_button{color: #fff;text-shadow: 1px 1px 1px #000;height: 26px;line-height: 26px;padding: 0 10px;text-decoration: none;margin-left: 4px;display: inline-block;cursor:pointer;background: #202020;border-radius: 4px;font-size: 13px;background: #0F5579 !important}
-.post_rate_btn img{cursor:pointer;margin-top: 2px;transform: scale(1.00);transition: all 0.25s ease-in;}
-.post_rate_btn img:hover{transform: scale(1.25);transition: all 0.25s ease-in;margin-top:-96px;}
+.post_rate_btn img{cursor:pointer;}
+.post_rate_btn img:hover{width:70px;height:70px;margin-top:-96px;transition:all ease 0.5s;}
 .ptr_list{display: none;position: absolute;background: #0b0a0a;color: #e4dada;padding: 6px;border-radius: 3px;font-size: 10px;}
 .dnt_prt_ulist > span{display:block}
 .pcl_list{text-shadow: 1px 1px 1px #000;padding: 10px;border-radius: 2px;-moz-border-radius: 2px;-webkit-border-radius: 2px;color: #fff;text-align:center;font-size: 13px;display: inline-block;}
 .dnt_post_hl{background-color: rgba(83,168,65,0.33)}
 .clasify_post_norates_msg{background-color: rgba(185, 65, 25, 0.3);float: right;margin: 5px;color: #6f2f16;font-weight: bold;font-size: 11px;padding: 10px;border-radius: 3px;}
 .clasify_post_rates_msg{background-color: rgba(83,168,65,0.33);float: right;margin: 5px;color: #166f16;font-weight: bold;font-size: 11px;padding: 10px;border-radius: 3px;}
-.clasify_post_rates_msg_span{font-size: 10px;font-weight: bold;position: absolute;background: #ce5757;padding: 1px 3px;color: #f0f0f0;border-radius: 4px;}';
+.clasify_post_rates_msg_span{font-size: 8px;font-weight: bold;position: absolute;background: #ce5757;padding: 1px 3px;color: #f0f0f0;border-radius: 4px;border-radius: 3px;margin-top: -5px;}';
 
 	$stylesheet = array(
 		"name"			=> "pcl.css",
@@ -528,12 +528,12 @@ function dnt_post_rate_post_rates(&$post)
 	{		
 $post['clasify_post_rates'] = '<div class="post_rate_button" id="post_rates_btn">'.$lang->pcl_rate.'</div>
 <div id="post_rates" class="post_rate_list" style="display:none;">
-	<span onclick="javascript:DNTPostRate(1, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/like.png" alt="Like" title="Like" /></span>
-	<span onclick="javascript:DNTPostRate(2, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/love.png" alt="Love" title="Love" /></span>
-	<span onclick="javascript:DNTPostRate(3, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/surprise.png" alt="Surprise" title="Surprise" /></span>
-	<span onclick="javascript:DNTPostRate(4, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="Smile" title="Smile" /></span>
-	<span onclick="javascript:DNTPostRate(5, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="Cry" title="Cry" /></span>
-	<span onclick="javascript:DNTPostRate(6, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.png" alt="Angry" title="Angry" /></span>	
+	<span onclick="javascript:DNTPostRate(1, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/like.gif" alt="'.$lang->pcl_like.'" title="'.$lang->pcl_like.'" /></span>
+	<span onclick="javascript:DNTPostRate(2, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/love.gif" alt="'.$lang->pcl_love.'" title="'.$lang->pcl_love.'" /></span>
+	<span onclick="javascript:DNTPostRate(3, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/wow.gif" alt="'.$lang->pcl_wow.'" title="'.$lang->pcl_wow.'" /></span>
+	<span onclick="javascript:DNTPostRate(4, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.gif" alt="'.$lang->pcl_smile.'" title="'.$lang->pcl_smile.'" /></span>
+	<span onclick="javascript:DNTPostRate(5, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.gif" alt="'.$lang->pcl_cry.'" title="'.$lang->pcl_cry.'" /></span>
+	<span onclick="javascript:DNTPostRate(6, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.gif" alt="'.$lang->pcl_angry.'" title="'.$lang->pcl_angry.'" /></span>	
 </div>';
 	}
 
@@ -541,12 +541,12 @@ $post['clasify_post_rates'] = '<div class="post_rate_button" id="post_rates_btn"
 
 	if($clasify_post_rates_total > 0)
 	{
-		$pcl_results1 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/like.png" alt="Like" onmouseover="javascript:DNTPostRates(1, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(1, '.$tid.')" /><span id="prt_list1" class="ptr_list"></span>';
-		$pcl_results2 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/love.png" alt="Love" onmouseover="javascript:DNTPostRates(2, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(2, '.$tid.')" /><span id="prt_list2" class="ptr_list"></span>';
-		$pcl_results3 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/surprise.png" alt="Surprise" onmouseover="javascript:DNTPostRates(3, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(3, '.$tid.')" /><span id="prt_list3" class="ptr_list"></span>';			
-		$pcl_results4 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="Smile" onmouseover="javascript:DNTPostRates(4, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(4, '.$tid.')" /><span id="prt_list4" class="ptr_list"></span>';				
-		$pcl_results5 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="Cry" onmouseover="javascript:DNTPostRates(5, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(5, '.$tid.')" /><span id="prt_list5" class="ptr_list"></span>';				
-		$pcl_results6 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.png" alt="Angry" onmouseover="javascript:DNTPostRates(6, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(6, '.$tid.')" /><span id="prt_list6" class="ptr_list"></span>';
+		$pcl_results1 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/like.png" alt="'.$lang->pcl_like.'" title="'.$lang->pcl_like.'" onmouseover="javascript:DNTPostRates(1, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(1, '.$tid.')" /><span id="prt_list1" class="ptr_list"></span>';
+		$pcl_results2 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/love.png" alt="'.$lang->pcl_love.'" title="'.$lang->pcl_love.'" onmouseover="javascript:DNTPostRates(2, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(2, '.$tid.')" /><span id="prt_list2" class="ptr_list"></span>';
+		$pcl_results3 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/wow.png" alt="'.$lang->pcl_wow.'" title="'.$lang->pcl_wow.'" onmouseover="javascript:DNTPostRates(3, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(3, '.$tid.')" /><span id="prt_list3" class="ptr_list"></span>';			
+		$pcl_results4 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="'.$lang->pcl_smile.'" title="'.$lang->pcl_smile.'" onmouseover="javascript:DNTPostRates(4, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(4, '.$tid.')" /><span id="prt_list4" class="ptr_list"></span>';				
+		$pcl_results5 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="'.$lang->pcl_cry.'" title="'.$lang->pcl_cry.'" onmouseover="javascript:DNTPostRates(5, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(5, '.$tid.')" /><span id="prt_list5" class="ptr_list"></span>';				
+		$pcl_results6 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.png" alt="'.$lang->pcl_angry.'" title="'.$lang->pcl_angry.'" onmouseover="javascript:DNTPostRates(6, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(6, '.$tid.')" /><span id="prt_list6" class="ptr_list"></span>';
 		
 		if($likes > 0)
 			$post['dnt_like'] = "<span class=\"clasify_post_rates_msg_span\">".$like."</span>".$pcl_results1;
@@ -670,12 +670,12 @@ function dnt_post_rate_xmlhttp()
 			}
 		}
 		
-		$pcl_results1 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/like.png" alt="Like" onmouseover="javascript:DNTPostRates(1, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(1, '.$tid.')" /><span id="prt_list1" class="ptr_list"></span>';
-		$pcl_results2 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/love.png" alt="Love" onmouseover="javascript:DNTPostRates(2, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(2, '.$tid.')" /><span id="prt_list2" class="ptr_list"></span>';
-		$pcl_results3 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/surprise.png" alt="Surprise" onmouseover="javascript:DNTPostRates(3, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(3, '.$tid.')" /><span id="prt_list3" class="ptr_list"></span>';			
-		$pcl_results4 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="Smile" onmouseover="javascript:DNTPostRates(4, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(4, '.$tid.')" /><span id="prt_list4" class="ptr_list"></span>';				
-		$pcl_results5 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="Cry" onmouseover="javascript:DNTPostRates(5, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(5, '.$tid.')" /><span id="prt_list5" class="ptr_list"></span>';				
-		$pcl_results6 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.png" alt="Angry" onmouseover="javascript:DNTPostRates(6, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(6, '.$tid.')" /><span id="prt_list6" class="ptr_list"></span>';
+		$pcl_results1 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/like.png" alt="'.$lang->pcl_like.'" title="'.$lang->pcl_like.'" onmouseover="javascript:DNTPostRates(1, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(1, '.$tid.')" /><span id="prt_list1" class="ptr_list"></span>';
+		$pcl_results2 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/love.png" alt="'.$lang->pcl_love.'" title="'.$lang->pcl_love.'" onmouseover="javascript:DNTPostRates(2, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(2, '.$tid.')" /><span id="prt_list2" class="ptr_list"></span>';
+		$pcl_results3 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/wow.png" alt="'.$lang->pcl_wow.'" title="'.$lang->pcl_wow.'" onmouseover="javascript:DNTPostRates(3, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(3, '.$tid.')" /><span id="prt_list3" class="ptr_list"></span>';			
+		$pcl_results4 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="'.$lang->pcl_smile.'" title="'.$lang->pcl_smile.'" onmouseover="javascript:DNTPostRates(4, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(4, '.$tid.')" /><span id="prt_list4" class="ptr_list"></span>';				
+		$pcl_results5 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="'.$lang->pcl_cry.'" title="'.$lang->pcl_cry.'" onmouseover="javascript:DNTPostRates(5, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(5, '.$tid.')" /><span id="prt_list5" class="ptr_list"></span>';				
+		$pcl_results6 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.png" alt="'.$lang->pcl_angry.'" title="'.$lang->pcl_angry.'" onmouseover="javascript:DNTPostRates(6, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(6, '.$tid.')" /><span id="prt_list6" class="ptr_list"></span>';
 			
 		if($likes > 0)
 			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$like."</span>".$pcl_results1;
@@ -783,12 +783,12 @@ function dnt_post_rate_member()
 			}
 		}
 		
-		$pcl_results1 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/like.png" alt="Like" onmouseover="javascript:DNTPostRates(1, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(1, '.$tid.')" /><span id="prt_list1" class="ptr_list"></span>';
-		$pcl_results2 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/love.png" alt="Love" onmouseover="javascript:DNTPostRates(2, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(2, '.$tid.')" /><span id="prt_list2" class="ptr_list"></span>';
-		$pcl_results3 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/surprise.png" alt="Surprise" onmouseover="javascript:DNTPostRates(3, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(3, '.$tid.')" /><span id="prt_list3" class="ptr_list"></span>';			
-		$pcl_results4 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="Smile" onmouseover="javascript:DNTPostRates(4, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(4, '.$tid.')" /><span id="prt_list4" class="ptr_list"></span>';				
-		$pcl_results5 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="Cry" onmouseover="javascript:DNTPostRates(5, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(5, '.$tid.')" /><span id="prt_list5" class="ptr_list"></span>';				
-		$pcl_results6 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.png" alt="Angry" onmouseover="javascript:DNTPostRates(6, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(6, '.$tid.')" /><span id="prt_list6" class="ptr_list"></span>';
+		$pcl_results1 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/like.png" alt="'.$lang->pcl_like.'" title="'.$lang->pcl_like.'" onmouseover="javascript:DNTPostRates(1, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(1, '.$tid.')" /><span id="prt_list1" class="ptr_list"></span>';
+		$pcl_results2 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/love.png" alt="'.$lang->pcl_love.'" title="'.$lang->pcl_love.'" onmouseover="javascript:DNTPostRates(2, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(2, '.$tid.')" /><span id="prt_list2" class="ptr_list"></span>';
+		$pcl_results3 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/wow.png" alt="'.$lang->pcl_wow.'" title="'.$lang->pcl_wow.'" onmouseover="javascript:DNTPostRates(3, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(3, '.$tid.')" /><span id="prt_list3" class="ptr_list"></span>';			
+		$pcl_results4 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="'.$lang->pcl_smile.'" title="'.$lang->pcl_smile.'" onmouseover="javascript:DNTPostRates(4, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(4, '.$tid.')" /><span id="prt_list4" class="ptr_list"></span>';				
+		$pcl_results5 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="'.$lang->pcl_cry.'" title="'.$lang->pcl_cry.'" onmouseover="javascript:DNTPostRates(5, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(5, '.$tid.')" /><span id="prt_list5" class="ptr_list"></span>';				
+		$pcl_results6 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.png" alt="'.$lang->pcl_angry.'" title="'.$lang->pcl_angry.'" onmouseover="javascript:DNTPostRates(6, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(6, '.$tid.')" /><span id="prt_list6" class="ptr_list"></span>';
 			
 		if($likes > 0)
 			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$like."</span>".$pcl_results1;
