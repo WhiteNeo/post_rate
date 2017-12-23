@@ -528,12 +528,12 @@ function dnt_post_rate_post_rates(&$post)
 	{		
 $post['clasify_post_rates'] = '<div class="post_rate_button" id="post_rates_btn">'.$lang->pcl_rate.'</div>
 <div id="post_rates" class="post_rate_list" style="display:none;">
-	<span onclick="javascript:DNTPostRate(1, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/like.png" alt="Like" /></span>
-	<span onclick="javascript:DNTPostRate(2, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/love.png" alt="Love" /></span>
-	<span onclick="javascript:DNTPostRate(3, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/surprise.png" alt="Surprise" /></span>
-	<span onclick="javascript:DNTPostRate(4, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="Smile" /></span>
-	<span onclick="javascript:DNTPostRate(5, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="Cry" /></span>
-	<span onclick="javascript:DNTPostRate(6, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/hungry.png" alt="Hungry" /></span>	
+	<span onclick="javascript:DNTPostRate(1, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/like.png" alt="Like" title="Like" /></span>
+	<span onclick="javascript:DNTPostRate(2, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/love.png" alt="Love" title="Love" /></span>
+	<span onclick="javascript:DNTPostRate(3, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/surprise.png" alt="Surprise" title="Surprise" /></span>
+	<span onclick="javascript:DNTPostRate(4, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="Smile" title="Smile" /></span>
+	<span onclick="javascript:DNTPostRate(5, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="Cry" title="Cry" /></span>
+	<span onclick="javascript:DNTPostRate(6, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/hungry.png" alt="Angry" title="Angry" /></span>	
 </div>';
 	}
 
