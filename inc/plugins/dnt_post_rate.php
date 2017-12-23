@@ -8,6 +8,7 @@ $plugins->add_hook('postbit', 'dnt_post_rate_post_rates');
 $plugins->add_hook('xmlhttp', 'dnt_post_rate_xmlhttp');
 $plugins->add_hook('global_start', 'dnt_post_rate_script');
 $plugins->add_hook('member_profile_end', 'dnt_post_rate_member');
+$plugins->add_hook('forumdisplay_thread', 'dnt_post_rates');
 $plugins->add_hook('admin_load', 'dnt_post_rate_admin_load');	
 	
 function dnt_post_rate_info()
@@ -34,7 +35,7 @@ function dnt_post_rate_info()
 		"website" => "",
 		"author" => "Whiteneo",
 		"authorsite" => "https://soportemybb.es",
-		"version" => "1.1",
+		"version" => "1.3",
 		"codename" => "dnt_post_rate_",
 		"compatibility" => "18*"
 	);
@@ -62,8 +63,14 @@ function dnt_post_rate_install()
 	$db->write_query($tables);
 	if(!$db->field_exists("pcl_total", "threads"))
 	{
-		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` ADD `pcl_total` int(10) NOT NULL DEFAULT '0';");
+		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` ADD `pcl_total` int(10) NOT NULL DEFAULT '0'");
 	}
+	
+	if(!$db->field_exists("pcl_rates", "threads"))
+	{
+		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` ADD `pcl_rates` text NOT NULL");
+	}	
+	
 	if(function_exists("myalerts_info")){
 		$my_alerts_info = myalerts_info();
 		$verify = $my_alerts_info['version'];
@@ -90,8 +97,12 @@ function dnt_post_rate_uninstall()
 	}
 	if(!isset($mybb->input['no']))
 	{
-		$db->write_query('DROP TABLE `'.TABLE_PREFIX.'dnt_post_rate`');
-		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` DROP `pcl_total`;");
+		if($db->table_exists("pcl_rates", "dnt_post_rate"))
+			$db->write_query('DROP TABLE `'.TABLE_PREFIX.'dnt_post_rate`');
+		if($db->field_exists("pcl_total", "threads"))
+			$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` DROP `pcl_total`");
+		if($db->field_exists("pcl_rates", "threads"))
+			$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` DROP `pcl_rates`");		
 	}
 	if(function_exists("myalerts_info")){
 		$my_alerts_info = myalerts_info();
@@ -222,7 +233,8 @@ function dnt_post_rate_activate()
 	require_once MYBB_ROOT."/inc/adminfunctions_templates.php";
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'button_edit\']}').'#', '{$post[\'clasify_post_rates\']}{$post[\'button_edit\']}');
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'button_edit\']}').'#', '{$post[\'clasify_post_rates\']}{$post[\'button_edit\']}');	
-	find_replace_templatesets("showthread", '#'.preg_quote('{$headerinclude}').'#', '{$headerinclude}{$dnt_prt_script}');		
+	find_replace_templatesets("showthread", '#'.preg_quote('{$headerinclude}').'#', '{$headerinclude}{$dnt_prt_script}');
+	find_replace_templatesets("forumdisplay_thread", '#'.preg_quote('{$attachment_count}').'#', '{$attachment_count}{$dnt_prt_rates}');		
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$headerinclude}').'#', '{$headerinclude}{$dnt_prt_script}');		
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$profilefields}').'#', '{$profilefields}{$memprofile[\'dnt_prt\']}');		
 	rebuild_settings();
@@ -252,6 +264,7 @@ function dnt_post_rate_deactivate()
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'clasify_post_rates\']}').'#', '', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'clasify_post_rates\']}').'#', '', 0);	
 	find_replace_templatesets("showthread", '#'.preg_quote('{$dnt_prt_script}').'#', '', 0);
+	find_replace_templatesets("forumdisplay_thread", '#'.preg_quote('{$dnt_prt_rates}').'#', '', 0);	
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$memprofile[\'dnt_prt\']}').'#', '', 0);		
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$dnt_prt_script}').'#', '', 0);		
 	
@@ -494,7 +507,7 @@ function dnt_post_rate_post_rates(&$post)
 	}
 	$tid = (int)$thread['tid'];
 	$pcl_user = (int)$thread['uid'];
-	$likes = $loves = $surprises = $smiles = $crys = $hungrys = 0;
+	$likes = $loves = $wow = $smiles = $crys = $angrys = 0;
 	$pcl_query = $db->simple_select('dnt_post_rate','*',"pcl_tid='{$tid}' AND pcl_date>='{$pcl_date}'");
 	while($pcl_rows = $db->fetch_array($pcl_query))
 	{
@@ -510,7 +523,7 @@ function dnt_post_rate_post_rates(&$post)
 		}
 		if($pcl_type == 3)
 		{
-			$surprises++;
+			$wow++;
 		}			
 		if($pcl_type == 4)
 		{
@@ -522,7 +535,7 @@ function dnt_post_rate_post_rates(&$post)
 		}
 		if($pcl_type == 6)
 		{
-			$hungrys++;				
+			$angrys++;				
 		}
 	}
 
@@ -554,17 +567,17 @@ $post['clasify_post_rates'] = '<div class="post_rate_button" id="post_rates_btn"
 			$post['dnt_likes'] = "<span class=\"clasify_post_rates_msg_span\">".$likes."</span>".$pcl_results1;
 		if($loves > 0)
 			$post['dnt_loves'] = "<span class=\"clasify_post_rates_msg_span\">".$loves."</span>".$pcl_results2;		
-		if($surprises > 0)
-			$post['dnt_surprises'] = "<span class=\"clasify_post_rates_msg_span\">".$surprises."</span>".$pcl_results3;
+		if($wow > 0)
+			$post['dnt_surprises'] = "<span class=\"clasify_post_rates_msg_span\">".$wow."</span>".$pcl_results3;
 		if($smiles > 0)
 			$post['dnt_smiles'] = "<span class=\"clasify_post_rates_msg_span\">".$smiles."</span>".$pcl_results4;
 		if($crys > 0)
 			$post['dnt_crys'] = "<span class=\"clasify_post_rates_msg_span\">".$crys."</span>".$pcl_results5;
-		if($hungrys > 0)
-			$post['dnt_hungrys'] = "<span class=\"clasify_post_rates_msg_span\">".$hungrys."</span>".$pcl_results6;
+		if($angrys > 0)
+			$post['dnt_hungrys'] = "<span class=\"clasify_post_rates_msg_span\">".$angrys."</span>".$pcl_results6;
 		if($mybb->settings['dnt_post_rate_highlight'] > 0)
 		{
-			$dnt_to_highlight = (int)$likes + (int)$loves + (int)$surprises + (int)$smiles + (int)$crys + (int)$hungrys;
+			$dnt_to_highlight = (int)$likes + (int)$loves + (int)$wow + (int)$smiles + (int)$crys + (int)$angrys;
 			$dnt_to_compare = (int)$mybb->settings['dnt_post_rate_highlight'];			
 			if($dnt_to_highlight >= $dnt_to_compare)
 				$post['message'] = "<div class=\"dnt_post_hl\">{$post['message']}</div>";
@@ -602,7 +615,7 @@ function dnt_post_rate_xmlhttp()
 		$pcl_total = (int)$thread['pcl_total'];
 		$pcl_tot = (int)$thread['pcl_total']+1;
 		$pcl_date = time() - (30 * 60 * 60 * 24);
-		$likes = $loves = $surprises = $smiles = $crys = $hungrys = 0;	
+		$likes = $loves = $wow = $smiles = $crys = $angrys = 0;	
 		$pcl_query = $db->simple_select('dnt_post_rate','*',"pcl_sender={$uid} AND pcl_tid='{$tid}' AND pcl_date>='{$pcl_date}'", array("limit"=>1));		
 		if($db->num_rows($pcl_query) > 0)
 		{
@@ -634,11 +647,6 @@ function dnt_post_rate_xmlhttp()
 			$db->insert_query("dnt_post_rate",$insert_data);
 		else if($pcl_dataiu == "update")
 			$db->update_query("dnt_post_rate",$update_data,"pcl_tid='{$tid}' AND pcl_sender='{$uid}'");
-		$update_data = array(
-			'pcl_total' => (int)$pcl_total+1,
-		);
-		if(isset($update_data))
-		$db->update_query("threads",$update_data,"tid={$tid}");
 		recordAlertRpt($tid);	
 		$pcl_query = $db->simple_select('dnt_post_rate','*',"pcl_tid='{$tid}' AND pcl_date>='{$pcl_date}'");			
 		while($pcl_rows = $db->fetch_array($pcl_query))
@@ -656,7 +664,7 @@ function dnt_post_rate_xmlhttp()
 			}
 			if($pcl_type == 3)
 			{
-				$surprises++;
+				$wow++;
 			}			
 			if($pcl_type == 4)
 			{
@@ -668,7 +676,7 @@ function dnt_post_rate_xmlhttp()
 			}
 			if($pcl_type == 6)
 			{
-				$hungrys++;				
+				$angrys++;				
 			}
 		}
 		
@@ -683,21 +691,40 @@ function dnt_post_rate_xmlhttp()
 			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$likes."</span>".$pcl_results1;
 		if($loves > 0)
 			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$loves."</span>".$pcl_results2;		
-		if($surprises > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$surprises."</span>".$pcl_results3;
+		if($wow > 0)
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$wow."</span>".$pcl_results3;
 		if($smiles > 0)
 			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$smiles."</span>".$pcl_results4;
 		if($crys > 0)
 			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$crys."</span>".$pcl_results5;
-		if($hungrys > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$hungrys."</span>".$pcl_results6;
+		if($angrys > 0)
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$angrys."</span>".$pcl_results6;
 
 		$clasify_post_rates_total = (int)$thread['pcl_total'] + 1;		
 		$lang->pcl_total = $lang->sprintf($lang->pcl_total, $clasify_post_rates_total);
 
 		$templates = '<div class="clasify_post_rates_msg">'.$lang->pcl_total.$lang->pcl_rates.'<br />'.$clasify_post_rates_msg.'</div>';
 
-		$pcl_data = array('receive' => $pcl_dataiu,
+		$thread_rates = array(
+			'likes' => (int)$likes,
+			'loves' => (int)$loves,
+			'wow' => (int)$wow,
+			'smiles' => (int)$smiles,
+			'crys' => (int)$crys,
+			'angry' => (int)$angrys	
+		);
+
+		$thread_rates = serialize($thread_rates);
+
+		$update_data = array(
+			'pcl_total' => (int)$pcl_total+1,
+			"pcl_rates" => $thread_rates
+		);
+		if(isset($update_data))
+		$db->update_query("threads",$update_data,"tid={$tid}");
+		
+		$pcl_data = array(
+			'receive' => $pcl_dataiu,
 			'post_rate_id' => (int)$lid,
 			'post_rate_tid' => (int)$tid,
 			'pcl_user' => (int)$touid,
@@ -769,7 +796,7 @@ function dnt_post_rate_member()
 			}
 			if($pcl_type == 3)
 			{
-				$surprises++;
+				$wow++;
 			}			
 			if($pcl_type == 4)
 			{
@@ -781,7 +808,7 @@ function dnt_post_rate_member()
 			}
 			if($pcl_type == 6)
 			{
-				$hungrys++;				
+				$angrys++;				
 			}
 		}
 		
@@ -796,14 +823,14 @@ function dnt_post_rate_member()
 			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$likes."</span>".$pcl_results1;
 		if($loves > 0)
 			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$loves."</span>".$pcl_results2;		
-		if($surprises > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$surprises."</span>".$pcl_results3;
+		if($wow > 0)
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$wow."</span>".$pcl_results3;
 		if($smiles > 0)
 			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$smiles."</span>".$pcl_results4;
 		if($crys > 0)
 			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$crys."</span>".$pcl_results5;
-		if($hungrys > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$hungrys."</span>".$pcl_results6;
+		if($angrys > 0)
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$angrys."</span>".$pcl_results6;
 		$lang->pcl_total_best = $lang->sprintf($lang->pcl_total_best, $total);
 			$templates = '<div class="clasify_post_rates_msg">'.$lang->pcl_total_best.'<BR />'.$subject.'<br />'.$clasify_post_rates_msg.'</div>';
 	}
@@ -811,4 +838,38 @@ function dnt_post_rate_member()
 		$templates = '<div class="clasify_post_norates_msg">'.$lang->pcl_dont_rates.'</div>';
 	
 	$memprofile['dnt_prt'] = $templates;
+}
+
+function dnt_post_rates()
+{
+	global $mybb, $thread, $dnt_prt_rates;
+	$dnt_prt_rates = "";
+	$thread['pcl_rates'] = unserialize($thread['pcl_rates']);
+	$pcl_results1 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/like.png" alt="'.$lang->pcl_like.'" title="'.$lang->pcl_like.'" />';
+	$pcl_results2 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/love.png" alt="'.$lang->pcl_love.'" title="'.$lang->pcl_love.'" />';
+	$pcl_results3 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/wow.png" alt="'.$lang->pcl_wow.'" title="'.$lang->pcl_wow.'" />';			
+	$pcl_results4 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="'.$lang->pcl_smile.'" title="'.$lang->pcl_smile.'" />';				
+	$pcl_results5 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="'.$lang->pcl_cry.'" title="'.$lang->pcl_cry.'" />';				
+	$pcl_results6 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.png" alt="'.$lang->pcl_angry.'" title="'.$lang->pcl_angry.'" />';
+	$likes = (int)$thread['pcl_rates']['likes'];
+	$loves = (int)$thread['pcl_rates']['loves'];
+	$wow = (int)$thread['pcl_rates']['wow'];
+	$smiles = (int)$thread['pcl_rates']['smiles'];
+	$crys = (int)$thread['pcl_rates']['crys'];
+	$angrys = (int)$thread['pcl_rates']['angrys'];
+	$dnt_prt_rates = '<div style="float:right">';
+	if($likes > 0)
+		$dnt_prt_rates .= "<span class=\"clasify_post_rates_msg_span\">".$likes."</span>".$pcl_results1;
+	if($loves > 0)
+		$dnt_prt_rates .= "<span class=\"clasify_post_rates_msg_span\">".$loves."</span>".$pcl_results2;		
+	if($wow > 0)
+		$dnt_prt_rates .= "<span class=\"clasify_post_rates_msg_span\">".$wow."</span>".$pcl_results3;
+	if($smiles > 0)
+		$dnt_prt_rates .= "<span class=\"clasify_post_rates_msg_span\">".$smiles."</span>".$pcl_results4;
+	if($crys > 0)
+		$dnt_prt_rates .= "<span class=\"clasify_post_rates_msg_span\">".$crys."</span>".$pcl_results5;
+	if($angrys > 0)
+		$dnt_prt_rates .= "<span class=\"clasify_post_rates_msg_span\">".$angrys."</span>".$pcl_results6;
+	$dnt_prt_rates .= '</div>';
+	unset($thread['pcl_rates']);
 }
