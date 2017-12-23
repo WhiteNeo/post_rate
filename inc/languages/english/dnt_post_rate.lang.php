@@ -6,10 +6,10 @@
  */
 
 $l['pcl_rate'] = "Rate Post";
-$l['pcl_working'] = "Working";
-$l['pcl_not_working'] = "Not working";
-$l['pcl_maybe_infected'] = "Maybe infected";
-$l['pcl_rated'] = "Leak rated successfully";
-$l['pcl_working_total'] = "This leak has been reported as still working {1} times this month ({2} times in total).";
-$l['pcl_not_working_total'] = "This leak has been reported as still not working {1} times this month ({2} times in total).";
-$l['pcl_maybe_infected_total'] = "This leak has been reported as posible infected {1} times this month ({2} times in total).";
+$l['pcl_rated'] = "Post rated successfully";
+$l['pcl_total'] = "This post has been rated {1} times.";
+$l['pcl_total_best'] = "The best rated thread of this user with {1} times this month is:";
+$l['pcl_rates'] = " Rates of this month: ";
+$l['pcl_dont_rates'] = "This user has not post rates this month !!!";
+$l['dnt_prt_alert'] = '{1} has rated your message "{2}"';
+$l['myalerts_setting_dntprt'] = 'Receive an alert when someone rate one of my threads?';
