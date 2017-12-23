@@ -197,10 +197,10 @@ function dnt_post_rate_activate()
 	}
 
 	// Creating stylesheet...
-	$stylesheet_css = '.post_rate_list{position: absolute;z-index: 9999;border: 2px solid #0F5579;background:#fff;margin-left: -120px;margin-top: -86px;border-radius: 10px;}
+	$stylesheet_css = '.post_rate_list{position: absolute;z-index: 9999;border: 2px solid #0F5579;background:#fff;margin-left: -230px;margin-top: -95px;border-radius: 10px;}
 .post_rate_button{color: #fff;text-shadow: 1px 1px 1px #000;height: 26px;line-height: 26px;padding: 0 10px;text-decoration: none;margin-left: 4px;display: inline-block;cursor:pointer;background: #202020;border-radius: 4px;font-size: 13px;background: #0F5579 !important}
 .post_rate_btn img{cursor:pointer;}
-.post_rate_btn img:hover{width:70px;height:70px;margin-top:-96px;transition:all ease 0.5s;}
+.post_rate_btn img:hover{width:70px;height:70px;margin-top:-95px;transition:all ease 0.5s;}
 .ptr_list{display: none;position: absolute;background: #0b0a0a;color: #e4dada;padding: 6px;border-radius: 3px;font-size: 10px;}
 .dnt_prt_ulist > span{display:block}
 .pcl_list{text-shadow: 1px 1px 1px #000;padding: 10px;border-radius: 2px;-moz-border-radius: 2px;-webkit-border-radius: 2px;color: #fff;text-align:center;font-size: 13px;display: inline-block;}
