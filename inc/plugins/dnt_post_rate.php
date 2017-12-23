@@ -30,7 +30,7 @@ function dnt_post_rate_info()
 	
 	return array(
 		"name" => "Post Rate",
-		"description" => "Clasify your post by users rate".$dpr_config.$dpr_integrate,
+		"description" => "Add emoji reactions to posts".$dpr_config.$dpr_integrate,
 		"website" => "",
 		"author" => "Whiteneo",
 		"authorsite" => "https://soportemybb.es",
@@ -130,7 +130,7 @@ function dnt_post_rate_activate()
 	$new_groupconfig = array(
 		'name' => 'dnt_post_rate', 
 		'title' => 'Post rate plugin',
-		'description' => 'Clasify your posts by users rate plugin settings',
+		'description' => 'Add emoji reactions to posts',
 		'disporder' => $rows+1,
 		'isdefault' => 0
 	);
@@ -143,7 +143,7 @@ function dnt_post_rate_activate()
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_active',
 		'title' => 'Enable / Disable plugin',
-		'description' => 'Here you can set if plugin is enabled or disabled on your boards',
+		'description' => 'Enabled or disabled emoji reactions rating on your board',
 		'optionscode' => 'yesno',
 		'value' => 1,
 		'disporder' => 1,
@@ -152,8 +152,8 @@ function dnt_post_rate_activate()
 	
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_forums',
-		'title' => 'Select forums where this mod applies',
-		'description' => 'Select from the list your forums where this mod take effect',
+		'title' => 'Select forums where emoji reactions are enabled',
+		'description' => 'Select from the list forums where this mod takes effect',
 		'optionscode' => 'forumselect',
 		'value' => "-1",
 		'disporder' => 2,
@@ -186,10 +186,10 @@ function dnt_post_rate_activate()
 	}
 
 	// Creating stylesheet...
-	$stylesheet_css = '.post_rate_list{position: absolute;z-index: 9999;border: 2px solid #0F5579;background:#fff;margin-left: -120px;margin-top: -86px;border-radius: 10px;}
+	$stylesheet_css = '.post_rate_list{position: absolute;z-index: 9999;background:#fff;margin-left: -120px;margin-top: -86px;border-radius: 40px;heigh: 52px;transition: opacity .15s;box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.15);}
 .post_rate_button{color: #fff;text-shadow: 1px 1px 1px #000;height: 26px;line-height: 26px;padding: 0 10px;text-decoration: none;margin-left: 4px;display: inline-block;cursor:pointer;background: #202020;border-radius: 4px;font-size: 13px;background: #0F5579 !important}
-.post_rate_btn img{cursor:pointer;}
-.post_rate_btn img:hover{width:60px;height:60px;margin-top:-96px;transition:all ease 0.5s;}
+.post_rate_btn img{cursor:pointer;margin-top: 2px;transform: scale(1.00);transition: all 0.25s ease-in;}
+.post_rate_btn img:hover{transform: scale(1.25);transition: all 0.25s ease-in;margin-top:-96px;}
 .ptr_list{display: none;position: absolute;background: #0b0a0a;color: #e4dada;padding: 6px;border-radius: 3px;font-size: 10px;}
 .dnt_prt_ulist > span{display:block}
 .pcl_list{text-shadow: 1px 1px 1px #000;padding: 10px;border-radius: 2px;-moz-border-radius: 2px;-webkit-border-radius: 2px;color: #fff;text-align:center;font-size: 13px;display: inline-block;}
@@ -296,13 +296,13 @@ function dnt_post_rate_myalerts_integrate(){
 			}
 			else
 			{
-				flash_message("MyAlerts version is wrong and can not integrate with post rate system or already integrated", 'error');
+				flash_message("MyAlerts version is invalid and cannot be integrated with post rate system or already integrated", 'error');
 				admin_redirect('index.php?module=config-plugins');			
 			}
 		}
 		else
 		{
-			flash_message("MyAlerts is not working yet on your board, verify this and try again latter", 'error');
+			flash_message("MyAlerts is not working yet on your board, verify this and try again later", 'error');
 			admin_redirect('index.php?module=config-plugins');			
 		}
 	}	
@@ -492,7 +492,7 @@ function dnt_post_rate_post_rates(&$post)
 	}
 	$tid = (int)$thread['tid'];
 	$pcl_user = (int)$thread['uid'];
-	$likes = $loves = $surprises = $smiles = $crys = $hungrys = 0;
+	$like = $love = $surprise = $smile = $cry = $angry = 0;
 	$pcl_query = $db->simple_select('dnt_post_rate','*',"pcl_tid='{$tid}' AND pcl_date>='{$pcl_date}'");
 	while($pcl_rows = $db->fetch_array($pcl_query))
 	{
@@ -500,27 +500,27 @@ function dnt_post_rate_post_rates(&$post)
 		$pcl_type = (int)$pcl_rows['pcl_type'];
 		if($pcl_type == 1)
 		{
-			$likes++;
+			$like++;
 		}
 		if($pcl_type == 2)
 		{
-			$loves++;
+			$love++;
 		}
 		if($pcl_type == 3)
 		{
-			$surprises++;
+			$surprise++;
 		}			
 		if($pcl_type == 4)
 		{
-			$smiles++;
+			$smile++;
 		}
 		if($pcl_type == 5)
 		{
-			$crys++;
+			$cry++;
 		}
 		if($pcl_type == 6)
 		{
-			$hungrys++;				
+			$angry++;				
 		}
 	}
 
@@ -533,7 +533,7 @@ $post['clasify_post_rates'] = '<div class="post_rate_button" id="post_rates_btn"
 	<span onclick="javascript:DNTPostRate(3, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/surprise.png" alt="Surprise" title="Surprise" /></span>
 	<span onclick="javascript:DNTPostRate(4, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="Smile" title="Smile" /></span>
 	<span onclick="javascript:DNTPostRate(5, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="Cry" title="Cry" /></span>
-	<span onclick="javascript:DNTPostRate(6, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/hungry.png" alt="Angry" title="Angry" /></span>	
+	<span onclick="javascript:DNTPostRate(6, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.png" alt="Angry" title="Angry" /></span>	
 </div>';
 	}
 
@@ -546,29 +546,29 @@ $post['clasify_post_rates'] = '<div class="post_rate_button" id="post_rates_btn"
 		$pcl_results3 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/surprise.png" alt="Surprise" onmouseover="javascript:DNTPostRates(3, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(3, '.$tid.')" /><span id="prt_list3" class="ptr_list"></span>';			
 		$pcl_results4 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="Smile" onmouseover="javascript:DNTPostRates(4, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(4, '.$tid.')" /><span id="prt_list4" class="ptr_list"></span>';				
 		$pcl_results5 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="Cry" onmouseover="javascript:DNTPostRates(5, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(5, '.$tid.')" /><span id="prt_list5" class="ptr_list"></span>';				
-		$pcl_results6 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/hungry.png" alt="Hungry" onmouseover="javascript:DNTPostRates(6, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(6, '.$tid.')" /><span id="prt_list6" class="ptr_list"></span>';
+		$pcl_results6 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.png" alt="Angry" onmouseover="javascript:DNTPostRates(6, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(6, '.$tid.')" /><span id="prt_list6" class="ptr_list"></span>';
 		
 		if($likes > 0)
-			$post['dnt_likes'] = "<span class=\"clasify_post_rates_msg_span\">".$likes."</span>".$pcl_results1;
+			$post['dnt_like'] = "<span class=\"clasify_post_rates_msg_span\">".$like."</span>".$pcl_results1;
 		if($loves > 0)
-			$post['dnt_loves'] = "<span class=\"clasify_post_rates_msg_span\">".$loves."</span>".$pcl_results2;		
+			$post['dnt_love'] = "<span class=\"clasify_post_rates_msg_span\">".$love."</span>".$pcl_results2;		
 		if($surprises > 0)
-			$post['dnt_surprises'] = "<span class=\"clasify_post_rates_msg_span\">".$surprises."</span>".$pcl_results3;
+			$post['dnt_surprise'] = "<span class=\"clasify_post_rates_msg_span\">".$surprise."</span>".$pcl_results3;
 		if($smiles > 0)
-			$post['dnt_smiles'] = "<span class=\"clasify_post_rates_msg_span\">".$smiles."</span>".$pcl_results4;
+			$post['dnt_smile'] = "<span class=\"clasify_post_rates_msg_span\">".$smile."</span>".$pcl_results4;
 		if($crys > 0)
-			$post['dnt_crys'] = "<span class=\"clasify_post_rates_msg_span\">".$crys."</span>".$pcl_results5;
+			$post['dnt_cry'] = "<span class=\"clasify_post_rates_msg_span\">".$cry."</span>".$pcl_results5;
 		if($hungrys > 0)
-			$post['dnt_hungrys'] = "<span class=\"clasify_post_rates_msg_span\">".$hungrys."</span>".$pcl_results6;
+			$post['dnt_angry'] = "<span class=\"clasify_post_rates_msg_span\">".$angry."</span>".$pcl_results6;
 		if($mybb->settings['dnt_post_rate_highlight'] > 0)
 		{
-			$dnt_to_highlight = (int)$likes + (int)$loves + (int)$surprises + (int)$smiles + (int)$crys + (int)$hungrys;
+			$dnt_to_highlight = (int)$like + (int)$love + (int)$surprise + (int)$smile + (int)$cry + (int)$angry;
 			$dnt_to_compare = (int)$mybb->settings['dnt_post_rate_highlight'];			
 			if($dnt_to_highlight >= $dnt_to_compare)
 				$post['message'] = "<div class=\"dnt_post_hl\">{$post['message']}</div>";
 		}
 		
-		$clasify_post_rates_msg = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_surprises'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_hungrys'];
+		$clasify_post_rates_msg = $post['dnt_like'].$post['dnt_love'].$post['dnt_surprise'].$post['dnt_smile'].$post['dnt_cry'].$post['dnt_angry'];
 		$lang->pcl_total = $lang->sprintf($lang->pcl_total, $clasify_post_rates_total);
 		$post['clasify_post_rates_msg'] = '<div id="clasify_post_rates_msgs_list"><div class="clasify_post_rates_msg">'.$lang->pcl_total.$lang->pcl_rates."<br />".$clasify_post_rates_msg.'</div></div>';
 		$post['message'] .= $post['clasify_post_rates_msg'];		
@@ -600,7 +600,7 @@ function dnt_post_rate_xmlhttp()
 		$pcl_total = (int)$thread['pcl_total'];
 		$pcl_tot = (int)$thread['pcl_total']+1;
 		$pcl_date = time() - (30 * 60 * 60 * 24);
-		$likes = $loves = $surprises = $smiles = $crys = $hungrys = 0;	
+		$like = $love = $surprise = $smile = $cry = $angry = 0;	
 		$pcl_query = $db->simple_select('dnt_post_rate','*',"pcl_sender={$uid} AND pcl_tid='{$tid}' AND pcl_date>='{$pcl_date}'", array("limit"=>1));		
 		if($db->num_rows($pcl_query) > 0)
 		{
@@ -646,27 +646,27 @@ function dnt_post_rate_xmlhttp()
 			$pcl_type = (int)$pcl_rows['pcl_type'];
 			if($pcl_type == 1)
 			{
-				$likes++;
+				$like++;
 			}
 			if($pcl_type == 2)
 			{
-				$loves++;
+				$love++;
 			}
 			if($pcl_type == 3)
 			{
-				$surprises++;
+				$surprise++;
 			}			
 			if($pcl_type == 4)
 			{
-				$smiles++;
+				$smile++;
 			}
 			if($pcl_type == 5)
 			{
-				$crys++;
+				$cry++;
 			}
 			if($pcl_type == 6)
 			{
-				$hungrys++;				
+				$angry++;				
 			}
 		}
 		
@@ -675,20 +675,20 @@ function dnt_post_rate_xmlhttp()
 		$pcl_results3 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/surprise.png" alt="Surprise" onmouseover="javascript:DNTPostRates(3, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(3, '.$tid.')" /><span id="prt_list3" class="ptr_list"></span>';			
 		$pcl_results4 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="Smile" onmouseover="javascript:DNTPostRates(4, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(4, '.$tid.')" /><span id="prt_list4" class="ptr_list"></span>';				
 		$pcl_results5 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="Cry" onmouseover="javascript:DNTPostRates(5, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(5, '.$tid.')" /><span id="prt_list5" class="ptr_list"></span>';				
-		$pcl_results6 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/hungry.png" alt="Hungry" onmouseover="javascript:DNTPostRates(6, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(6, '.$tid.')" /><span id="prt_list6" class="ptr_list"></span>';
+		$pcl_results6 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.png" alt="Angry" onmouseover="javascript:DNTPostRates(6, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(6, '.$tid.')" /><span id="prt_list6" class="ptr_list"></span>';
 			
 		if($likes > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$likes."</span>".$pcl_results1;
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$like."</span>".$pcl_results1;
 		if($loves > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$loves."</span>".$pcl_results2;		
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$love."</span>".$pcl_results2;		
 		if($surprises > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$surprises."</span>".$pcl_results3;
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$surprise."</span>".$pcl_results3;
 		if($smiles > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$smiles."</span>".$pcl_results4;
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$smile."</span>".$pcl_results4;
 		if($crys > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$crys."</span>".$pcl_results5;
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$cry."</span>".$pcl_results5;
 		if($hungrys > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$hungrys."</span>".$pcl_results6;
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$angry."</span>".$pcl_results6;
 
 		$clasify_post_rates_total = (int)$thread['pcl_total'] + 1;		
 		$lang->pcl_total = $lang->sprintf($lang->pcl_total, $clasify_post_rates_total);
@@ -759,27 +759,27 @@ function dnt_post_rate_member()
 			$pcl_type = (int)$pcl_rows['pcl_type'];
 			if($pcl_type == 1)
 			{
-				$likes++;
+				$like++;
 			}
 			if($pcl_type == 2)
 			{
-				$loves++;
+				$love++;
 			}
 			if($pcl_type == 3)
 			{
-				$surprises++;
+				$surprise++;
 			}			
 			if($pcl_type == 4)
 			{
-				$smiles++;
+				$smile++;
 			}
 			if($pcl_type == 5)
 			{
-				$crys++;
+				$cry++;
 			}
 			if($pcl_type == 6)
 			{
-				$hungrys++;				
+				$angry++;				
 			}
 		}
 		
@@ -788,20 +788,20 @@ function dnt_post_rate_member()
 		$pcl_results3 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/surprise.png" alt="Surprise" onmouseover="javascript:DNTPostRates(3, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(3, '.$tid.')" /><span id="prt_list3" class="ptr_list"></span>';			
 		$pcl_results4 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="Smile" onmouseover="javascript:DNTPostRates(4, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(4, '.$tid.')" /><span id="prt_list4" class="ptr_list"></span>';				
 		$pcl_results5 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="Cry" onmouseover="javascript:DNTPostRates(5, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(5, '.$tid.')" /><span id="prt_list5" class="ptr_list"></span>';				
-		$pcl_results6 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/hungry.png" alt="Hungry" onmouseover="javascript:DNTPostRates(6, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(6, '.$tid.')" /><span id="prt_list6" class="ptr_list"></span>';
+		$pcl_results6 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.png" alt="Angry" onmouseover="javascript:DNTPostRates(6, '.$tid.')" onmouseout="javascript:DNTPostRatesRemove(6, '.$tid.')" /><span id="prt_list6" class="ptr_list"></span>';
 			
 		if($likes > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$likes."</span>".$pcl_results1;
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$like."</span>".$pcl_results1;
 		if($loves > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$loves."</span>".$pcl_results2;		
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$love."</span>".$pcl_results2;		
 		if($surprises > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$surprises."</span>".$pcl_results3;
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$surprise."</span>".$pcl_results3;
 		if($smiles > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$smiles."</span>".$pcl_results4;
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$smile."</span>".$pcl_results4;
 		if($crys > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$crys."</span>".$pcl_results5;
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$cry."</span>".$pcl_results5;
 		if($hungrys > 0)
-			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$hungrys."</span>".$pcl_results6;
+			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$angry."</span>".$pcl_results6;
 		$lang->pcl_total_best = $lang->sprintf($lang->pcl_total_best, $total);
 			$templates = '<div class="clasify_post_rates_msg">'.$lang->pcl_total_best.'<BR />'.$subject.'<br />'.$clasify_post_rates_msg.'</div>';
 	}
