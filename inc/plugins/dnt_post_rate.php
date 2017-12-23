@@ -533,7 +533,7 @@ $post['clasify_post_rates'] = '<div class="post_rate_button" id="post_rates_btn"
 	<span onclick="javascript:DNTPostRate(3, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/surprise.png" alt="Surprise" title="Surprise" /></span>
 	<span onclick="javascript:DNTPostRate(4, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="Smile" title="Smile" /></span>
 	<span onclick="javascript:DNTPostRate(5, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="Cry" title="Cry" /></span>
-	<span onclick="javascript:DNTPostRate(6, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/hungry.png" alt="Hungry" title="Hungry" /></span>	
+	<span onclick="javascript:DNTPostRate(6, '.$tid.')" class="post_rate_btn"><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/hungry.png" alt="Angry" title="Angry" /></span>	
 </div>';
 	}
 
