@@ -212,7 +212,7 @@ function dnt_post_rate_activate()
 	$stylesheet = array(
 		"name"			=> "pcl.css",
 		"tid"			=> 1,
-		"attachedto"	=> 0,		
+		"attachedto"	=> "",		
 		"stylesheet"	=> $db->escape_string($stylesheet_css),
 		"cachefile"		=> "pcl.css",
 		"lastmodified"	=> TIME_NOW
