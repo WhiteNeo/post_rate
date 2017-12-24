@@ -187,6 +187,36 @@ function dnt_post_rate_activate()
 		'disporder' => 4,
 		'gid' => $group['gid']
 	);
+
+	$new_config[] = array(
+		'name' => 'dnt_post_rate_limit',
+		'title' => 'Limit to search data',
+		'description' => 'Set limit in days to search into database, by default 30 days',
+		'optionscode' => 'numeric',
+		'value' => 30,
+		'disporder' => 5,
+		'gid' => $group['gid']
+	);
+
+	$new_config[] = array(
+		'name' => 'dnt_post_rate_limit_users',
+		'title' => 'Limit to search userlist',
+		'description' => 'Set limit of max number of users to show into modal hover, by default 10',
+		'optionscode' => 'numeric',
+		'value' => 10,
+		'disporder' => 6,
+		'gid' => $group['gid']
+	);
+
+	$new_config[] = array(
+		'name' => 'dnt_post_rate_only_firspost',
+		'title' => 'Use only in first post',
+		'description' => 'Use this mod only for the first post or all posts. Set to No if you wish to show all posts (It requires more querys)',
+		'optionscode' => 'yesno',
+		'value' => 1,
+		'disporder' => 6,
+		'gid' => $group['gid']
+	);
 	
 	foreach($new_config as $array => $content)
 	{
@@ -436,16 +466,19 @@ function dnt_post_rate_post_rates(&$post)
 		return false;
 	}
 	$lang->load('dnt_post_rate',false,true);
-
-	if($thread['firstpost'] != $post['pid'])
+	$pcl_firstpost = (int)$mybb->settings['dnt_post_rate_only_firspost'];	
+	
+	if($pcl_firstpost == 1 && $thread['firstpost'] != $post['pid'])
 		return false;	
 	
 	$tid = (int)$thread['tid'];
 	$fid = (int)$thread['fid'];
 	$pcl_sender = (int)$mybb->user['uid'];
 	$pcl_senderc = "-1";
-	$pcl_date = time() - (30 * 60 * 60 * 24);
-	
+	$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];	
+	$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
+	$pcl_date = " AND pcl_date>='{$pcl_date_limit}";
+		
 	if($pcl_fids != "")
 		return false;
 	else if($pcl_fids != "-1" && !empty($pcl_fids))
@@ -491,7 +524,7 @@ function dnt_post_rate_post_rates(&$post)
 	{
 		if($mybb->user['uid'] != $thread['uid'])
 		{
-			$query = $db->simple_select('dnt_post_rate','*',"pcl_sender='{$pcl_sender}' AND pcl_tid='{$tid}' AND pcl_date>='{$pcl_date}'", array("limit"=>1));		
+			$query = $db->simple_select('dnt_post_rate','*',"pcl_sender='{$pcl_sender}' AND pcl_tid='{$tid}'{$pcl_date}", array("limit"=>1));		
 			if ($db->num_rows($query) > 0)
 			{
 				$pcl_see_me = false;
@@ -505,7 +538,7 @@ function dnt_post_rate_post_rates(&$post)
 	$tid = (int)$thread['tid'];
 	$pcl_user = (int)$thread['uid'];
 	$likes = $loves = $wow = $smiles = $crys = $angrys = 0;
-	$pcl_query = $db->simple_select('dnt_post_rate','*',"pcl_tid='{$tid}' AND pcl_date>='{$pcl_date}'");
+	$pcl_query = $db->simple_select('dnt_post_rate','*',"pcl_tid='{$tid}'{$pcl_date}");
 	while($pcl_rows = $db->fetch_array($pcl_query))
 	{
 		$pcl_senderc = (int)$pcl_rows['pcl_sender'];
@@ -611,9 +644,11 @@ function dnt_post_rate_xmlhttp()
 		$pid = (int)$thread['pid'];
 		$pcl_total = (int)$thread['pcl_total'];
 		$pcl_tot = (int)$thread['pcl_total']+1;
-		$pcl_date = time() - (30 * 60 * 60 * 24);
+		$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];	
+		$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
+		$pcl_date = " AND pcl_date>='{$pcl_date_limit}";
 		$likes = $loves = $wow = $smiles = $crys = $angrys = 0;	
-		$pcl_query = $db->simple_select('dnt_post_rate','*',"pcl_sender={$uid} AND pcl_tid='{$tid}' AND pcl_date>='{$pcl_date}'", array("limit"=>1));		
+		$pcl_query = $db->simple_select('dnt_post_rate','*',"pcl_sender={$uid} AND pcl_tid='{$tid}'{$pcl_date}", array("limit"=>1));		
 		if($db->num_rows($pcl_query) > 0)
 		{
 			$pcl_dataiu = "update";	
@@ -645,7 +680,7 @@ function dnt_post_rate_xmlhttp()
 		else if($pcl_dataiu == "update")
 			$db->update_query("dnt_post_rate",$update_data,"pcl_tid='{$tid}' AND pcl_sender='{$uid}'");
 		recordAlertRpt($tid);	
-		$pcl_query = $db->simple_select('dnt_post_rate','*',"pcl_tid='{$tid}' AND pcl_date>='{$pcl_date}'");			
+		$pcl_query = $db->simple_select('dnt_post_rate','*',"pcl_tid='{$tid}'{$pcl_date}");			
 		while($pcl_rows = $db->fetch_array($pcl_query))
 		{
 			$pcl_senderc = (int)$pcl_rows['pcl_sender'];
@@ -740,13 +775,16 @@ function dnt_post_rate_xmlhttp()
 		$lid = (int)$mybb->input['lid'];
 		$tid = (int)$mybb->input['tid'];
 		$thread = get_thread($tid);
-		$pcl_date = time() - (30 * 60 * 60 * 24);
+		$limit_users = (int)$mybb->settings['dnt_post_rate_limit_users'];
+		$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];	
+		$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
+		$pcl_date = " AND pcl_date>='{$pcl_date_limit}";		
 		$templates = "";
 		$pcl_query = $db->query("SELECT dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
 		LEFT JOIN ".TABLE_PREFIX."users u
 		ON (dp.pcl_sender=u.uid)
-		WHERE pcl_tid='{$tid}' AND pcl_type='{$lid}' AND pcl_date>='{$pcl_date}'
-		ORDER BY pcl_date DESC LIMIT 10");
+		WHERE pcl_tid='{$tid}' AND pcl_type='{$lid}'{$pcl_date}'
+		ORDER BY pcl_date DESC LIMIT {$limit_users}");
 		while($pcl_rows = $db->fetch_array($pcl_query))
 		{
 			$uname = htmlspecialchars_uni($pcl_rows['username']);
@@ -765,7 +803,9 @@ function dnt_post_rate_member()
 	global $db, $lang, $mybb, $memprofile;
 	$lang->load('dnt_post_rate',false,true);		
 	$templates = "";
-	$pcl_date = time() - (30 * 60 * 60 * 24);	
+	$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];	
+	$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
+	$pcl_date = " AND pcl_date>='{$pcl_date_limit}";
 	$pcl_query = $db->simple_select('threads','*',"uid='{$memprofile['uid']}' AND pcl_total>0 ORDER BY pcl_total DESC LIMIT 1");
 	while($thread = $db->fetch_array($pcl_query))
 	{
@@ -777,7 +817,7 @@ function dnt_post_rate_member()
 	}
 	if(isset($tid))
 	{
-		$pcl_query = $db->simple_select('dnt_post_rate','*',"pcl_tid='{$tid}' AND pcl_date>='{$pcl_date}'");			
+		$pcl_query = $db->simple_select('dnt_post_rate','*',"pcl_tid='{$tid}'{$pcl_date}");			
 		while($pcl_rows = $db->fetch_array($pcl_query))
 		{
 			$pcl_senderc = (int)$pcl_rows['pcl_sender'];
