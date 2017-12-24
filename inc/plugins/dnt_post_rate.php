@@ -207,7 +207,7 @@ function dnt_post_rate_activate()
 		'disporder' => 6,
 		'gid' => $group['gid']
 	);
-
+/*
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_only_firspost',
 		'title' => 'Use only in first post',
@@ -217,7 +217,7 @@ function dnt_post_rate_activate()
 		'disporder' => 6,
 		'gid' => $group['gid']
 	);
-	
+	*/
 	foreach($new_config as $array => $content)
 	{
 		$db->insert_query("settings", $content);
@@ -276,7 +276,7 @@ function dnt_post_rate_deactivate()
 	global $db,$cache;
 
 	// Delete config groups
-	$db->delete_query("settings", "name IN ('dnt_post_rate_active','dnt_post_rate_forums','dnt_post_rate_groups','dnt_post_rate_highlight')");
+	$db->delete_query("settings", "name IN ('dnt_post_rate_active','dnt_post_rate_forums','dnt_post_rate_groups','dnt_post_rate_highlight','dnt_post_rate_limit','dnt_post_rate_limit_users','dnt_post_rate_only_firspost')");
 	$db->delete_query("settinggroups", "name='dnt_post_rate'");
    // Delete stylesheet
    	$db->delete_query('themestylesheets', "name='pcl.css'");
@@ -466,10 +466,12 @@ function dnt_post_rate_post_rates(&$post)
 		return false;
 	}
 	$lang->load('dnt_post_rate',false,true);
-	$pcl_firstpost = (int)$mybb->settings['dnt_post_rate_only_firspost'];	
+	/*$pcl_firstpost = (int)$mybb->settings['dnt_post_rate_only_firspost'];	
 	
 	if($pcl_firstpost == 1 && $thread['firstpost'] != $post['pid'])
-		return false;	
+		return false;*/
+	if($thread['firstpost'] != $post['pid'])
+		return false;
 	
 	$tid = (int)$thread['tid'];
 	$fid = (int)$thread['fid'];
