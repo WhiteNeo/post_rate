@@ -783,7 +783,7 @@ function dnt_post_rate_xmlhttp()
 		$pcl_query = $db->query("SELECT dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
 		LEFT JOIN ".TABLE_PREFIX."users u
 		ON (dp.pcl_sender=u.uid)
-		WHERE pcl_tid='{$tid}' AND pcl_type='{$lid}'{$pcl_date}'
+		WHERE pcl_tid='{$tid}' AND pcl_type='{$lid}'{$pcl_date}
 		ORDER BY pcl_date DESC LIMIT {$limit_users}");
 		while($pcl_rows = $db->fetch_array($pcl_query))
 		{
@@ -869,7 +869,7 @@ function dnt_post_rate_member()
 		if($angrys > 0)
 			$clasify_post_rates_msg .= "<span class=\"clasify_post_rates_msg_span\">".$angrys."</span>".$pcl_results6;
 		$lang->pcl_total_best = $lang->sprintf($lang->pcl_total_best, $total);
-			$templates = '<div class="clasify_post_rates_msg">'.$lang->pcl_total_best.'<BR />'.$subject.'<br />'.$clasify_post_rates_msg.'</div>';
+			$templates = '<div class="clasify_post_rates_msg">'.$lang->pcl_total_best.'<br />'.$subject.'<br /><br />'.$clasify_post_rates_msg.'</div>';
 	}
 	else
 		$templates = '<div class="clasify_post_norates_msg">'.$lang->pcl_dont_rates.'</div>';
