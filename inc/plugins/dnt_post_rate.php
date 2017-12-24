@@ -74,7 +74,7 @@ function dnt_post_rate_install()
 	if(function_exists("myalerts_info")){
 		$my_alerts_info = myalerts_info();
 		$verify = $my_alerts_info['version'];
-		if($verify >= "2.0.0"){
+		if($verify >= "2.0.0" && !dnt_post_rate_myalerts_status()){
 			$myalerts_plugins = $cache->read('mybbstuff_myalerts_alert_types');
 			if($myalerts_plugins['dntprt']['code'] != 'dntprt'){
 			$alertTypeManager = MybbStuff_MyAlerts_AlertTypeManager::createInstance($db, $cache);
@@ -107,7 +107,7 @@ function dnt_post_rate_uninstall()
 	if(function_exists("myalerts_info")){
 		$my_alerts_info = myalerts_info();
 		$verify = $my_alerts_info['version'];
-		if($verify >= "2.0.0"){	
+		if($verify >= "2.0.0" && dnt_post_rate_myalerts_status()){	
 			if($db->table_exists("alert_types")){
 				$alertTypeManager = MybbStuff_MyAlerts_AlertTypeManager::getInstance();
 				$alertTypeManager->deleteByCode('dntprt');
@@ -124,10 +124,7 @@ function dnt_post_rate_is_installed()
 	{
 		return true;
 	}
-	else
-	{
-		return false;		
-	}
+	return false;		
 }
 
 function dnt_post_rate_activate()
