@@ -348,6 +348,8 @@ function dnt_post_rate_deactivate()
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'pcl_rates_received\']}').'#', '', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'pcl_rates_given\']}').'#', '', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'pcl_rates_received\']}').'#', '', 0);
+	find_replace_templatesets("memprofile", '#'.preg_quote('{$memprofile[\'pcl_rates_given\']}').'#', '', 0);
+	find_replace_templatesets("memprofile", '#'.preg_quote('{$memprofile[\'pcl_rates_received\']}').'#', '', 0);
 	
 	rebuild_settings();
 }
