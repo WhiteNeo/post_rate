@@ -309,7 +309,7 @@ function dnt_post_rate_activate()
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'button_edit\']}').'#', '{$post[\'clasify_post_rates\']}{$post[\'button_edit\']}');	
 	find_replace_templatesets("headerinclude", '#'.preg_quote('{$stylesheets}').'#', '{$stylesheets}{$dnt_prt_script}');
 	find_replace_templatesets("forumdisplay_thread", '#'.preg_quote('{$attachment_count}').'#', '{$attachment_count}{$dnt_prt_rates}');		
-	find_replace_templatesets("member_profile", '#'.preg_quote('{$profilefields}').'#', '{$profilefields}{$memprofile[\'dnt_prt\']}{$memprofile[\'pcl_rates_given\']}{$memprofile[\'pcl_rates_received\']}');		
+	find_replace_templatesets("member_profile", '#'.preg_quote('{$profilefields}').'#', '{$profilefields}{$memprofile[\'stats\']}{$memprofile[\'dnt_prt\']}{$memprofile[\'top5_given\']}{$memprofile[\'top5_received\']}');
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'user_details\']}').'#', '{$post[\'user_details\']}{$post[\'pcl_rates_given\']}{$post[\'pcl_rates_received\']}', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'user_details\']}').'#', '{$post[\'user_details\']}{$post[\'pcl_rates_given\']}{$post[\'pcl_rates_received\']}', 0);	
 	rebuild_settings();
@@ -348,8 +348,14 @@ function dnt_post_rate_deactivate()
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'pcl_rates_received\']}').'#', '', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'pcl_rates_given\']}').'#', '', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'pcl_rates_received\']}').'#', '', 0);
+	find_replace_templatesets("memprofile", '#'.preg_quote('{$post[\'pcl_rates_given\']}').'#', '', 0);
+	find_replace_templatesets("memprofile", '#'.preg_quote('{$post[\'pcl_rates_received\']}').'#', '', 0);	
 	find_replace_templatesets("memprofile", '#'.preg_quote('{$memprofile[\'pcl_rates_given\']}').'#', '', 0);
 	find_replace_templatesets("memprofile", '#'.preg_quote('{$memprofile[\'pcl_rates_received\']}').'#', '', 0);
+	find_replace_templatesets("memprofile", '#'.preg_quote('{$memprofile[\'stats\']}').'#', '', 0);
+	find_replace_templatesets("memprofile", '#'.preg_quote('{$memprofile[\'dnt_prt\']}').'#', '', 0);
+	find_replace_templatesets("memprofile", '#'.preg_quote('{$memprofile[\'top5_given\']}').'#', '', 0);
+	find_replace_templatesets("memprofile", '#'.preg_quote('{$memprofile[\'top5_received\']}').'#', '', 0);
 	
 	rebuild_settings();
 }
@@ -1384,8 +1390,55 @@ function dnt_post_rate_member()
 	}
 	else
 		$pcl_templates = '<div class="clasify_post_norates_msg">'.$lang->pcl_dont_rates.'</div>';
+
+	$queryg = $db->simple_select('dnt_post_rate','COUNT(*) AS bestid, pcl_type',"pcl_sender='{$memprofile['uid']}' GROUP BY pcl_type HAVING bestid > 0 ORDER BY bestid DESC LIMIT 5");
+	$pcl_resultsg = '<div class="clasify_post_rates_msg">'.$lang->pcl_top5_rates_giv.'<br />';
+	while($pclg = $db->fetch_array($queryg))
+	{
+		if($pclg['pcl_type'] == 1)
+			$pcl_resultsg .= '<span class="clasify_post_rates_msg_span">'.$pclg['bestid'].'</span><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/like.png" alt="'.$lang->pcl_like.'" title="'.$lang->pcl_like.'" /><span style="color:#1b43b6;">'.$lang->pcl_like.'</span>';
+		if($pclg['pcl_type'] == 2)
+			$pcl_resultsg .= '<span class="clasify_post_rates_msg_span">'.$pclg['bestid'].'</span><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/love.png" alt="'.$lang->pcl_love.'" title="'.$lang->pcl_love.'" /><span style="color: #e61b3f;">'.$lang->pcl_love.'</span>';
+		if($pclg['pcl_type'] == 3)
+			$pcl_resultsg .= '<span class="clasify_post_rates_msg_span">'.$pclg['bestid'].'</span><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/wow.png" alt="'.$lang->pcl_wow.'" title="'.$lang->pcl_wow.'" /><span style="color:#cfcd35;">'.$lang->pcl_wow.'</span>';
+		if($pclg['pcl_type'] == 4)
+			$pcl_resultsg .= '<span class="clasify_post_rates_msg_span">'.$pclg['bestid'].'</span><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="'.$lang->pcl_smile.'" title="'.$lang->pcl_smile.'" /><span style="color:#cfcd35;">'.$lang->pcl_smile.'</span>';
+		if($pclg['pcl_type'] == 5)				
+			$pcl_resultsg .= '<span class="clasify_post_rates_msg_span">'.$pclg['bestid'].'</span><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="'.$lang->pcl_cry.'" title="'.$lang->pcl_cry.'" /><span style="color:#1b43b6;">'.$lang->pcl_cry.'</span>';				
+		if($pclg['pcl_type'] == 6)
+			$pcl_resultsg .= '<span class="clasify_post_rates_msg_span">'.$pclg['bestid'].'</span><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.png" alt="'.$lang->pcl_angry.'" title="'.$lang->pcl_angry.'" /><span style="color:#c22e0f;">'.$lang->pcl_angry.'</span>';
+	}
+	$pcl_resultsg .= '</div>';
+	$pcl_templatesg	.= $pcl_resultsg;
+
+	$queryr = $db->simple_select('dnt_post_rate','COUNT(*) AS bestid, pcl_type',"pcl_user='{$memprofile['uid']}' GROUP BY pcl_type HAVING bestid > 0 ORDER BY bestid DESC LIMIT 5");
+	$pcl_resultsr = '<div class="clasify_post_rates_msg">'.$lang->pcl_top5_rates_rec.'<br />';
+	while($pclr = $db->fetch_array($queryr))
+	{
+		if($pclr['pcl_type'] == 1)
+			$pcl_resultsr .= '<span class="clasify_post_rates_msg_span">'.$pclr['bestid'].'</span><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/like.png" alt="'.$lang->pcl_like.'" title="'.$lang->pcl_like.'" /><span style="color:#1b43b6;">'.$lang->pcl_like.'</span>';
+		if($pclr['pcl_type'] == 2)
+			$pcl_resultsr .= '<span class="clasify_post_rates_msg_span">'.$pclr['bestid'].'</span><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/love.png" alt="'.$lang->pcl_love.'" title="'.$lang->pcl_love.'" /><span style="color: #e61b3f;">'.$lang->pcl_love.'</span>';
+		if($pclr['pcl_type'] == 3)
+			$pcl_resultsr .= '<span class="clasify_post_rates_msg_span">'.$pclr['bestid'].'</span><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/wow.png" alt="'.$lang->pcl_wow.'" title="'.$lang->pcl_wow.'" /><span style="color:#cfcd35;">'.$lang->pcl_wow.'</span>';
+		if($pclr['pcl_type'] == 4)
+			$pcl_resultsr .= '<span class="clasify_post_rates_msg_span">'.$pclr['bestid'].'</span><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/smile.png" alt="'.$lang->pcl_smile.'" title="'.$lang->pcl_smile.'" /><span style="color:#cfcd35;">'.$lang->pcl_smile.'</span>';
+		if($pclr['pcl_type'] == 5)				
+			$pcl_resultsr .= '<span class="clasify_post_rates_msg_span">'.$pclr['bestid'].'</span><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/cry.png" alt="'.$lang->pcl_cry.'" title="'.$lang->pcl_cry.'" /><span style="color:#1b43b6;">'.$lang->pcl_cry.'</span>';				
+		if($pclr['pcl_type'] == 6)
+			$pcl_resultsr .= '<span class="clasify_post_rates_msg_span">'.$pclr['bestid'].'</span><img src="'.$mybb->settings['bburl'].'/images/dnt_rates/angry.png" alt="'.$lang->pcl_angry.'" title="'.$lang->pcl_angry.'" /><span style="color:#c22e0f;">'.$lang->pcl_angry.'</span>';
+	}
+	$pcl_resultsr .= '</div>';
+	$pcl_templatesr	.= $pcl_resultsr;
+
+	$pcl_stats = '<div class="clasify_post_rates_msg">'.$lang->pcl_stats.'<br />';
+	$pcl_stats .= $memprofile['pcl_rates_given'].$memprofile['pcl_rates_received'];
+	$pcl_stats .= '</div>';
 	
+	$memprofile['stats'] = $pcl_stats;	
 	$memprofile['dnt_prt'] = $pcl_templates;
+	$memprofile['top5_given'] = $pcl_templatesg;
+	$memprofile['top5_received'] = $pcl_templatesr;	
 }
 
 function dnt_post_rates()
