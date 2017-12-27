@@ -34,3 +34,6 @@ $l['pcl_you'] = "Tú";
 $l['pcl_has_rated'] = " dió al usuario ";
 $l['pcl_with'] = " la reacción de ";
 $l['pcl_in_this_post'] = " en el mensaje ";
+$l['pcl_top5_rates_rec'] = "<span style=\"display:block\">Top 5 emociones recibidas.</span>";
+$l['pcl_top5_rates_giv'] = "<span style=\"display:block\">Top 5 emociones brindadas.</span>";
+$l['pcl_stats'] = "<span style=\"display:block\">Estadísticas de sus emociones.</span>";
