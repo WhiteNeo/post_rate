@@ -89,7 +89,6 @@ if($mybb->input['action'] == "get_thread_rates")
 		$sql_req .= " AND pcl_pid=".$mybb->input['pid'];
 	}
 
-	$limit_users = (int)$mybb->settings['dnt_post_rate_limit_users'];
 	$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];	
 	$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
 	if($limit_search > 0)
@@ -119,8 +118,10 @@ if($mybb->input['action'] == "get_thread_rates")
 	$page = (int)$mybb->input['page'];
 	if($page < 1) $page = 1;
 	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req), 'numtot');
-	$perpage = 20;
-	$likes_founded = (int)$numtot;
+	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
+	if($perpage == 0)
+		$perpage = 20;
+	$items_founded = (int)$numtot;
 	if(isset($mybb->input['pid']))
 		$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}&amp;pcl_pid={$pid}");
 	else
@@ -256,7 +257,6 @@ else if($mybb->input['action'] == "get_received_rates")
 	$mybb->input['uid'] = $db->escape_string($mybb->input['uid']);
 	$sql_req = "pcl_user=".$mybb->input['uid'];
 
-	$limit_users = (int)$mybb->settings['dnt_post_rate_limit_users'];
 	$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];	
 	$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
 	if($limit_search > 0)
@@ -286,8 +286,10 @@ else if($mybb->input['action'] == "get_received_rates")
 	$page = (int)$mybb->input['page'];
 	if($page < 1) $page = 1;
 	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req), 'numtot');
-	$perpage = 20;
-	$likes_founded = (int)$numtot;
+	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
+	if($perpage == 0)
+		$perpage = 20;	
+	$items_founded = (int)$numtot;
 	if(isset($mybb->input['pid']))
 		$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}&amp;pcl_pid={$pid}");
 	else
@@ -423,7 +425,6 @@ else if($mybb->input['action'] == "get_given_rates")
 	$mybb->input['uid'] = $db->escape_string($mybb->input['uid']);
 	$sql_req = "pcl_sender=".$mybb->input['uid'];
 
-	$limit_users = (int)$mybb->settings['dnt_post_rate_limit_users'];
 	$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];	
 	$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
 	if($limit_search > 0)
@@ -453,8 +454,10 @@ else if($mybb->input['action'] == "get_given_rates")
 	$page = (int)$mybb->input['page'];
 	if($page < 1) $page = 1;
 	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req), 'numtot');
-	$perpage = 20;
-	$likes_founded = (int)$numtot;
+	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
+	if($perpage == 0)
+		$perpage = 20;	
+	$items_founded = (int)$numtot;
 	if(isset($mybb->input['pid']))
 		$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}&amp;pcl_pid={$pid}");
 	else
