@@ -73,11 +73,9 @@ if($mybb->input['action'] == "get_thread_rates")
 	if($mybb->input['lid'] == "all")
 	{
 		$sql_req = "pcl_type>0";
-		$lang->pcl_rates = $lang->pcl_rates_thread;		
 	}
 	else
 	{
-		$lang->pcl_rates = $lang->pcl_rates_post;		
 		$mybb->input['lid'] = (int)$mybb->input['lid'];
 		$mybb->input['lid'] = $db->escape_string($mybb->input['lid']);
 		$sql_req = "pcl_type=".$mybb->input['lid'];
@@ -100,7 +98,7 @@ if($mybb->input['action'] == "get_thread_rates")
 	else
 		$pcl_date = "";
 	
-	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}", array("limit" => 1));
+	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}{$unviewwhere}", array("limit" => 1));
 		
 	$pcl_rows = $db->fetch_array($query);
 	$db->free_result($query);
@@ -121,11 +119,16 @@ if($mybb->input['action'] == "get_thread_rates")
 		
 	$page = (int)$mybb->input['page'];
 	if($page < 1) $page = 1;
-	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req), 'numtot');
+	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date.$unviewwhere), 'numtot');
 	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
 	if($perpage == 0)
 		$perpage = 20;
 	$items_founded = (int)$numtot;
+	if($mybb->input['lid'] == "all")
+		$lang->pcl_rates = $lang->sprintf($lang->pcl_rates_thread, $items_founded);
+	else
+		$lang->pcl_rates = $lang->sprintf($lang->pcl_rates_post, $items_founded);		
+	
 	if(isset($mybb->input['pid']))
 		$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}&amp;pcl_pid={$pid}");
 	else
@@ -239,8 +242,6 @@ else if($mybb->input['action'] == "get_received_rates")
 	{
 		error($lang->pcl_not_received, $lang->pcl_error_title);
 	}
-		$lang->pcl_rates = $lang->pcl_rates_received;
-	
 	// get forums user cannot view
 	$unviewable = get_unviewable_forums(true);	
 	if(isset($fids) && !empty($fids) && !empty($unviewable)){
@@ -269,7 +270,7 @@ else if($mybb->input['action'] == "get_received_rates")
 	else
 		$pcl_date = "";
 	
-	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}", array("limit" => 1));
+	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}{$unviewwhere}", array("limit" => 1));
 		
 	$pcl_rows = $db->fetch_array($query);
 	$db->free_result($query);
@@ -290,11 +291,13 @@ else if($mybb->input['action'] == "get_received_rates")
 		
 	$page = (int)$mybb->input['page'];
 	if($page < 1) $page = 1;
-	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req), 'numtot');
+	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date.$unviewwhere), 'numtot');
 	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
 	if($perpage == 0)
 		$perpage = 20;	
 	$items_founded = (int)$numtot;
+	$lang->pcl_rates = $lang->sprintf($lang->pcl_rates_received, $items_founded);
+	
 	if(isset($mybb->input['pid']))
 		$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}&amp;pcl_pid={$pid}");
 	else
@@ -409,7 +412,6 @@ else if($mybb->input['action'] == "get_given_rates")
 	{
 		error($lang->pcl_not_received, $lang->pcl_error_title);
 	}
-	$lang->pcl_rates = $lang->pcl_rates_given;	
 	// get forums user cannot view
 	$unviewable = get_unviewable_forums(true);	
 	if(isset($fids) && !empty($fids) && !empty($unviewable)){
@@ -438,7 +440,7 @@ else if($mybb->input['action'] == "get_given_rates")
 	else
 		$pcl_date = "";
 	
-	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}", array("limit" => 1));
+	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}{$unviewwhere}", array("limit" => 1));
 		
 	$pcl_rows = $db->fetch_array($query);
 	$db->free_result($query);
@@ -459,11 +461,13 @@ else if($mybb->input['action'] == "get_given_rates")
 		
 	$page = (int)$mybb->input['page'];
 	if($page < 1) $page = 1;
-	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req), 'numtot');
+	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date.$unviewwhere), 'numtot');
 	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
 	if($perpage == 0)
 		$perpage = 20;	
 	$items_founded = (int)$numtot;
+	$lang->pcl_rates = $lang->sprintf($lang->pcl_rates_given, $items_founded);
+	
 	if(isset($mybb->input['pid']))
 		$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}&amp;pcl_pid={$pid}");
 	else
