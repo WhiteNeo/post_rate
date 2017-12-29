@@ -19,6 +19,9 @@ function DNTPostRate(lid,tid,pid)
 		}
 		else
 		{
+			var dreca = $("span#dnt_pcl_reca"+pid).text();
+			dreca++;
+			$("span#dnt_pcl_reca"+pid).text(dreca);
 			$("#post_rates_btn_"+pid).removeClass("post_rate_button").css("display","inline").removeAttr("onclick").html(request.rate);
 			$("#post_rates_"+pid).remove();
 			$.jGrowl(dnt_prt_success, {theme:'jgrowl_success'});
@@ -108,6 +111,9 @@ function DNTRemoveRate(lid,tid,pid)
 		}
 		else
 		{
+			var dreca = $("span#dnt_pcl_reca"+pid).text();
+			dreca--;
+			$("span#dnt_pcl_reca"+pid).text(dreca);
 			$("#post_rates_btn_"+pid).removeClass("pcl_div_rate").css("display","inline").removeAttr("onclick").html(request.button);
 			$.jGrowl(dnt_prt_remove_success, {theme:'jgrowl_success'});
 			$("#clasify_post_rates_msgs_list"+pid).html(request.templates);		
