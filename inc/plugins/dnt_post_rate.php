@@ -487,7 +487,13 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_list',
 		'template' => "<div class=\"dnt_prt_list {\$trow}\">
-{\$pcl_rows[\'avatar\']}<span class=\"dnt_prt_list\">{\$pcl_rows[\'username\']}{\$lang->pcl_has_rated}{\$pcl_rows[\'runame\']}{\$lang->pcl_with}{\$pcl_rows[\'rate\']}{\$lang->pcl_in_this_post}<a href=\"{\$pcl_rows[\'url\']}\">{\$pcl_rows[\'subject\']}</a><span class=\"smalltext\">{\$pcl_rows[\'date\']} ({\$pcl_rows[\'time\']})</span></span>
+	{\$pcl_rows[\'avatar\']}
+	<span class=\"dnt_prt_list\">
+		{\$pcl_rows[\'username\']}{\$lang->pcl_has_rated}{\$pcl_rows[\'runame\']}
+		{\$lang->pcl_with}{\$pcl_rows[\'rate\']}
+		{\$lang->pcl_in_this_post}<a href=\"{\$pcl_rows[\'url\']}\">{\$pcl_rows[\'subject\']}</a>
+		<span class=\"smalltext\">{\$pcl_rows[\'date\']} ({\$pcl_rows[\'time\']})</span>
+	</span>
 </div>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -851,8 +857,8 @@ $post['clasify_post_rates'] = '<div class="post_rate_button" id="post_rates_btn_
 		$pcl_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$post['tid']}&amp;pid={$post['pid']}";
 		$lang->pcl_view_all = $lang->sprintf($lang->pcl_view_all, $pcl_url);
 		$clasify_post_rates_msg = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_surprises'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_hungrys'];
-		//$lang->pcl_total = "This post contains ".$post['psc_rates_total']." rates";
-		$lang->pcl_total = $lang->sprintf($lang->pcl_total, $total);
+		$lang->pcl_total = "This post contains ".$post['psc_rates_total']." rates";
+		//$lang->pcl_total = $lang->sprintf($lang->pcl_total, $total);
 		$post['clasify_post_rates_msg'] = '<div id="clasify_post_rates_msgs_list'.$pid.'"><div class="clasify_post_rates_msg'.$pcl_hl_class.'">'.$lang->pcl_total.$lang->pcl_view_all.$lang->pcl_rates."<br />".$clasify_post_rates_msg.'</div></div>';
 		$post['message'] = "<div class=\"pcl_post {$pcl_hl_class}\">".$post['message'].$post['clasify_post_rates_msg']."</div>";
 	}
