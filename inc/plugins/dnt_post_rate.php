@@ -692,9 +692,12 @@ function dnt_post_rate_post_rates(&$post)
 	$pid = (int)$post['pid'];
 	$pcl_sender = (int)$mybb->user['uid'];
 	$pcl_senderc = "-1";
-	$limit_search = (int)$mybb->settings['dnt_post_rate_limit'];
+	$limit_search = (int)$mybb->settings['dnt_post_rate_limit'];	
 	$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
-	$pcl_date = " AND pcl_date>='{$pcl_date_limit}'";
+	if($limit_search > 0)
+		$pcl_date = " AND pcl_date>='{$pcl_date_limit}'";
+	else
+		$pcl_date = "";
 	$post['pcl_see_me'] = false;
 	if($pcl_firstpost == 0 && $mybb->settings['dnt_post_rate_postbit'])
 	{
@@ -756,16 +759,25 @@ function dnt_post_rate_post_rates(&$post)
 		$post['pcl_see_me'] = false;		
 	}
 	else if($mybb->settings['dnt_post_rate_groups'] == "-1")
-		$post['pcl_see_me'] = true;	
+		$post['pcl_see_me'] = true;
+	$pcl_user = (int)$post['uid'];
+	$post['pcl_rates_posts'] = unserialize($post['pcl_rates_posts']);
+	$likes = (int)$post['pcl_rates_posts']['likes'];
+	$loves = (int)$post['pcl_rates_posts']['loves'];
+	$wow = (int)$post['pcl_rates_posts']['wow'];
+	$smiles = (int)$post['pcl_rates_posts']['smiles'];
+	$crys = (int)$post['pcl_rates_posts']['crys'];
+	$angrys = (int)$post['pcl_rates_posts']['angrys'];
+	$total = (int)$post['pcl_rates_posts']['total'];	
 	if($post['uid'] == $mybb->user['uid'])
 	{
 		$post['pcl_see_me'] = false;
-	}
+	}	
 	else
 	{
-		if($mybb->user['uid'] != $post['uid'])
+		if($mybb->user['uid'] != $post['uid'] && $total > 0)
 		{
-			$query = $db->simple_select('dnt_post_rate','*',"pcl_sender='{$pcl_sender}' AND pcl_tid='{$tid}' AND pcl_pid='{$pid}'{$pcl_date}", array("limit"=>1));
+			$query = $db->simple_select('dnt_post_rate','*',"pcl_sender='{$pcl_sender}' AND pcl_pid='{$pid}'{$pcl_date}", array("limit"=>1));
 			if ($db->num_rows($query) > 0)
 			{
 				$post['pcl_see_me'] = false;
@@ -791,17 +803,7 @@ function dnt_post_rate_post_rates(&$post)
 				$post['pcl_see_me'] = true;
 			}		
 		}
-	}
-	
-	$pcl_user = (int)$post['uid'];
-	$post['pcl_rates_posts'] = unserialize($post['pcl_rates_posts']);
-	$likes = (int)$post['pcl_rates_posts']['likes'];
-	$loves = (int)$post['pcl_rates_posts']['loves'];
-	$wow = (int)$post['pcl_rates_posts']['wow'];
-	$smiles = (int)$post['pcl_rates_posts']['smiles'];
-	$crys = (int)$post['pcl_rates_posts']['crys'];
-	$angrys = (int)$post['pcl_rates_posts']['angrys'];
-	$total = (int)(int)$post['pcl_rates_posts']['total'];
+	}	
 	
 	if($post['pcl_see_me'] === true)
 	{		
@@ -816,9 +818,7 @@ $post['clasify_post_rates'] = '<div class="post_rate_button" id="post_rates_btn_
 </div>';
 	}
 
-	$post['psc_rates_total'] = (int)$likes + (int)$loves + (int)$wow + (int)$smiles + (int)$crys + (int)$angrys;
-
-	if($post['psc_rates_total'] > 0)
+	if($total > 0)
 	{
 		$pcl_results1 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/like.png" alt="'.$lang->pcl_like.'" title="'.$lang->pcl_like.'" onmouseover="javascript:DNTPostRates(1, '.$tid.', '.$pid.')" onmouseout="javascript:DNTPostRatesRemove(1, '.$tid.', '.$pid.')" onclick="location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=1&amp;tid='.$tid.'&amp;pid='.$pid.'\'" /><span id="prt_list1_pid'.$pid.'" class="ptr_list"></span>';
 		$pcl_results2 = '<img src="'.$mybb->settings['bburl'].'/images/dnt_rates/love.png" alt="'.$lang->pcl_love.'" title="'.$lang->pcl_love.'" onmouseover="javascript:DNTPostRates(2, '.$tid.', '.$pid.')" onmouseout="javascript:DNTPostRatesRemove(2, '.$tid.', '.$pid.')" onclick="location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=2&amp;tid='.$tid.'&amp;pid='.$pid.'\'" /><span id="prt_list2_pid'.$pid.'" class="ptr_list"></span>';
@@ -839,9 +839,10 @@ $post['clasify_post_rates'] = '<div class="post_rate_button" id="post_rates_btn_
 			$post['dnt_crys'] = "<span class=\"clasify_post_rates_msg_span\">".$crys."</span>".$pcl_results5;
 		if($angrys > 0)
 			$post['dnt_hungrys'] = "<span class=\"clasify_post_rates_msg_span\">".$angrys."</span>".$pcl_results6;
+		
 		if($mybb->settings['dnt_post_rate_highlight'] > 0)
 		{
-			$dnt_to_highlight = (int)$likes + (int)$loves + (int)$wow + (int)$smiles + (int)$crys + (int)$angrys;
+			$dnt_to_highlight = (int)$total;
 			$dnt_to_compare = (int)$mybb->settings['dnt_post_rate_highlight'];			
 			if($dnt_to_highlight >= $dnt_to_compare)
 				$pcl_hl_class = " dnt_post_hl";
@@ -849,14 +850,15 @@ $post['clasify_post_rates'] = '<div class="post_rate_button" id="post_rates_btn_
 		$pcl_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$post['tid']}&amp;pid={$post['pid']}";
 		$lang->pcl_view_all = $lang->sprintf($lang->pcl_view_all, $pcl_url);
 		$clasify_post_rates_msg = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_surprises'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_hungrys'];
-		$lang->pcl_total = $lang->sprintf($lang->pcl_total, $post['psc_rates_total']);
+		//$lang->pcl_total = "Este post contiene ".$post['psc_rates_total']." emociones";
+		$lang->pcl_total = $lang->sprintf($lang->pcl_total, $total);
 		$post['clasify_post_rates_msg'] = '<div id="clasify_post_rates_msgs_list'.$pid.'"><div class="clasify_post_rates_msg'.$pcl_hl_class.'">'.$lang->pcl_total.$lang->pcl_view_all.$lang->pcl_rates."<br />".$clasify_post_rates_msg.'</div></div>';
-		$post['message'] .= $post['clasify_post_rates_msg'];		
+		$post['message'] .= $post['clasify_post_rates_msg'];
 	}
 	else
 	{
 		$post['message'] .= '<div id="clasify_post_rates_msgs_list'.$pid.'">'.$post['clasify_post_rates_msg'].'</div>';		
-	}
+	}	
 }
 
 function dnt_post_rate_xmlhttp()
