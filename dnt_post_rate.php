@@ -52,7 +52,7 @@ if($mybb->input['action'] == "get_thread_rates")
 	if(!isset($mybb->input['lid']) && !isset($mybb->input['tid']))
 	{
 		error($lang->pcl_not_received, $lang->pcl_error_title);
-	}
+	}	
 	// get forums user cannot view
 	$unviewable = get_unviewable_forums(true);	
 	if(isset($fids) && !empty($fids) && !empty($unviewable)){
@@ -71,9 +71,13 @@ if($mybb->input['action'] == "get_thread_rates")
 	}
 	
 	if($mybb->input['lid'] == "all")
-		$sql_req = "pcl_type>0";	
+	{
+		$sql_req = "pcl_type>0";
+		$lang->pcl_rates = $lang->pcl_rates_thread;		
+	}
 	else
 	{
+		$lang->pcl_rates = $lang->pcl_rates_post;		
 		$mybb->input['lid'] = (int)$mybb->input['lid'];
 		$mybb->input['lid'] = $db->escape_string($mybb->input['lid']);
 		$sql_req = "pcl_type=".$mybb->input['lid'];
@@ -89,7 +93,7 @@ if($mybb->input['action'] == "get_thread_rates")
 		$sql_req .= " AND pcl_pid=".$mybb->input['pid'];
 	}
 
-	$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];	
+	$limit_search = (int)$mybb->settings['dnt_post_rate_limit'];	
 	$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
 	if($limit_search > 0)
 		$pcl_date = " AND pcl_date>='{$pcl_date_limit}'";
@@ -211,9 +215,8 @@ if($mybb->input['action'] == "get_thread_rates")
 			}
 		}
 		else 		
-			$pcl_rows['runame'] = $lang->guest;
+			$pcl_rows['runame'] = $lang->guest;			
 			
-
 		eval("\$dnt_prt_list .= \"".$templates->get("dnt_prt_list")."\";");
 	}
 
@@ -236,6 +239,8 @@ else if($mybb->input['action'] == "get_received_rates")
 	{
 		error($lang->pcl_not_received, $lang->pcl_error_title);
 	}
+		$lang->pcl_rates = $lang->pcl_rates_received;
+	
 	// get forums user cannot view
 	$unviewable = get_unviewable_forums(true);	
 	if(isset($fids) && !empty($fids) && !empty($unviewable)){
@@ -257,7 +262,7 @@ else if($mybb->input['action'] == "get_received_rates")
 	$mybb->input['uid'] = $db->escape_string($mybb->input['uid']);
 	$sql_req = "pcl_user=".$mybb->input['uid'];
 
-	$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];	
+	$limit_search = (int)$mybb->settings['dnt_post_rate_limit'];	
 	$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
 	if($limit_search > 0)
 		$pcl_date = " AND pcl_date>='{$pcl_date_limit}'";
@@ -404,6 +409,7 @@ else if($mybb->input['action'] == "get_given_rates")
 	{
 		error($lang->pcl_not_received, $lang->pcl_error_title);
 	}
+	$lang->pcl_rates = $lang->pcl_rates_given;	
 	// get forums user cannot view
 	$unviewable = get_unviewable_forums(true);	
 	if(isset($fids) && !empty($fids) && !empty($unviewable)){
@@ -425,7 +431,7 @@ else if($mybb->input['action'] == "get_given_rates")
 	$mybb->input['uid'] = $db->escape_string($mybb->input['uid']);
 	$sql_req = "pcl_sender=".$mybb->input['uid'];
 
-	$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];	
+	$limit_search = (int)$mybb->settings['dnt_post_rate_limit'];	
 	$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
 	if($limit_search > 0)
 		$pcl_date = " AND pcl_date>='{$pcl_date_limit}'";
