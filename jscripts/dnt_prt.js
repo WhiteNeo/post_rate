@@ -8,11 +8,22 @@
  **************************************************************/
 function DNTPostRate(lid,tid,pid)
 {
-	$.get("xmlhttp.php?action=clasify_post_rate&lid="+lid+"&tid="+tid+"&pid="+pid,function(request){
-		$("#post_rates_btn_"+pid).removeClass("post_rate_button").css("display","inline").removeAttr("onclick").html(request.rate);
-		$("#post_rates_"+pid).remove();
-		$.jGrowl(dnt_prt_success, {theme:'jgrowl_success'});
-		$("#clasify_post_rates_msgs_list"+pid).html(request.templates);
+	$.get("xmlhttp.php?action=clasify_post_rate&lid="+lid+"&tid="+tid+"&pid="+pid,function(request,status){
+		if(request.errors)
+		{
+			$.each(request.errors, function(i, error)
+			{
+				$.jGrowl(error, {theme: 'jgrowl_error'});
+			});
+			return false;					
+		}
+		else
+		{
+			$("#post_rates_btn_"+pid).removeClass("post_rate_button").css("display","inline").removeAttr("onclick").html(request.rate);
+			$("#post_rates_"+pid).remove();
+			$.jGrowl(dnt_prt_success, {theme:'jgrowl_success'});
+			$("#clasify_post_rates_msgs_list"+pid).html(request.templates);
+		}
 	});
 }
 function DNTPostRates(lid,tid,pid)
@@ -24,10 +35,21 @@ function DNTPostRates(lid,tid,pid)
 	}
 	else
 	{
-		$.get("xmlhttp.php?action=get_post_rates&lid="+lid+"&tid="+tid+"&pid="+pid,function(request){
-			dntulist.attr("rel","dntulist");
-			dntulist.html(request);
-			dntulist.fadeIn("slow").css({"display":"inline","marginTop":"45px","marginLeft":"-12px","zIndex":"1"});
+		$.get("xmlhttp.php?action=get_post_rates&lid="+lid+"&tid="+tid+"&pid="+pid,function(request,status){
+			if(request.errors)
+			{
+				$.each(request.errors, function(i, error)
+				{
+					$.jGrowl(error, {theme: 'jgrowl_error'});
+				});
+				return false;					
+			}
+			else
+			{
+				dntulist.attr("rel","dntulist");
+				dntulist.html(request);
+				dntulist.fadeIn("slow").css({"display":"inline","marginTop":"45px","marginLeft":"-12px","zIndex":"1"});
+			}
 		});		
 	}
 }
@@ -45,10 +67,21 @@ function DNTPostRatesMember(lid,tid)
 	}
 	else
 	{
-		$.get("xmlhttp.php?action=get_post_rates_member&lid="+lid+"&tid="+tid,function(request){
-			dntulist.attr("rel","dntulist");
-			dntulist.html(request);
-			dntulist.fadeIn("slow").css({"display":"inline","marginTop":"45px","marginLeft":"-12px","zIndex":"1"});
+		$.get("xmlhttp.php?action=get_post_rates_member&lid="+lid+"&tid="+tid,function(request,status){
+			if(request.errors)
+			{
+				$.each(request.errors, function(i, error)
+				{
+					$.jGrowl(error, {theme: 'jgrowl_error'});
+				});
+				return false;					
+			}
+			else
+			{
+				dntulist.attr("rel","dntulist");
+				dntulist.html(request);
+				dntulist.fadeIn("slow").css({"display":"inline","marginTop":"45px","marginLeft":"-12px","zIndex":"1"});
+			}
 		});		
 	}
 }
@@ -64,10 +97,21 @@ function DNTRemoveRate(lid,tid,pid)
 		stop();
 		return false;
 	}
-	$.get("xmlhttp.php?action=remove_post_rates&lid="+lid+"&tid="+tid+"&pid="+pid,function(request){
-		$("#post_rates_btn_"+pid).removeClass("pcl_div_rate").css("display","inline").removeAttr("onclick").html(request.button);
-		$.jGrowl(dnt_prt_remove_success, {theme:'jgrowl_success'});
-		$("#clasify_post_rates_msgs_list"+pid).html(request.templates);		
+	$.get("xmlhttp.php?action=remove_post_rates&lid="+lid+"&tid="+tid+"&pid="+pid,function(request,status){
+		if(request.errors)
+		{
+			$.each(request.errors, function(i, error)
+			{
+				$.jGrowl(error, {theme: 'jgrowl_error'});
+			});
+			return false;					
+		}
+		else
+		{
+			$("#post_rates_btn_"+pid).removeClass("pcl_div_rate").css("display","inline").removeAttr("onclick").html(request.button);
+			$.jGrowl(dnt_prt_remove_success, {theme:'jgrowl_success'});
+			$("#clasify_post_rates_msgs_list"+pid).html(request.templates);		
+		}
 	});	
 }
 function DNTShowMenu(pid)
