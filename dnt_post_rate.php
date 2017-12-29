@@ -119,7 +119,12 @@ if($mybb->input['action'] == "get_thread_rates")
 		
 	$page = (int)$mybb->input['page'];
 	if($page < 1) $page = 1;
-	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date), 'numtot');
+	//$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date), 'numtot');
+	$numtot = $db->query("SELECT COUNT(*) AS numtot, dp.*, t.fid, t.tid, t.visible FROM ".TABLE_PREFIX."dnt_post_rate dp
+		LEFT JOIN ".TABLE_PREFIX."threads t
+		ON (dp.pcl_tid=t.tid)			
+		WHERE {$sql_req}{$pcl_date}{$unviewwhere}");
+	$numtot = $db->fetch_field($numtot,'numtot');
 	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
 	if($perpage == 0)
 		$perpage = 20;
@@ -284,24 +289,23 @@ else if($mybb->input['action'] == "get_received_rates")
 	$tid = (int)$mybb->input['tid'];
 	$pid = (int)$mybb->input['pid'];
 
-	if(isset($mybb->input['pid']))	
-		add_breadcrumb($lang->pcl_rates_page_title, THIS_SCRIPT."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}&amp;pcl_pid={$pid}");
-	else
-		add_breadcrumb($lang->pcl_rates_page_title, THIS_SCRIPT."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}");
+	add_breadcrumb($lang->pcl_rates_page_title, THIS_SCRIPT."?action=get_received_rates&amp;uid={$mybb->input['uid']}");
 		
 	$page = (int)$mybb->input['page'];
 	if($page < 1) $page = 1;
-	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date), 'numtot');
+	//$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date), 'numtot');
+	$numtot = $db->query("SELECT COUNT(*) AS numtot, dp.*, t.fid, t.tid, t.visible FROM ".TABLE_PREFIX."dnt_post_rate dp
+		LEFT JOIN ".TABLE_PREFIX."threads t
+		ON (dp.pcl_tid=t.tid)			
+		WHERE {$sql_req}{$pcl_date}{$unviewwhere}");
+	$numtot = $db->fetch_field($numtot,'numtot');	
 	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
 	if($perpage == 0)
 		$perpage = 20;	
 	$items_founded = (int)$numtot;
 	$lang->pcl_rates = $lang->sprintf($lang->pcl_rates_received, $items_founded);
 	
-	if(isset($mybb->input['pid']))
-		$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}&amp;pcl_pid={$pid}");
-	else
-		$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}");
+	$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_received_rates&amp;uid={$mybb->input['uid']}");
 		
 	$query = $db->query("SELECT dp.*, u.*, ru.username as runame, ru.uid as ruid, ru.usergroup as rug, ru.displaygroup as rudg, t.fid, t.tid, t.visible, p.subject, p.pid FROM ".TABLE_PREFIX."dnt_post_rate dp
 		LEFT JOIN ".TABLE_PREFIX."users u
@@ -454,24 +458,23 @@ else if($mybb->input['action'] == "get_given_rates")
 	$tid = (int)$mybb->input['tid'];
 	$pid = (int)$mybb->input['pid'];
 
-	if(isset($mybb->input['pid']))	
-		add_breadcrumb($lang->pcl_rates_page_title, THIS_SCRIPT."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}&amp;pcl_pid={$pid}");
-	else
-		add_breadcrumb($lang->pcl_rates_page_title, THIS_SCRIPT."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}");
+	add_breadcrumb($lang->pcl_rates_page_title, THIS_SCRIPT."?action=get_given_rates&amp;uid={$mybb->input['uid']}");
 		
 	$page = (int)$mybb->input['page'];
 	if($page < 1) $page = 1;
-	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date), 'numtot');
+	//$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date), 'numtot');
+	$numtot = $db->query("SELECT COUNT(*) AS numtot, dp.*, t.fid, t.tid, t.visible FROM ".TABLE_PREFIX."dnt_post_rate dp
+		LEFT JOIN ".TABLE_PREFIX."threads t
+		ON (dp.pcl_tid=t.tid)			
+		WHERE {$sql_req}{$pcl_date}{$unviewwhere}");
+	$numtot = $db->fetch_field($numtot,'numtot');	
 	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
 	if($perpage == 0)
 		$perpage = 20;	
 	$items_founded = (int)$numtot;
 	$lang->pcl_rates = $lang->sprintf($lang->pcl_rates_given, $items_founded);
 	
-	if(isset($mybb->input['pid']))
-		$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}&amp;pcl_pid={$pid}");
-	else
-		$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}");
+	$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_given_rates&amp;uid={$mybb->input['uid']}");
 		
 	$query = $db->query("SELECT dp.*, u.*, ru.username as runame, ru.usergroup as rug, ru.displaygroup as rudg, ru.uid as ruid, t.fid, t.tid, t.visible, p.subject, p.pid FROM ".TABLE_PREFIX."dnt_post_rate dp
 		LEFT JOIN ".TABLE_PREFIX."users u
