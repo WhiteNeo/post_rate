@@ -98,7 +98,7 @@ if($mybb->input['action'] == "get_thread_rates")
 	else
 		$pcl_date = "";
 	
-	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}{$unviewwhere}", array("limit" => 1));
+	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}", array("limit" => 1));
 		
 	$pcl_rows = $db->fetch_array($query);
 	$db->free_result($query);
@@ -119,7 +119,7 @@ if($mybb->input['action'] == "get_thread_rates")
 		
 	$page = (int)$mybb->input['page'];
 	if($page < 1) $page = 1;
-	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date.$unviewwhere), 'numtot');
+	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date), 'numtot');
 	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
 	if($perpage == 0)
 		$perpage = 20;
@@ -270,7 +270,7 @@ else if($mybb->input['action'] == "get_received_rates")
 	else
 		$pcl_date = "";
 	
-	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}{$unviewwhere}", array("limit" => 1));
+	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}", array("limit" => 1));
 		
 	$pcl_rows = $db->fetch_array($query);
 	$db->free_result($query);
@@ -291,7 +291,7 @@ else if($mybb->input['action'] == "get_received_rates")
 		
 	$page = (int)$mybb->input['page'];
 	if($page < 1) $page = 1;
-	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date.$unviewwhere), 'numtot');
+	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date), 'numtot');
 	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
 	if($perpage == 0)
 		$perpage = 20;	
@@ -440,7 +440,7 @@ else if($mybb->input['action'] == "get_given_rates")
 	else
 		$pcl_date = "";
 	
-	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}{$unviewwhere}", array("limit" => 1));
+	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}", array("limit" => 1));
 		
 	$pcl_rows = $db->fetch_array($query);
 	$db->free_result($query);
@@ -461,7 +461,7 @@ else if($mybb->input['action'] == "get_given_rates")
 		
 	$page = (int)$mybb->input['page'];
 	if($page < 1) $page = 1;
-	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date.$unviewwhere), 'numtot');
+	$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date), 'numtot');
 	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
 	if($perpage == 0)
 		$perpage = 20;	
