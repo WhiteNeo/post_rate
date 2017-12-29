@@ -279,7 +279,7 @@ function dnt_post_rate_activate()
 	);
 
 	$new_config[] = array(
-		'name' => 'dnt_post_top5_given_memprofile',
+		'name' => 'dnt_post_rate_top5_given_memprofile',
 		'title' => 'Top 5 emotions given',
 		'description' => 'Show the top 5 emotions given by users in user profiles',
 		'optionscode' => 'yesno',
@@ -289,7 +289,7 @@ function dnt_post_rate_activate()
 	);
 
 	$new_config[] = array(
-		'name' => 'dnt_post_top5_received_memprofile',
+		'name' => 'dnt_post_rate_top5_received_memprofile',
 		'title' => 'Post rates received and received in memprofile',
 		'description' => 'Show the top 5 emotions received by users in user profiles',
 		'optionscode' => 'yesno',
@@ -306,6 +306,16 @@ function dnt_post_rate_activate()
 		'value' => 10,
 		'disporder' => 11,
 		'gid' => $group['gid']
+	);
+
+	$new_config[] = array(
+		'name' => 'dnt_post_rate_version',
+		'title' => 'Actual version of post rate plugin.',
+		'description' => 'This is the actual version of your post rate system installed',
+		'optionscode' => 'numeric',
+		'value' => 150,
+		'disporder' => 0,
+		'gid' => 0
 	);
 	
 	foreach($new_config as $array => $content)
@@ -374,7 +384,7 @@ function dnt_post_rate_deactivate()
 	global $db,$cache;
 
 	// Delete config groups
-	$db->delete_query("settings", "name IN ('dnt_post_rate_active','dnt_post_rate_forums','dnt_post_rate_groups','dnt_post_rate_highlight','dnt_post_rate_limit','dnt_post_rate_limit_users','dnt_post_rate_only_firspost','dnt_post_rate_postbit','dnt_post_rate_memprofile','dnt_post_top5_given_memprofile','dnt_post_top5_received_memprofile','dnt_post_rate_limit_page')");
+	$db->delete_query("settings", "name LIKE ('dnt_post_rate_%')");
 	$db->delete_query("settinggroups", "name='dnt_post_rate'");
    // Delete stylesheet
    	$db->delete_query('themestylesheets', "name='pcl.css'");
@@ -682,7 +692,7 @@ function dnt_post_rate_post_rates(&$post)
 	$pid = (int)$post['pid'];
 	$pcl_sender = (int)$mybb->user['uid'];
 	$pcl_senderc = "-1";
-	$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];
+	$limit_search = (int)$mybb->settings['dnt_post_rate_limit'];
 	$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
 	$pcl_date = " AND pcl_date>='{$pcl_date_limit}'";
 	$post['pcl_see_me'] = false;
@@ -864,7 +874,7 @@ function dnt_post_rate_xmlhttp()
 		$pid = (int)$mybb->input['pid'];
 		$thread = get_thread($tid);
 		$limit_users = (int)$mybb->settings['dnt_post_rate_limit_users'];
-		$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];	
+		$limit_search = (int)$mybb->settings['dnt_post_rate_limit'];	
 		$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
 		if($limit_search > 0)
 			$pcl_date = " AND pcl_date>='{$pcl_date_limit}'";
@@ -918,7 +928,7 @@ function dnt_post_rate_xmlhttp()
 		$tid = (int)$mybb->input['tid'];
 		$thread = get_thread($tid);
 		$limit_users = (int)$mybb->settings['dnt_post_rate_limit_users'];
-		$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];	
+		$limit_search = (int)$mybb->settings['dnt_post_rate_limit'];	
 		$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
 		if($limit_search > 0)
 			$pcl_date = " AND pcl_date>='{$pcl_date_limit}'";
@@ -978,7 +988,7 @@ function dnt_post_rate_xmlhttp()
 		$touid = (int)$post['uid'];
 		$uid = (int)$mybb->user['uid'];
 		$pcl_total = (int)$thread['pcl_total']+1;
-		$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];	
+		$limit_search = (int)$mybb->settings['dnt_post_rate_limit'];	
 		$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
 		if($limit_search > 0)
 			$pcl_date = " AND pcl_date>='{$pcl_date_limit}'";
@@ -1220,7 +1230,7 @@ function dnt_post_rate_xmlhttp()
 		$tid = (int)$mybb->input['tid'];
 		$pid = (int)$mybb->input['pid'];
 		$uid = (int)$mybb->user['uid'];
-		$limit_search = (int)$mybb->settings['dnt_post_rate_limit_users'];	
+		$limit_search = (int)$mybb->settings['dnt_post_rate_limit'];	
 		$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);		
 		if($limit_search > 0)
 			$pcl_date = " AND pcl_date>='{$pcl_date_limit}'";
@@ -1486,7 +1496,7 @@ function dnt_post_rate_member()
 			$pcl_templates = '<div class="clasify_post_norates_msg">'.$lang->pcl_dont_rates.'</div>';
 	}
 	
-	if($mybb->settings['dnt_post_top5_given_memprofile'] == 1)
+	if($mybb->settings['dnt_post_rate_top5_given_memprofile'] == 1)
 	{
 		$queryg = $db->simple_select('dnt_post_rate','COUNT(*) AS bestid, pcl_type',"pcl_sender='{$memprofile['uid']}' GROUP BY pcl_type HAVING bestid > 0 ORDER BY bestid DESC LIMIT 5");
 		$pcl_resultsg = '<div class="clasify_post_rates_msg">'.$lang->pcl_top5_rates_giv.'<br />';
@@ -1509,7 +1519,7 @@ function dnt_post_rate_member()
 		$pcl_templatesg	.= $pcl_resultsg;
 	}
 
-	if($mybb->settings['dnt_post_top5_received_memprofile'] == 1)
+	if($mybb->settings['dnt_post_rate_top5_received_memprofile'] == 1)
 	{
 		$queryr = $db->simple_select('dnt_post_rate','COUNT(*) AS bestid, pcl_type',"pcl_user='{$memprofile['uid']}' GROUP BY pcl_type HAVING bestid > 0 ORDER BY bestid DESC LIMIT 5");
 		$pcl_resultsr = '<div class="clasify_post_rates_msg">'.$lang->pcl_top5_rates_rec.'<br />';
