@@ -339,7 +339,7 @@ function dnt_post_rate_activate()
 .pcl_div_rate img{width:19px;height:19px;position:absolute}
 .pcl_div_rate span{margin-left:20px;font-weight:bold}
 .pcl_list_avatar{padding: 3px;border: 1px solid #D8DFEA;width: 30px;height: 30px;border-radius: 50%;margin: 0px 5px -15px 2px;position: relative}
-.clasify_post_norates_msg{background-color:rgba(185,65,25,0.3);float:right;margin:5px;color:#6f2f16;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
+.clasify_post_norates_msg{background-color:rgba(185,65,25,0.3);margin:5px;color:#6f2f16;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
 .clasify_post_rates_msg{background-color:rgba(102,189,218,0.3);margin:5px;color:#315284;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
 .clasify_post_rates_msg_span{font-size:8px;font-weight:bold;position:absolute;background:#ce5757;padding:1px 3px;color:#f0f0f0;border-radius:4px;border-radius:3px;margin-top:-5px}';
 
@@ -739,8 +739,8 @@ function dnt_post_rate_post_rates(&$post)
 	{
 		$url_given = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_given_rates&amp;uid='.(int)$post['uid'];
 		$url_received = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_received_rates&amp;uid='.(int)$post['uid'];	
-		$post['pcl_rates_given'] = $lang->sprintf($lang->pcl_rates_given,(int)$post['pcl_rates_given'], $url_given);
-		$post['pcl_rates_received'] = $lang->sprintf($lang->pcl_rates_received,(int)$post['pcl_rates_received'], $url_received);		
+		$post['pcl_rates_given'] = $lang->sprintf($lang->pcl_rates_given,'<span id="dnt_pcl_giva'.$post['pid'].'">'.(int)$post['pcl_rates_given']."</span>", $url_given);
+		$post['pcl_rates_received'] = $lang->sprintf($lang->pcl_rates_received,'<span id="dnt_pcl_reca'.$post['pid'].'">'.(int)$post['pcl_rates_received']."</span>", $url_received);
 	}
 	else if($pcl_firstpost == 1 && $mybb->settings['dnt_post_rate_postbit'])
 	{
@@ -748,13 +748,13 @@ function dnt_post_rate_post_rates(&$post)
 		{
 			$url_given = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_given_rates&amp;uid='.(int)$post['uid'];
 			$url_received = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_received_rates&amp;uid='.(int)$post['uid'];	
-			$post['pcl_rates_given'] = $lang->sprintf($lang->pcl_rates_given,(int)$post['pcl_rates_given'], $url_given);
-			$post['pcl_rates_received'] = $lang->sprintf($lang->pcl_rates_received,(int)$post['pcl_rates_received'], $url_received);			
+			$post['pcl_rates_given'] = $lang->sprintf($lang->pcl_rates_given,'<span id="dnt_pcl_giva'.$post['pid'].'">'.(int)$post['pcl_rates_given']."</span>", $url_given);
+			$post['pcl_rates_received'] = $lang->sprintf($lang->pcl_rates_received,'<span id="dnt_pcl_reca'.$post['pid'].'">'.(int)$post['pcl_rates_received']."</span>", $url_received);
 		}
 		else
 		{
-			$post['pcl_rates_given'] = "";
-			$post['pcl_rates_received'] = "";			
+			$post['pcl_rates_given'] = '<span id="dnt_pcl_giva'.$post['pid'].'" style="display:none"></span>';
+			$post['pcl_rates_received'] = '<span id="dnt_pcl_reca'.$post['pid'].'" style="display:none"></span>';
 		}		
 	}
 
@@ -851,10 +851,10 @@ $post['clasify_post_rates'] = '<div class="post_rate_button" id="post_rates_btn_
 		$pcl_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$post['tid']}&amp;pid={$post['pid']}";
 		$lang->pcl_view_all = $lang->sprintf($lang->pcl_view_all, $pcl_url);
 		$clasify_post_rates_msg = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_surprises'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_hungrys'];
-		//$lang->pcl_total = "Este post contiene ".$post['psc_rates_total']." emociones";
+		//$lang->pcl_total = "This post contains ".$post['psc_rates_total']." rates";
 		$lang->pcl_total = $lang->sprintf($lang->pcl_total, $total);
 		$post['clasify_post_rates_msg'] = '<div id="clasify_post_rates_msgs_list'.$pid.'"><div class="clasify_post_rates_msg'.$pcl_hl_class.'">'.$lang->pcl_total.$lang->pcl_view_all.$lang->pcl_rates."<br />".$clasify_post_rates_msg.'</div></div>';
-		$post['message'] .= $post['clasify_post_rates_msg'];
+		$post['message'] = "<div class=\"pcl_post {$pcl_hl_class}\">".$post['message'].$post['clasify_post_rates_msg']."</div>";
 	}
 	else
 	{
@@ -1010,8 +1010,6 @@ function dnt_post_rate_xmlhttp()
 			xmlhttp_error("You have rated this post, you can not rate twice...");
 			return false;
 			exit;
-			//$pcl_dataiu = "update";	
-			//$pcl_count = $pcl_query+1;
 		}
 		else
 		{
@@ -1029,16 +1027,8 @@ function dnt_post_rate_xmlhttp()
 			'pcl_date' => time()
 		);
 		
-		/*$update_data = array(
-			'pcl_type' => $db->escape_string($lid),
-			'pcl_count' => $db->escape_string($pcl_count),
-			'pcl_date' => time()
-		);*/
-
 		if($pcl_dataiu == "insert")
 			$db->insert_query("dnt_post_rate",$insert_data);
-		//else if($pcl_dataiu == "update")
-			//$db->update_query("dnt_post_rate",$update_data,"pcl_tid='{$tid}' AND pcl_pid='{$pid}' AND pcl_sender='{$uid}'");
 
 		$thread['pcl_rates_threads'] = unserialize($thread['pcl_rates_threads']);
 		
@@ -1095,28 +1085,13 @@ function dnt_post_rate_xmlhttp()
 		);
 		if(isset($update_data_thread))
 			$db->update_query("threads",$update_data_thread,"tid='{$tid}'");
-		//$db->update_query("threads",$update_data_thread,"tid='{$tid}' AND firstpost='{$pid}'");
 
 		$post['pcl_rates_posts'] = unserialize($post['pcl_rates_posts']);
 
-		$user['pcl_rates_given'] = (int)$mybb->user['pcl_rates_given'] + 1;
-		
-		$rates = get_user($post['uid']);
-		$rates['pcl_rates_received'] = (int)$rates['pcl_rates_received'] + 1;
-		
 		if($uid != $post['uid'])
 		{
-			$update_user = array(
-				"pcl_rates_given" => $db->escape_string($user['pcl_rates_given'])
-			);		
-			if(isset($update_user))
-				$db->update_query("users",$update_user,"uid='{$uid}'");
-
-			$update_post = array(
-				"pcl_rates_received" => $db->escape_string($rates['pcl_rates_received'])
-			);		
-			if(isset($update_post))
-				$db->update_query("users",$update_post,"uid='{$post['uid']}'");
+			$db->query("UPDATE ".TABLE_PREFIX."users SET pcl_rates_given=pcl_rates_given+1 WHERE uid='{$uid}' LIMIT 1");
+			$db->query("UPDATE ".TABLE_PREFIX."users SET pcl_rates_received=pcl_rates_received+1 WHERE uid='{$post['uid']}' LIMIT 1");			
 		}
 		
 		$likesp = (int)$post['pcl_rates_posts']['likes'];
@@ -1319,32 +1294,13 @@ function dnt_post_rate_xmlhttp()
 		);
 		if(isset($update_data_thread))
 			$db->update_query("threads",$update_data_thread,"tid='{$tid}'");
-			//$db->update_query("threads",$update_data_thread,"tid='{$tid}' AND firstpost='{$pid}'");
 
 		$post['pcl_rates_posts'] = unserialize($post['pcl_rates_posts']);
-		$user['pcl_rates_given'] = (int)$mybb->user['pcl_rates_given'] - 1;
-
-		if($user['pcl_rates_given'] < 0)
-			$user['pcl_rates_given'] = 0;
-
-		$rates = get_user($post['uid']);
-		$rates['pcl_rates_received'] = (int)$rates['pcl_rates_received'] - 1;
-		if($rates['pcl_rates_received'] < 0)
-			$rates['pcl_rates_received'] = 0;
-
+		
 		if($uid != $post['uid'])
 		{
-			$update_user = array(
-				"pcl_rates_given" => $db->escape_string($user['pcl_rates_given'])
-			);		
-			if(isset($update_user))
-				$db->update_query("users",$update_user,"uid='{$uid}'");
-
-			$update_post = array(
-				"pcl_rates_received" => $db->escape_string($rates['pcl_rates_received'])
-			);		
-			if(isset($update_post))
-				$db->update_query("users",$update_post,"uid='{$post['uid']}'");			
+			$db->query("UPDATE ".TABLE_PREFIX."users SET pcl_rates_given=pcl_rates_given-1 WHERE uid='{$uid}' LIMIT 1");
+			$db->query("UPDATE ".TABLE_PREFIX."users SET pcl_rates_received=pcl_rates_received-1 WHERE uid='{$post['uid']}' LIMIT 1");			
 		}
 		
 		$likesp = (int)$post['pcl_rates_posts']['likes'];
@@ -1468,7 +1424,6 @@ function dnt_post_rate_member()
 		while($thread = $db->fetch_array($pcl_query))
 		{
 			$tid = (int)$thread['tid'];
-			//$pid = (int)$thread['firstpost'];
 			$subject = htmlspecialchars_uni($thread['subject']);
 			$subject_link = get_thread_link($tid);
 			$subject = "<a href=\"{$subject_link}\">{$subject}</a>";
@@ -1768,7 +1723,7 @@ function do_pcl_threads_recount()
 
 	if($mybb->settings['dnt_post_rate_only_firspost'] == 1)
 	{
-		$query = $db->simple_select("dnt_post_rate", "COUNT(distinct pcl_tid) AS pcl_count");
+		$query = $db->simple_select("dnt_post_rate", "COUNT(pcl_id) AS pcl_count");
 		$pcl_count = $db->fetch_field($query, 'pcl_count');
 		$likes = $loves = $wow = $smiles = $crys = $angrys = 0;
 
