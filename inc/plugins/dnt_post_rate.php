@@ -41,9 +41,9 @@ function dnt_post_rate_info()
 	if(isset($mybb->settings['dnt_post_rate_active']))
 		$dpr_config = '<div style="float: right;"><a href="index.php?module=config&amp;action=change&amp;search=dnt_post_rate" style="color:#035488; background: url(../images/icons/brick.png) no-repeat 0px 18px; padding: 21px; text-decoration: none;">'.htmlspecialchars_uni($lang->pcl_configure).'</a></div>';
 
-	if(!isset($mybb->settings['dnt_post_rate_version']))
+	if(!isset($mybb->settings['dnt_post_rate_version']) && isset($mybb->settings['dnt_post_rate_active']))
 		$dpr_config .= '<div style="float: right;"><a href="index.php?module=config-plugins&amp;action=dnt_post_rate_verify_update" style="color:#035488; padding: 21px; text-decoration: none;">'.htmlspecialchars_uni($lang->pcl_update_to_15).'</a></div>';
-	else if($mybb->settings['dnt_post_rate_version'] > 140)
+	else if($mybb->settings['dnt_post_rate_version'] > 140 && isset($mybb->settings['dnt_post_rate_active']))
 		$dpr_config .= "";
 	
 	return array(
@@ -872,7 +872,7 @@ function dnt_post_rate_xmlhttp()
 			$pcl_date = "";
 		$templates = "";
 		if($limit_users > 0)
-		{		
+		{	
 			$pcl_query = $db->query("SELECT dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
 			LEFT JOIN ".TABLE_PREFIX."users u
 			ON (dp.pcl_sender=u.uid)
@@ -889,7 +889,6 @@ function dnt_post_rate_xmlhttp()
 			$templates = "<div class=\"dnt_prt_ulist\">{$dnt_pcl_uname}</div>";		
 			echo json_encode($templates);
 			exit;		
-			}
 		}
 		else
 		{
@@ -910,7 +909,7 @@ function dnt_post_rate_xmlhttp()
 			echo json_encode($templates);
 			exit;			
 		}		
-	} 
+	}
 	else if($mybb->get_input('action') == "get_post_rates_member")
 	{
 		header("Content-type: application/json; charset={$charset}");     
