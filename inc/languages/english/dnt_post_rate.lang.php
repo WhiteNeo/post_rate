@@ -7,10 +7,13 @@
 
 $l['pcl_rate'] = "Rate Post";
 $l['pcl_rated'] = "Post rated successfully";
-$l['pcl_total'] = '<span style="display:block">This post has been rated {1} times.</span>';
+$l['pcl_total'] = '<span style="display:block">This post has been rated {1} times.';
 $l['pcl_view_all'] = '<span style="float:right;"><a href="{1}">View all</a></span>';
 $l['pcl_total_best'] = "The best rated thread of this user with {1} times is:";
-$l['pcl_rates'] = '<span style="display:block">Rates for this post:</span>';
+$l['pcl_rates_post'] = '<span style="display:block">Rates for this post:</span>';
+$l['pcl_rates_thread'] = '<span style="display:block">Rates in this thread:</span>';
+$l['pcl_rates_given'] = '<span style="display:block">Rates Given:</span>';
+$l['pcl_rates_received'] = '<span style="display:block">Rates Received:</span>';
 $l['pcl_dont_rates'] = "This user has not post rates yet, be the first in rate it :) !!!";
 $l['dnt_prt_alert'] = '{1} has rated your message "{2}"';
 $l['myalerts_setting_dntprt'] = 'Receive an alert when someone rate one of my threads?';
@@ -33,6 +36,3 @@ $l['pcl_you'] = "You";
 $l['pcl_has_rated'] = " has rated ";
 $l['pcl_with'] = " with ";
 $l['pcl_in_this_post'] = " in this post ";
-$l['pcl_top5_rates_rec'] = "<span style=\"display:block\">Top 5 emotions received.</span>";
-$l['pcl_top5_rates_giv'] = "<span style=\"display:block\">Top 5 emotions given.</span>";
-$l['pcl_stats'] = "<span style=\"display:block\">Emotions stats.</span>";
