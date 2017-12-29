@@ -241,7 +241,7 @@ function dnt_post_rate_activate()
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_limit_users',
 		'title' => 'Limit to search userlist',
-		'description' => 'Set limit of max number of users to show into modal hover and default counter, by default 10',
+		'description' => 'Set limit of max number of users to show into modal hover and default counter, by default 10 (Leave empty or set to 0 to load emotion type and saves 1 query, besides loads usernames and date and use 1 query).',
 		'optionscode' => 'numeric',
 		'value' => 10,
 		'disporder' => 6,
@@ -871,22 +871,45 @@ function dnt_post_rate_xmlhttp()
 		else
 			$pcl_date = "";
 		$templates = "";
-		$pcl_query = $db->query("SELECT dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
-		LEFT JOIN ".TABLE_PREFIX."users u
-		ON (dp.pcl_sender=u.uid)
-		WHERE pcl_tid='{$tid}' AND pcl_pid='{$pid}' AND pcl_type='{$lid}'{$pcl_date}
-		ORDER BY pcl_date DESC LIMIT {$limit_users}");
-		while($pcl_rows = $db->fetch_array($pcl_query))
-		{
-			$pcl_date = my_date($mybb->settings['dateformat'], $pcl_rows['pcl_date']);
-			$uname = htmlspecialchars_uni($pcl_rows['username']);
-			if(empty($uname))
-				$uname = $lang->guest;
-			$dnt_pcl_uname .= "<span>".$uname." (".$pcl_date.")</span>";			
+		if($limit_users > 0)
+		{		
+			$pcl_query = $db->query("SELECT dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
+			LEFT JOIN ".TABLE_PREFIX."users u
+			ON (dp.pcl_sender=u.uid)
+			WHERE pcl_tid='{$tid}' AND pcl_pid='{$pid}' AND pcl_type='{$lid}'{$pcl_date}
+			ORDER BY pcl_date DESC LIMIT {$limit_users}");
+			while($pcl_rows = $db->fetch_array($pcl_query))
+			{
+				$pcl_date = my_date($mybb->settings['dateformat'], $pcl_rows['pcl_date']);
+				$uname = htmlspecialchars_uni($pcl_rows['username']);
+				if(empty($uname))
+					$uname = $lang->guest;
+				$dnt_pcl_uname .= "<span>".$uname." (".$pcl_date.")</span>";			
+			}
+			$templates = "<div class=\"dnt_prt_ulist\">{$dnt_pcl_uname}</div>";		
+			echo json_encode($templates);
+			exit;		
+			}
 		}
-		$templates = "<div class=\"dnt_prt_ulist\">{$dnt_pcl_uname}</div>";		
-		echo json_encode($templates);
-		exit;		
+		else
+		{
+			if($lid == 1)
+				$dnt_pcl_type = $lang->pcl_like;
+			else if($lid == 2)
+				$dnt_pcl_type = $lang->pcl_love;
+			else if($lid == 3)
+				$dnt_pcl_type = $lang->pcl_wow;
+			else if($lid == 4)
+				$dnt_pcl_type = $lang->pcl_smile;
+			else if($lid == 5)
+				$dnt_pcl_type = $lang->pcl_cry;
+			else if($lid == 6)
+				$dnt_pcl_type = $lang->pcl_angry;			
+			
+			$templates = "<div class=\"dnt_prt_ulist\">{$dnt_pcl_type}</div>";		
+			echo json_encode($templates);
+			exit;			
+		}		
 	} 
 	else if($mybb->get_input('action') == "get_post_rates_member")
 	{
@@ -903,22 +926,44 @@ function dnt_post_rate_xmlhttp()
 		else
 			$pcl_date = "";
 		$templates = "";
-		$pcl_query = $db->query("SELECT dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
-		LEFT JOIN ".TABLE_PREFIX."users u
-		ON (dp.pcl_sender=u.uid)
-		WHERE pcl_tid='{$tid}' AND pcl_type='{$lid}'{$pcl_date}
-		ORDER BY pcl_date DESC LIMIT {$limit_users}");
-		while($pcl_rows = $db->fetch_array($pcl_query))
+		if($limit_users > 0)
 		{
-			$pcl_date = my_date($mybb->settings['dateformat'], $pcl_rows['pcl_date']);
-			$uname = htmlspecialchars_uni($pcl_rows['username']);
-			if(empty($uname))
-				$uname = $lang->guest;
-			$dnt_pcl_uname .= "<span>".$uname." (".$pcl_date.")</span>";			
+			$pcl_query = $db->query("SELECT dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
+			LEFT JOIN ".TABLE_PREFIX."users u
+			ON (dp.pcl_sender=u.uid)
+			WHERE pcl_tid='{$tid}' AND pcl_type='{$lid}'{$pcl_date}
+			ORDER BY pcl_date DESC LIMIT {$limit_users}");
+			while($pcl_rows = $db->fetch_array($pcl_query))
+			{
+				$pcl_date = my_date($mybb->settings['dateformat'], $pcl_rows['pcl_date']);
+				$uname = htmlspecialchars_uni($pcl_rows['username']);
+				if(empty($uname))
+					$uname = $lang->guest;
+				$dnt_pcl_uname .= "<span>".$uname." (".$pcl_date.")</span>";			
+			}
+			$templates = "<div class=\"dnt_prt_ulist\">{$dnt_pcl_uname}</div>";		
+			echo json_encode($templates);
+			exit;
 		}
-		$templates = "<div class=\"dnt_prt_ulist\">{$dnt_pcl_uname}</div>";		
-		echo json_encode($templates);
-		exit;		
+		else
+		{
+			if($lid == 1)
+				$dnt_pcl_type = $lang->pcl_like;
+			else if($lid == 2)
+				$dnt_pcl_type = $lang->pcl_love;
+			else if($lid == 3)
+				$dnt_pcl_type = $lang->pcl_wow;
+			else if($lid == 4)
+				$dnt_pcl_type = $lang->pcl_smile;
+			else if($lid == 5)
+				$dnt_pcl_type = $lang->pcl_cry;
+			else if($lid == 6)
+				$dnt_pcl_type = $lang->pcl_angry;			
+			
+			$templates = "<div class=\"dnt_prt_ulist\">{$dnt_pcl_type}</div>";		
+			echo json_encode($templates);
+			exit;			
+		}
 	} 	
 	else if($mybb->get_input('action') == "clasify_post_rate")
 	{
@@ -1036,8 +1081,10 @@ function dnt_post_rate_xmlhttp()
 
 		$post['pcl_rates_posts'] = unserialize($post['pcl_rates_posts']);
 		$user['pcl_rates_given'] = (int)$mybb->user['pcl_rates_given'] + 1;
+		
 		if($user['pcl_rates_given'] < 1)
 			$user['pcl_rates_given'] = 1;
+		
 		$post['pcl_rates_received'] = (int)$post['pcl_rates_received'] + 1;
 		if($post['pcl_rates_received'] < 1)
 			$post['pcl_rates_received'] = 1;
@@ -1254,27 +1301,29 @@ function dnt_post_rate_xmlhttp()
 		$post = get_post($pid);	
 		$post['pcl_rates_posts'] = unserialize($post['pcl_rates_posts']);
 		$user['pcl_rates_given'] = (int)$mybb->user['pcl_rates_given'] - 1;
+
 		if($user['pcl_rates_given'] < 0)
 			$user['pcl_rates_given'] = 0;
+
 		$post['pcl_rates_received'] = (int)$post['pcl_rates_received'] - 1;
 		if($post['pcl_rates_received'] < 0)
 			$post['pcl_rates_received'] = 0;
-		if($uid == $post['uid'])
-		{			
+
+		if($uid != $post['uid'])
+		{
 			$update_user = array(
 				"pcl_rates_given" => $db->escape_string($user['pcl_rates_given'])
 			);		
 			if(isset($update_user))
 				$db->update_query("users",$update_user,"uid='{$uid}'");
-		}
-		else if($uid != $post['uid'])
-		{
+
 			$update_user = array(
 				"pcl_rates_received" => $db->escape_string($post['pcl_rates_received'])
 			);		
 			if(isset($update_user))
 				$db->update_query("users",$update_user,"uid='{$post['uid']}'");			
 		}
+		
 		$likesp = (int)$post['pcl_rates_posts']['likes'];
 		$lovesp = (int)$post['pcl_rates_posts']['loves'];
 		$wowp = (int)$post['pcl_rates_posts']['wow'];
