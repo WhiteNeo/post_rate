@@ -31,8 +31,8 @@ $l['pcl_not_received'] = "Actualmente no existen emociones brindadas en este men
 $l['pcl_has_rated_you'] = " a reaccionado con {2} al usuario {1} en el mensaje <a href=\"{3}\">{4}</a> <span class=\"smalltext\">{5} ({6})</span>";
 $l['pcl_error_title'] = "Error del sistema de emociones";
 $l['pcl_error'] = "La petición que ha solicitado es incorrecta, por favor verifique que la dirección url sea correcta....";
-$l['pcl_rates_given'] = "<span style=\"display:block\">Emociones Recibidas: <strong><a href=\"{2}\">{1}</a></strong></span>";
-$l['pcl_rates_received'] = "<span style=\"display:block\">Emociones Brindadas: <strong><a href=\"{2}\">{1}</a></strong></span>";
+$l['pcl_rates_given'] = "<span style=\"display:block\">Emociones Brindadas: <strong><a href=\"{2}\">{1}</a></strong></span>";
+$l['pcl_rates_received'] = "<span style=\"display:block\">Emociones Recibidas: <strong><a href=\"{2}\">{1}</a></strong></span>";
 $l['pcl_you'] = "Tú";
 $l['pcl_has_rated'] = " dió al usuario ";
 $l['pcl_with'] = " la reacción de ";
