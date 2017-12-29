@@ -1748,10 +1748,12 @@ function do_pcl_threads_recount()
 	if ($cur_page == 1)
 	{
 		$db->write_query("UPDATE ".TABLE_PREFIX."threads SET pcl_rates_threads=''");
-		$db->write_query("UPDATE ".TABLE_PREFIX."posts SET pcl_rates_posts=''");		
+		$db->write_query("UPDATE ".TABLE_PREFIX."posts SET pcl_rates_posts=''");
+		$db->write_query("UPDATE ".TABLE_PREFIX."threads SET pcl_total='0'");		
 	}
 
-	$query = $db->simple_select("dnt_post_rate", "COUNT(distinct pcl_tid) AS pcl_count");
+	//$query = $db->simple_select("dnt_post_rate", "COUNT(distinct pcl_tid) AS pcl_count");
+	$query = $db->simple_select("dnt_post_rate", "COUNT(pcl_id) AS pcl_count");
 	$pcl_count = $db->fetch_field($query, 'pcl_count');
 	$likes = $loves = $wow = $smiles = $crys = $angrys = 0;
 	$query = $db->simple_select("dnt_post_rate", "*", '', array('order_by' => 'pcl_tid', 'group_by' => 'pcl_tid', 'order_dir' => 'asc', 'limit_start' => $start, 'limit' => $per_page));
@@ -1769,18 +1771,19 @@ function do_pcl_threads_recount()
 		$crys = $db->fetch_field($type5, 'count5');
 		$type6 = $db->simple_select('dnt_post_rate', 'COUNT(pcl_count) as count6', 'pcl_tid='.(int)$pcl['pcl_tid'].' AND pcl_type=6');
 		$angrys = $db->fetch_field($type6, 'count6');	
-		$total = $likes + $loves + $wow + $smiles + $crys + $angrys;
+		$total = (int)$likes + (int)$loves + (int)$wow + (int)$smiles + (int)$crys + (int)$angrys;
+		$pcl['pcl_tid'] = (int)$pcl['pcl_tid'];
 		$pcl['pcl_rates'] = array(
-			'likes' => $likes,
-			'loves' => $loves,
-			'wow' => $wow,
-			'smiles' => $smiles,
-			'crys' => $crys,
-			'angrys' => $angrys,
-			'total' => $total
+			'likes' => (int)$likes,
+			'loves' => (int)$loves,
+			'wow' => (int)$wow,
+			'smiles' => (int)$smiles,
+			'crys' => (int)$crys,
+			'angrys' => (int)$angrys,
+			'total' => (int)$total
 		);
 		$pcl['pcl_rates'] = serialize($pcl['pcl_rates']);
-		$db->update_query("threads", array("pcl_rates_threads" => $db->escape_string($pcl['pcl_rates'])), "tid='{$pcl['pcl_tid']}'");		
+		$db->update_query("threads", array("pcl_rates_threads" => $db->escape_string($pcl['pcl_rates']), "pcl_total" => $db->escape_string($total)), "tid='{$pcl['pcl_tid']}'");		
 	}
 	//if($mybb->settings['dnt_post_rate_only_firspost'] == 1)
 	$query = $db->simple_select("dnt_post_rate", "*", '', array('order_by' => 'pcl_pid', 'group_by' => 'pcl_pid', 'order_dir' => 'asc', 'limit_start' => $start, 'limit' => $per_page));
@@ -1797,20 +1800,22 @@ function do_pcl_threads_recount()
 		$type5 = $db->simple_select('dnt_post_rate', 'COUNT(pcl_count) as count5', 'pcl_pid='.(int)$pcl['pcl_pid'].' AND pcl_type=5');
 		$crys = $db->fetch_field($type5, 'count5');
 		$type6 = $db->simple_select('dnt_post_rate', 'COUNT(pcl_count) as count6', 'pcl_pid='.(int)$pcl['pcl_pid'].' AND pcl_type=6');
-		$angrys = $db->fetch_field($type6, 'count6');	
-		$total = $likes + $loves + $wow + $smiles + $crys + $angrys;
+		$angrys = $db->fetch_field($type6, 'count6');
+		$total = (int)$likes + (int)$loves + (int)$wow + (int)$smiles + (int)$crys + (int)$angrys;
+		$pcl['pcl_pid'] = (int)$pcl['pcl_pid'];
 		$pcl['pcl_rates'] = array(
-			'likes' => $likes,
-			'loves' => $loves,
-			'wow' => $wow,
-			'smiles' => $smiles,
-			'crys' => $crys,
-			'angrys' => $angrys,
-			'total' => $total
+			'likes' => (int)$likes,
+			'loves' => (int)$loves,
+			'wow' => (int)$wow,
+			'smiles' => (int)$smiles,
+			'crys' => (int)$crys,
+			'angrys' => (int)$angrys,
+			'total' => (int)$total
 		);
 		$pcl['pcl_rates'] = serialize($pcl['pcl_rates']);
 		$db->update_query("posts", array("pcl_rates_posts" => $db->escape_string($pcl['pcl_rates'])), "pid='{$pcl['pcl_pid']}'");		
-	}	
+	}
+	
 	pcl_check_proceed($pcl_count, $end, $cur_page+1, $per_page, "pcl_threads_chunk_size", "do_recount_rates_threads", $db->escape_string($lang->pcl_update_tsuccess));	
 }
 
@@ -1832,14 +1837,13 @@ function do_pcl_users_recount()
 
 	if ($cur_page == 1)
 	{
-		$db->write_query("UPDATE ".TABLE_PREFIX."users SET pcl_rates_given='0', pcl_rates_received='0'");
-		$db->write_query("UPDATE ".TABLE_PREFIX."threads SET pcl_total='0'");		
+		$db->write_query("UPDATE ".TABLE_PREFIX."users SET pcl_rates_given='0', pcl_rates_received='0'");	
 	}
 
 	$query = $db->simple_select("dnt_post_rate", "COUNT(pcl_id) AS pcl_count");
 	$pcl_count = $db->fetch_field($query, 'pcl_count');
 
-	$query = $db->query("SELECT pcl_user, pcl_sender, pcl_tid
+	$query = $db->query("SELECT pcl_user, pcl_sender
 		FROM ".TABLE_PREFIX."dnt_post_rate
 		ORDER BY pcl_id ASC
 		LIMIT {$start}, {$per_page}"
@@ -1847,7 +1851,6 @@ function do_pcl_users_recount()
 
 	$user_given = array();
 	$user_received = array();
-	$pcl_total = array();
 	
 	while($pcl = $db->fetch_array($query))
 	{
@@ -1867,14 +1870,6 @@ function do_pcl_users_recount()
 		{
 			$user_received[$pcl['pcl_user']] = 1;
 		}
-		if($pcl_total[$pcl['pcl_tid']])
-		{
-			$pcl_total[$pcl['pcl_tid']]++;
-		}
-		else
-		{
-			$pcl_total[$pcl['pcl_tid']] = 1;
-		}	
 	}
 
 	if(is_array($user_given))
@@ -1889,13 +1884,6 @@ function do_pcl_users_recount()
 		foreach($user_received as $touid => $change)
 		{
 			$db->write_query("UPDATE ".TABLE_PREFIX."users SET pcl_rates_received=pcl_rates_received+{$change} WHERE uid='{$touid}'");
-		}
-	}
-	if(is_array($pcl_total))
-	{
-		foreach($pcl_total as $tid => $total)
-		{
-			$db->write_query("UPDATE ".TABLE_PREFIX."threads SET pcl_total=pcl_total+{$total} WHERE tid='{$tid}'");			
 		}
 	}
 
