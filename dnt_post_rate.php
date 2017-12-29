@@ -54,7 +54,8 @@ if($mybb->input['action'] == "get_thread_rates")
 		error($lang->pcl_not_received, $lang->pcl_error_title);
 	}	
 	// get forums user cannot view
-	$unviewable = get_unviewable_forums(true);	
+	$unviewable = get_unviewable_forums(true);
+	$uwp = "";
 	if(isset($fids) && !empty($fids) && !empty($unviewable)){
 	$unviewable .= "," . $fids;
 	}	
@@ -66,7 +67,7 @@ if($mybb->input['action'] == "get_thread_rates")
 		$unviewwhere = " AND t.fid NOT IN ($unviewable)";
 	}	
 	if(!$mybb->user['ismoderator'])
-	{
+	{		
 		$unviewwhere .= " AND t.visible='1'";
 	}
 	
@@ -90,13 +91,14 @@ if($mybb->input['action'] == "get_thread_rates")
 		$mybb->input['pid'] = $db->escape_string($mybb->input['pid']);
 		$sql_req .= " AND pcl_pid=".$mybb->input['pid'];
 	}
-
 	$limit_search = (int)$mybb->settings['dnt_post_rate_limit'];	
 	$pcl_date_limit = time() - ($limit_search * 60 * 60 * 24);
 	if($limit_search > 0)
 		$pcl_date = " AND pcl_date>='{$pcl_date_limit}'";
 	else
 		$pcl_date = "";
+	if($mybb->settings['dnt_post_rate_only_firspost'] == 1)
+		$uwp = " AND t.firstpost=dp.pcl_pid";
 	
 	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}", array("limit" => 1));
 		
@@ -120,10 +122,10 @@ if($mybb->input['action'] == "get_thread_rates")
 	$page = (int)$mybb->input['page'];
 	if($page < 1) $page = 1;
 	//$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date), 'numtot');
-	$numtot = $db->query("SELECT COUNT(*) AS numtot, dp.*, t.fid, t.tid, t.visible FROM ".TABLE_PREFIX."dnt_post_rate dp
+	$numtot = $db->query("SELECT COUNT(*) AS numtot, dp.*, t.fid, t.tid, t.visible, t.firstpost FROM ".TABLE_PREFIX."dnt_post_rate dp
 		LEFT JOIN ".TABLE_PREFIX."threads t
-		ON (dp.pcl_tid=t.tid)			
-		WHERE {$sql_req}{$pcl_date}{$unviewwhere}");
+		ON (dp.pcl_tid=t.tid)
+		WHERE {$sql_req}{$pcl_date}{$unviewwhere}{$uwp}");
 	$numtot = $db->fetch_field($numtot,'numtot');
 	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
 	if($perpage == 0)
@@ -139,7 +141,7 @@ if($mybb->input['action'] == "get_thread_rates")
 	else
 		$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_thread_rates&amp;lid={$lid}&amp;pcl_tid={$tid}");
 		
-	$query = $db->query("SELECT dp.*, u.*, ru.uid as ruid, ru.username as runame, ru.usergroup as rug, ru.displaygroup as rudg, t.fid, t.tid, t.visible, p.subject, p.pid FROM ".TABLE_PREFIX."dnt_post_rate dp
+	$query = $db->query("SELECT dp.*, u.*, ru.uid as ruid, ru.username as runame, ru.usergroup as rug, ru.displaygroup as rudg, t.fid, t.tid, t.visible, t.firstpost, p.subject, p.pid FROM ".TABLE_PREFIX."dnt_post_rate dp
 		LEFT JOIN ".TABLE_PREFIX."users u
 		ON (dp.pcl_sender=u.uid)
 		LEFT JOIN ".TABLE_PREFIX."users ru
@@ -148,7 +150,7 @@ if($mybb->input['action'] == "get_thread_rates")
 		ON (dp.pcl_tid=t.tid)			
 		LEFT JOIN ".TABLE_PREFIX."posts p
 		ON (dp.pcl_pid=p.pid)	
-		WHERE {$sql_req}{$pcl_date}{$unviewwhere}
+		WHERE {$sql_req}{$pcl_date}{$unviewwhere}{$uwp}
 		ORDER BY pcl_date DESC
 		LIMIT ".(($page-1)*$perpage).", {$perpage}		
 	");
@@ -249,6 +251,7 @@ else if($mybb->input['action'] == "get_received_rates")
 	}
 	// get forums user cannot view
 	$unviewable = get_unviewable_forums(true);	
+	$uwp = "";	
 	if(isset($fids) && !empty($fids) && !empty($unviewable)){
 	$unviewable .= "," . $fids;
 	}	
@@ -274,7 +277,9 @@ else if($mybb->input['action'] == "get_received_rates")
 		$pcl_date = " AND pcl_date>='{$pcl_date_limit}'";
 	else
 		$pcl_date = "";
-	
+	if($mybb->settings['dnt_post_rate_only_firspost'] == 1)
+		$uwp = " AND t.firstpost=dp.pcl_pid";
+		
 	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}", array("limit" => 1));
 		
 	$pcl_rows = $db->fetch_array($query);
@@ -297,7 +302,7 @@ else if($mybb->input['action'] == "get_received_rates")
 	$numtot = $db->query("SELECT COUNT(*) AS numtot, dp.*, t.fid, t.tid, t.visible FROM ".TABLE_PREFIX."dnt_post_rate dp
 		LEFT JOIN ".TABLE_PREFIX."threads t
 		ON (dp.pcl_tid=t.tid)			
-		WHERE {$sql_req}{$pcl_date}{$unviewwhere}");
+		WHERE {$sql_req}{$pcl_date}{$unviewwhere}{$uwp}");
 	$numtot = $db->fetch_field($numtot,'numtot');	
 	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
 	if($perpage == 0)
@@ -316,7 +321,7 @@ else if($mybb->input['action'] == "get_received_rates")
 		ON (dp.pcl_tid=t.tid)			
 		LEFT JOIN ".TABLE_PREFIX."posts p
 		ON (dp.pcl_pid=p.pid)	
-		WHERE {$sql_req}{$pcl_date}{$unviewwhere}
+		WHERE {$sql_req}{$pcl_date}{$unviewwhere}{$uwp}
 		ORDER BY pcl_date DESC
 		LIMIT ".(($page-1)*$perpage).", {$perpage}		
 	");
@@ -418,6 +423,7 @@ else if($mybb->input['action'] == "get_given_rates")
 	}
 	// get forums user cannot view
 	$unviewable = get_unviewable_forums(true);	
+	$uwp = "";	
 	if(isset($fids) && !empty($fids) && !empty($unviewable)){
 	$unviewable .= "," . $fids;
 	}	
@@ -443,6 +449,8 @@ else if($mybb->input['action'] == "get_given_rates")
 		$pcl_date = " AND pcl_date>='{$pcl_date_limit}'";
 	else
 		$pcl_date = "";
+	if($mybb->settings['dnt_post_rate_only_firspost'] == 1)
+		$uwp = " AND t.firstpost=dp.pcl_pid";
 	
 	$query = $db->simple_select("dnt_post_rate", "*", "{$sql_req}{$pcl_date}", array("limit" => 1));
 		
@@ -463,10 +471,10 @@ else if($mybb->input['action'] == "get_given_rates")
 	$page = (int)$mybb->input['page'];
 	if($page < 1) $page = 1;
 	//$numtot = $db->fetch_field($db->simple_select('dnt_post_rate', 'COUNT(*) AS numtot', $sql_req.$pcl_date), 'numtot');
-	$numtot = $db->query("SELECT COUNT(*) AS numtot, dp.*, t.fid, t.tid, t.visible FROM ".TABLE_PREFIX."dnt_post_rate dp
+	$numtot = $db->query("SELECT COUNT(*) AS numtot, dp.*, t.fid, t.tid, t.visible,t.firstpost FROM ".TABLE_PREFIX."dnt_post_rate dp
 		LEFT JOIN ".TABLE_PREFIX."threads t
-		ON (dp.pcl_tid=t.tid)			
-		WHERE {$sql_req}{$pcl_date}{$unviewwhere}");
+		ON (dp.pcl_tid=t.tid)
+		WHERE {$sql_req}{$pcl_date}{$unviewwhere}{$uwp}");
 	$numtot = $db->fetch_field($numtot,'numtot');	
 	$perpage = (int)$mybb->settings['dnt_post_rate_limit_page'];
 	if($perpage == 0)
@@ -476,7 +484,7 @@ else if($mybb->input['action'] == "get_given_rates")
 	
 	$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_given_rates&amp;uid={$mybb->input['uid']}");
 		
-	$query = $db->query("SELECT dp.*, u.*, ru.username as runame, ru.usergroup as rug, ru.displaygroup as rudg, ru.uid as ruid, t.fid, t.tid, t.visible, p.subject, p.pid FROM ".TABLE_PREFIX."dnt_post_rate dp
+	$query = $db->query("SELECT dp.*, u.*, ru.username as runame, ru.usergroup as rug, ru.displaygroup as rudg, ru.uid as ruid, t.fid, t.tid, t.visible, t.firstpost, p.subject, p.pid FROM ".TABLE_PREFIX."dnt_post_rate dp
 		LEFT JOIN ".TABLE_PREFIX."users u
 		ON (dp.pcl_sender=u.uid)
 		LEFT JOIN ".TABLE_PREFIX."users ru
@@ -485,7 +493,7 @@ else if($mybb->input['action'] == "get_given_rates")
 		ON (dp.pcl_tid=t.tid)			
 		LEFT JOIN ".TABLE_PREFIX."posts p
 		ON (dp.pcl_pid=p.pid)	
-		WHERE {$sql_req}{$pcl_date}{$unviewwhere}
+		WHERE {$sql_req}{$pcl_date}{$unviewwhere}{$uwp}
 		ORDER BY pcl_date DESC
 		LIMIT ".(($page-1)*$perpage).", {$perpage}		
 	");
