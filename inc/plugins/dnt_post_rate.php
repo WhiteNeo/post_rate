@@ -56,7 +56,7 @@ function dnt_post_rate_info()
 		"website" => "",
 		"author" => "Whiteneo",
 		"authorsite" => "https://soportemybb.es",
-		"version" => "1.5",
+		"version" => "1.6",
 		"codename" => "dnt_post_rate_",
 		"compatibility" => "18*"
 	);
