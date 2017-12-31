@@ -46,7 +46,7 @@ function dnt_post_rate_info()
 	if(!isset($mybb->settings['dnt_post_rate_version']) && isset($mybb->settings['dnt_post_rate_active']))
 		$dpr_config .= '<div style="float: right;"><a href="index.php?module=config-plugins&amp;action=dnt_post_rate_verify_update" style="color:#035488; padding: 21px; text-decoration: none;">'.htmlspecialchars_uni($lang->dnt_prt_update_to_15).'</a></div>';
 	else if($mybb->settings['dnt_post_rate_version'] <= 150 && $mybb->settings['dnt_post_rate_active'])
-		$dpr_config .= '<div style="float: right;"><a href="index.php?module=config-plugins&amp;action=dnt_post_rate_verify_update" style="color:#035488; padding: 21px; text-decoration: none;">'.htmlspecialchars_uni($lang->dnt_prt_update_to_15).'</a></div>';
+		$dpr_config .= '<div style="float: right;"><a href="index.php?module=config-plugins&amp;action=dnt_post_rate_verify_update" style="color:#035488; padding: 21px; text-decoration: none;">'.htmlspecialchars_uni($lang->dnt_prt_update_to_16).'</a></div>';
 	else if($mybb->settings['dnt_post_rate_version'] >= 160 && $mybb->settings['dnt_post_rate_active'])
 		$dpr_config .= "";
 	
