@@ -45,9 +45,9 @@ function dnt_post_rate_info()
 
 	if(!isset($mybb->settings['dnt_post_rate_version']) && isset($mybb->settings['dnt_post_rate_active']))
 		$dpr_config .= '<div style="float: right;"><a href="index.php?module=config-plugins&amp;action=dnt_post_rate_verify_update" style="color:#035488; padding: 21px; text-decoration: none;">'.htmlspecialchars_uni($lang->dnt_prt_update_to_15).'</a></div>';
-	else if($mybb->settings['dnt_post_rate_version'] <= 150 && $mybb->settings['dnt_post_rate_active'])
+	else if($mybb->settings['dnt_post_rate_version'] <= 160 && $mybb->settings['dnt_post_rate_active'])
 		$dpr_config .= '<div style="float: right;"><a href="index.php?module=config-plugins&amp;action=dnt_post_rate_verify_update" style="color:#035488; padding: 21px; text-decoration: none;">'.htmlspecialchars_uni($lang->dnt_prt_update_to_16).'</a></div>';
-	else if($mybb->settings['dnt_post_rate_version'] >= 160 && $mybb->settings['dnt_post_rate_active'])
+	else if($mybb->settings['dnt_post_rate_version'] > 160 && $mybb->settings['dnt_post_rate_active'])
 		$dpr_config .= "";
 	
 	return array(
@@ -145,7 +145,7 @@ function dnt_post_rate_uninstall()
 			$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` DROP `dnt_prt_total`");
 		if($db->field_exists("dnt_prt_rates_given", "users"))
 			$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` DROP `dnt_prt_rates_given`");
-		if($db->field_exists("dnt_prt_rates_received", "posts"))
+		if($db->field_exists("dnt_prt_rates_received", "users"))
 			$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` DROP `dnt_prt_rates_received`");		
 	}
 	if(function_exists("myalerts_info")){
@@ -174,7 +174,6 @@ function dnt_post_rate_is_installed()
 function dnt_post_rate_activate()
 {
 	global $db, $lang, $cache;
-
 	// Create the config group for MyBB Settings
 	$query = $db->simple_select("settinggroups", "COUNT(*) as rows");
 	$rows = $db->fetch_field($query, "rows");
@@ -337,7 +336,7 @@ function dnt_post_rate_activate()
 		'title' => 'Actual version of post rate plugin.',
 		'description' => 'This is the actual version of your post rate system installed',
 		'optionscode' => 'numeric',
-		'value' => 160,
+		'value' => 150,
 		'disporder' => 0,
 		'gid' => 0
 	);
@@ -358,6 +357,7 @@ function dnt_post_rate_activate()
 .dnt_prt_list{padding:10px;font-size:13px;display:inline-block;width:98%}
 .dnt_prt_list img{margin-top: -12px;}
 .dnt_post_hl{background-color:rgba(25,119,150,0.3);margin:5px;border-radius:3px;border-left:2px solid #4d5e77}
+.dnt_popular_post{border: 1px dotted; border-radius: 2px; border-color: rgba(112,202,47,0.5); background-color: rgba(139,195,74,0.3)}
 .dnt_prt_div_rate{display:inline-block !important;cursor:pointer}
 .dnt_prt_div_rate img{width:19px;height:19px;position:absolute}
 .dnt_prt_div_rate span{margin-left:20px;font-weight:bold}
@@ -810,7 +810,7 @@ function dnt_prt_templates_make()
 		'template' => "<div id=\"clasify_post_rates_msgs_list{\$pid}\">
 	<div class=\"clasify_post_rates_msg{\$dnt_prt_hl_class}\">
 		{\$post[\'dnt_prt_total\']}
-		{\$lang->dnt_prt_view_all}
+		{\$lang->dnt_prt_view_all}<br />
 		{\$lang->dnt_prt_rates}<br />
 		{\$clasify_post_rates_msg}
 	</div>
@@ -1083,9 +1083,9 @@ function dnt_post_rate_script()
 	{
 		$dnt_prt_script = "<script type=\"text/javascript\" src=\"{$mybb->asset_url}/jscripts/dnt_prt.js?ver=160\"></script>
 <script type=\"text/javascript\">
-	var dnt_prt_success = \"{\$lang->dnt_prt_rated}\";
-	var dnt_prt_remove_question = \"{\$lang->dnt_prt_remove_rate_question}\";
-	var dnt_prt_remove_success = \"{\$lang->dnt_prt_remove_rate}\";
+	var dnt_prt_success = \"{$lang->dnt_prt_rated}\";
+	var dnt_prt_remove_question = \"{$lang->dnt_prt_remove_rate_question}\";
+	var dnt_prt_remove_success = \"{$lang->dnt_prt_remove_rate}\";
 </script>";
 		
 	}
@@ -1361,14 +1361,17 @@ function dnt_post_rate_post_rates(&$post)
 			$dnt_to_highlight = (int)$total;
 			$dnt_to_compare = (int)$mybb->settings['dnt_post_rate_highlight'];			
 			if($dnt_to_highlight >= $dnt_to_compare)
+			{
 				$dnt_prt_hl_class = " dnt_post_hl";
+				$dnt_prt_hl_post = " dnt_popular_post";		
+			}
 		}
 		$dnt_prt_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$post['tid']}&amp;pid={$post['pid']}";
 		$lang->dnt_prt_view_all = $lang->sprintf($lang->dnt_prt_view_all, $dnt_prt_url);
 		$clasify_post_rates_msg = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_wow'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_angrys'];
 		$post['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total, $total);
 		eval("\$post['clasify_post_rates_msg'] = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
-		$post['message'] = "<div class=\"dnt_prt_post{$dnt_prt_hl_class}\">".$post['message'].$post['clasify_post_rates_msg']."</div>";
+		$post['message'] = "<div class=\"dnt_prt_post{$post['pid']}{$dnt_prt_hl_post}\">".$post['message'].$post['clasify_post_rates_msg']."</div>";
 	}
 	else
 	{
@@ -1443,6 +1446,7 @@ function dnt_post_rate_xmlhttp()
 		$lid = (int)$mybb->input['lid'];
 		$tid = (int)$mybb->input['tid'];
 		$thread = get_thread($tid);
+		$pid = (int)$thread['firstpost'];
 		$limit_users = (int)$mybb->settings['dnt_post_rate_limit_users'];
 		$limit_search = (int)$mybb->settings['dnt_post_rate_limit'];	
 		$dnt_prt_date_limit = time() - ($limit_search * 60 * 60 * 24);
@@ -1453,10 +1457,14 @@ function dnt_post_rate_xmlhttp()
 		$template = "";
 		if($limit_users > 0)
 		{
+			if($mybb->settings['dnt_post_rate_showthread_all'] == 1)
+				$sta = "dnt_prt_tid='{$tid}'";
+			else
+				$sta = "dnt_prt_tid='{$tid}' AND dnt_prt_pid={$pid}";
 			$dnt_prt_query = $db->query("SELECT dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
 			LEFT JOIN ".TABLE_PREFIX."users u
 			ON (dp.dnt_prt_sender=u.uid)
-			WHERE dnt_prt_tid='{$tid}' AND dnt_prt_type='{$lid}'{$dnt_prt_date}
+			WHERE {$sta} AND dnt_prt_type='{$lid}'{$dnt_prt_date}
 			ORDER BY dnt_prt_date DESC LIMIT {$limit_users}");
 			while($dnt_prt_rows = $db->fetch_array($dnt_prt_query))
 			{
@@ -1606,48 +1614,48 @@ function dnt_post_rate_xmlhttp()
 			$db->query("UPDATE ".TABLE_PREFIX."users SET dnt_prt_rates_received=dnt_prt_rates_received+1 WHERE uid='{$post['uid']}' LIMIT 1");			
 		}
 		
-		$likesp = (int)$post['dnt_prt_rates_posts']['likes'];
-		$lovesp = (int)$post['dnt_prt_rates_posts']['loves'];
-		$wowp = (int)$post['dnt_prt_rates_posts']['wow'];
-		$smilesp = (int)$post['dnt_prt_rates_posts']['smiles'];
-		$crysp = (int)$post['dnt_prt_rates_posts']['crys'];
-		$angrysp = (int)$post['dnt_prt_rates_posts']['angrys'];
+		$likes = (int)$post['dnt_prt_rates_posts']['likes'];
+		$loves = (int)$post['dnt_prt_rates_posts']['loves'];
+		$wow = (int)$post['dnt_prt_rates_posts']['wow'];
+		$smiles = (int)$post['dnt_prt_rates_posts']['smiles'];
+		$crys = (int)$post['dnt_prt_rates_posts']['crys'];
+		$angrys = (int)$post['dnt_prt_rates_posts']['angrys'];
 
-		if($likesp < 1)
-			$likesp = 0;
-		if($lovesp < 1)
-			$lovesp = 0;
-		if($wowp < 1)
-			$wowp = 0;
-		if($smilesp < 1)
-			$smilesp = 0;
-		if($crysp < 1)
-			$crysp = 0;
-		if($angrysp < 1)
-			$angrysp = 0;
+		if($likes < 1)
+			$likes = 0;
+		if($loves < 1)
+			$loves = 0;
+		if($wow < 1)
+			$wow = 0;
+		if($smiles < 1)
+			$smiles = 0;
+		if($crys < 1)
+			$crys = 0;
+		if($angrys < 1)
+			$angrys = 0;
 		
 		if($lid == 1)
-			$likesp++;
+			$likes++;
 		if($lid == 2)
-			$lovesp++;
+			$loves++;
 		if($lid == 3)
-			$wowp++;
+			$wow++;
 		if($lid == 4)
-			$smilesp++;
+			$smiles++;
 		if($lid == 5)
-			$crysp++;
+			$crys++;
 		if($lid == 6)
-			$angrysp++;
+			$angrys++;
 		
-		$clasify_post_rates_total = (int)$likesp + (int)$lovesp + (int)$wowp + (int)$smilesp + (int)$crysp + (int)$angrysp;
+		$clasify_post_rates_total = (int)$likes + (int)$loves + (int)$wow + (int)$smiles + (int)$crys + (int)$angrys;
 	
 		$post_rates = array(
-			'likes' => (int)$likesp,
-			'loves' => (int)$lovesp,
-			'wow' => (int)$wowp,
-			'smiles' => (int)$smilesp,
-			'crys' => (int)$crysp,
-			'angrys' => (int)$angrysp,
+			'likes' => (int)$likes,
+			'loves' => (int)$loves,
+			'wow' => (int)$wow,
+			'smiles' => (int)$smiles,
+			'crys' => (int)$crys,
+			'angrys' => (int)$angrys,
 			'total' => (int)$clasify_post_rates_total
 		);
 
@@ -1680,8 +1688,20 @@ function dnt_post_rate_xmlhttp()
 		if($crys > 0)
 			eval("\$post['dnt_crys'] = \"".$templates->get("dnt_prt_crys")."\";");
 		if($angrys > 0)
-			eval("\$post['dnt_angrys'] = \"".$templates->get("dnt_prt_wow")."\";");
-		
+			eval("\$post['dnt_angrys'] = \"".$templates->get("dnt_prt_angrys")."\";");
+
+		if($mybb->settings['dnt_post_rate_highlight'] > 0)
+		{
+			$dnt_to_highlight = (int)$total;
+			$dnt_to_compare = (int)$mybb->settings['dnt_post_rate_highlight'];			
+			if($dnt_to_highlight >= $dnt_to_compare)
+			{
+				$dnt_prt_hl_class = " dnt_post_hl";
+				$dnt_prt_hl_post = " dnt_popular_post";		
+			}
+		}
+		$dnt_prt_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$tid}&amp;pid={$pid}";
+		$lang->dnt_prt_view_all = $lang->sprintf($lang->dnt_prt_view_all, $dnt_prt_url);
 		$clasify_post_rates_msg = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_wow'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_angrys'];	
 		$post['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total, $clasify_post_rates_total);		
 		eval("\$template = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
@@ -1700,7 +1720,10 @@ function dnt_post_rate_xmlhttp()
 			eval("\$dnt_prt_results .= \"".$templates->get("dnt_prt_results_6")."\";");		
 	
 		$rate = $dnt_prt_results;
-		
+		if(!empty($dnt_prt_hl_post))
+			$is_popular = 1;
+		else
+			$is_popular = 0;		
 		$dnt_prt_data = array(
 			'receive' => $dnt_prt_dataiu,
 			'post_rate_id' => (int)$lid,
@@ -1709,7 +1732,8 @@ function dnt_post_rate_xmlhttp()
 			'dnt_prt_sender' => (int)$uid,			
 			'dnt_prt_total' => (int)$dnt_prt_total+1,
 			'templates' => $template,
-			'rate' => $rate
+			'rate' => $rate,
+			'is_popular' => (int)$is_popular
 		);
 		
 		echo json_encode($dnt_prt_data);
@@ -1815,48 +1839,48 @@ function dnt_post_rate_xmlhttp()
 			$db->query("UPDATE ".TABLE_PREFIX."users SET dnt_prt_rates_received=dnt_prt_rates_received-1 WHERE uid='{$post['uid']}' LIMIT 1");			
 		}
 		
-		$likesp = (int)$post['dnt_prt_rates_posts']['likes'];
-		$lovesp = (int)$post['dnt_prt_rates_posts']['loves'];
-		$wowp = (int)$post['dnt_prt_rates_posts']['wow'];
-		$smilesp = (int)$post['dnt_prt_rates_posts']['smiles'];
-		$crysp = (int)$post['dnt_prt_rates_posts']['crys'];
-		$angrysp = (int)$post['dnt_prt_rates_posts']['angrys'];
+		$likes = (int)$post['dnt_prt_rates_posts']['likes'];
+		$loves = (int)$post['dnt_prt_rates_posts']['loves'];
+		$wow = (int)$post['dnt_prt_rates_posts']['wow'];
+		$smiles = (int)$post['dnt_prt_rates_posts']['smiles'];
+		$crys = (int)$post['dnt_prt_rates_posts']['crys'];
+		$angrys = (int)$post['dnt_prt_rates_posts']['angrys'];
 		
 		if($lid == 1)
-			$likesp--;
+			$likes--;
 		if($lid == 2)
-			$lovesp--;
+			$loves--;
 		if($lid == 3)
-			$wowp--;
+			$wow--;
 		if($lid == 4)
-			$smilesp--;
+			$smiles--;
 		if($lid == 5)
-			$crysp--;
+			$crys--;
 		if($lid == 6)
-			$angrysp--;
+			$angrys--;
 		
-		if($likesp < 1)
-			$likesp = 0;
-		if($lovesp < 1)
-			$lovesp = 0;
-		if($wowp < 1)
-			$wowp = 0;
+		if($likes < 1)
+			$likes = 0;
+		if($loves < 1)
+			$loves = 0;
+		if($wow < 1)
+			$wow = 0;
 		if($smilesp < 1)
-			$smilesp = 0;
+			$smiles = 0;
 		if($crysp < 1)
-			$crysp = 0;
-		if($angrysp < 1)
-			$angrysp = 0;
+			$crys = 0;
+		if($angrys < 1)
+			$angrys = 0;
 		
-		$clasify_post_rates_total = (int)$likesp + (int)$lovesp + (int)$wowp + (int)$smilesp + (int)$crysp + (int)$angrysp;
+		$clasify_post_rates_total = (int)$likes + (int)$loves + (int)$wow + (int)$smiles + (int)$crys + (int)$angrys;
 	
 		$post_rates = array(
-			'likes' => (int)$likesp,
-			'loves' => (int)$lovesp,
-			'wow' => (int)$wowp,
-			'smiles' => (int)$smilesp,
-			'crys' => (int)$crysp,
-			'angrys' => (int)$angrysp,
+			'likes' => (int)$likes,
+			'loves' => (int)$loves,
+			'wow' => (int)$wow,
+			'smiles' => (int)$smiles,
+			'crys' => (int)$crys,
+			'angrys' => (int)$angrys,
 			'total' => (int)$clasify_post_rates_total
 		);
 
@@ -1888,14 +1912,26 @@ function dnt_post_rate_xmlhttp()
 		if($crys > 0)
 			 eval("\$post['dnt_crys'] = \"".$templates->get("dnt_prt_crys")."\";");
 		if($angrys > 0)
-			eval("\$post['dnt_angrys'] = \"".$templates->get("dnt_prt_wow")."\";");
-		
+			eval("\$post['dnt_angrys'] = \"".$templates->get("dnt_prt_angrys")."\";");
+
+		if($mybb->settings['dnt_post_rate_highlight'] > 0)
+		{
+			$dnt_to_highlight = (int)$total;
+			$dnt_to_compare = (int)$mybb->settings['dnt_post_rate_highlight'];			
+			if($dnt_to_highlight >= $dnt_to_compare)
+			{
+				$dnt_prt_hl_class = " dnt_post_hl";
+				$dnt_prt_hl_post = " dnt_popular_post";		
+			}
+		}
+		$dnt_prt_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$post['tid']}&amp;pid={$post['pid']}";
+		$lang->dnt_prt_view_all = $lang->sprintf($lang->dnt_prt_view_all, $dnt_prt_url);		
 		$clasify_post_rates_msg = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_wow'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_angrys'];	
 		$post['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total, $clasify_post_rates_total);		
 		if($clasify_post_rates_total > 0)		
-			eval("\$templates = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
+			eval("\$template = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
 		else
-			eval("\$templates = \"".$templates->get("dnt_prt_clasify_post_no_rates_msg")."\";");
+			eval("\$template = \"".$templates->get("dnt_prt_clasify_post_no_rates_msg")."\";");
 		
 		if($lid == 1)
 			eval("\$dnt_prt_results .= \"".$templates->get("dnt_prt_results_1")."\";");
@@ -1912,11 +1948,16 @@ function dnt_post_rate_xmlhttp()
 		
 		eval("\$button = \"".$templates->get("dnt_prt_post_clasify_post_rates")."\";");
 	
+		if(!empty($dnt_prt_hl_post))
+			$is_popular = 1;
+		else
+			$is_popular = 0;
 		$dnt_prt_data = array(
 			'post_rate_tid' => (int)$tid,
 			'dnt_prt_user' => (int)$uid,
-			'templates' => $templates,
-			'button' => $button
+			'templates' => $template,
+			'button' => $button,
+			'is_popular' => (int)$is_popular
 		);
 		
 		echo json_encode($dnt_prt_data);
@@ -1937,16 +1978,33 @@ function dnt_post_rate_member()
 		$url_given = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_given_rates&amp;uid='.(int)$memprofile['uid'];
 		$url_received = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_received_rates&amp;uid='.(int)$memprofile['uid'];	
 		$memprofile['dnt_prt_rates_given'] = $lang->sprintf($lang->dnt_prt_rates_given,(int)$memprofile['dnt_prt_rates_given'], $url_given);
-		$memprofile['dnt_prt_rates_received'] = $lang->sprintf($lang->dnt_prt_rates_received,(int)$memprofile['dnt_prt_rates_received'], $url_received);	
+		$memprofile['dnt_prt_rates_received'] = $lang->sprintf($lang->dnt_prt_rates_received,(int)$memprofile['dnt_prt_rates_received'], $url_received);
 		$dnt_prt_query = $db->simple_select('threads','*',"uid='{$memprofile['uid']}' AND dnt_prt_total>0 ORDER BY dnt_prt_total DESC LIMIT 1");
-		while($thread = $db->fetch_array($dnt_prt_query))
+		if($mybb->settings['dnt_post_rate_showthread_all'] == 1)
+		{		
+			while($thread = $db->fetch_array($dnt_prt_query))
+			{
+				$tid = (int)$thread['tid'];
+				$pid = (int)$thread['firstpost'];
+				$subject = htmlspecialchars_uni($thread['subject']);
+				$subject_link = get_thread_link($tid);
+				$subject = "<a href=\"{$subject_link}\">{$subject}</a>";
+				$total = (int)$thread['dnt_prt_total'];
+				$memprofile['dnt_prt_rates'] = unserialize($thread['dnt_prt_rates_threads']);
+			}
+		}
+		else
 		{
+			$thread = $db->fetch_array($dnt_prt_query);
 			$tid = (int)$thread['tid'];
+			$pid = (int)$thread['firstpost'];
 			$subject = htmlspecialchars_uni($thread['subject']);
 			$subject_link = get_thread_link($tid);
 			$subject = "<a href=\"{$subject_link}\">{$subject}</a>";
-			$total = (int)$thread['dnt_prt_total'];
-			$memprofile['dnt_prt_rates'] = unserialize($thread['dnt_prt_rates_threads']);
+			$query = $db->simple_select('posts','dnt_prt_rates_posts',"pid={$pid}");
+			$post = $db->fetch_array($query);
+			$memprofile['dnt_prt_rates'] = unserialize($post['dnt_prt_rates_posts']);
+			$total = (int)$memprofile['dnt_prt_rates']['total'];			
 		}
 		if(isset($tid))
 		{
@@ -1976,7 +2034,16 @@ function dnt_post_rate_member()
 				eval("\$post['dnt_crys'] = \"".$templates->get("dnt_prt_crys")."\";");
 			if($angrys > 0)
 				eval("\$post['dnt_angrys'] = \"".$templates->get("dnt_prt_wow")."\";");
-			
+			if($mybb->settings['dnt_post_rate_highlight'] > 0)
+			{
+				$dnt_to_highlight = (int)$total;
+				$dnt_to_compare = (int)$mybb->settings['dnt_post_rate_highlight'];			
+				if($dnt_to_highlight >= $dnt_to_compare)
+					$dnt_prt_hl_class = " dnt_post_hl";
+			}
+			$dnt_prt_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$tid}&amp;pid={$pid}";
+			$lang->dnt_prt_view_all = $lang->sprintf($lang->dnt_prt_view_all, $dnt_prt_url);
+			$lang->dnt_prt_rates = $subject."<br />";			
 			$clasify_post_rates_msg = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_wow'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_angrys'];				
 			$post['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total_best, $total);
 			eval("\$dnt_prt_templates = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
@@ -2571,8 +2638,10 @@ function dnt_post_rate_verify_update()
 		return false;
 	if(!isset($mybb->settings['dnt_post_rate_version']))
 		dnt_post_rate_update15();
-	else if(isset($mybb->settings['dnt_post_rate_version']) && $mybb->settings['dnt_post_rate_version'] <= 150)
+	else if(isset($mybb->settings['dnt_post_rate_version']) && $mybb->settings['dnt_post_rate_version'] < 160)
 		dnt_post_rate_update16();
+	else if(isset($mybb->settings['dnt_post_rate_version']) && $mybb->settings['dnt_post_rate_version'] < 161)
+		dnt_post_rate_update161();
 	else
 		dnt_post_rate_updated();
 }
@@ -2669,9 +2738,25 @@ function dnt_post_rate_update16()
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` CHANGE `pcl_total` `dnt_prt_total` int(10) NOT NULL DEFAULT '0'");
 	if($db->field_exists("pcl_rates_given", "users"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` CHANGE `pcl_rates_given` `dnt_prt_rates_given` int(10) NOT NULL DEFAULT '0'");
-	if($db->field_exists("pcl_rates_received", "posts"))
+	if($db->field_exists("pcl_rates_received", "users"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` CHANGE `pcl_rates_received` `dnt_prt_rates_received` int(10) NOT NULL DEFAULT '0'");
 	$db->update_query('settings',array('value' => 160),"name='dnt_post_rate_version'");
+	rebuild_settings();
+	flash_message($lang->dnt_prt_update_version, 'success');
+	admin_redirect('index.php?module=config-plugins');
+}
+
+function dnt_post_rate_update161()
+{
+	global $db, $mybb, $lang;
+	if(!$mybb->settings['dnt_post_rate_active'] || !empty($session->is_spider))
+		return false;
+
+	if($db->field_exists("pcl_rates_given", "users"))
+		$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` CHANGE `pcl_rates_given` `dnt_prt_rates_given` int(10) NOT NULL DEFAULT '0'");
+	if($db->field_exists("pcl_rates_received", "users"))
+		$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` CHANGE `pcl_rates_received` `dnt_prt_rates_received` int(10) NOT NULL DEFAULT '0'");
+	$db->update_query('settings',array('value' => 161),"name='dnt_post_rate_version'");
 	rebuild_settings();
 	flash_message($lang->dnt_prt_update_version, 'success');
 	admin_redirect('index.php?module=config-plugins');
