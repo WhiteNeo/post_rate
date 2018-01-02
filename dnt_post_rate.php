@@ -192,17 +192,17 @@ if($mybb->input['action'] == "get_thread_rates")
 		
 		$dnt_prt_rows['dnt_prt_type'] = (int)$dnt_prt_rows['dnt_prt_type'];
 		if($dnt_prt_rows['dnt_prt_type'] == 1)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate1'")."\";");
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate1")."\";");
 		if($dnt_prt_rows['dnt_prt_type'] == 2)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate2'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate2")."\";");			
 		if($dnt_prt_rows['dnt_prt_type'] == 3)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate3'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate3")."\";");			
 		if($dnt_prt_rows['dnt_prt_type'] == 4)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate4'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate4")."\";");			
 		if($dnt_prt_rows['dnt_prt_type'] == 5)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate5'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate5")."\";");			
 		if($dnt_prt_rows['dnt_prt_type'] == 6)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate6'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate6")."\";");			
 			
 		$dnt_prt_rows['subject'] = htmlspecialchars_uni($dnt_prt_rows['subject']);
 		/*if(my_strlen($dnt_prt_rows['subject']) > 25)
@@ -365,17 +365,17 @@ else if($mybb->input['action'] == "get_received_rates")
 		
 		$dnt_prt_rows['dnt_prt_type'] = (int)$dnt_prt_rows['dnt_prt_type'];
 		if($dnt_prt_rows['dnt_prt_type'] == 1)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate1'")."\";");
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate1")."\";");
 		if($dnt_prt_rows['dnt_prt_type'] == 2)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate2'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate2")."\";");			
 		if($dnt_prt_rows['dnt_prt_type'] == 3)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate3'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate3")."\";");			
 		if($dnt_prt_rows['dnt_prt_type'] == 4)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate4'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate4")."\";");			
 		if($dnt_prt_rows['dnt_prt_type'] == 5)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate5'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate5")."\";");			
 		if($dnt_prt_rows['dnt_prt_type'] == 6)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate6'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate6")."\";");			
 			
 		$dnt_prt_rows['subject'] = htmlspecialchars_uni($dnt_prt_rows['subject']);
 		/*if(my_strlen($dnt_prt_rows['subject']) > 25)
@@ -538,17 +538,17 @@ else if($mybb->input['action'] == "get_given_rates")
 		
 		$dnt_prt_rows['dnt_prt_type'] = (int)$dnt_prt_rows['dnt_prt_type'];
 		if($dnt_prt_rows['dnt_prt_type'] == 1)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate1'")."\";");
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate1")."\";");
 		if($dnt_prt_rows['dnt_prt_type'] == 2)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate2'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate2")."\";");			
 		if($dnt_prt_rows['dnt_prt_type'] == 3)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate3'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate3")."\";");			
 		if($dnt_prt_rows['dnt_prt_type'] == 4)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate4'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate4")."\";");			
 		if($dnt_prt_rows['dnt_prt_type'] == 5)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate5'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate5")."\";");			
 		if($dnt_prt_rows['dnt_prt_type'] == 6)
-			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("'dnt_prt_list_rate6'")."\";");			
+			eval("\$dnt_prt_rows['rate'] = \"".$templates->get("dnt_prt_list_rate6")."\";");			
 			
 		$dnt_prt_rows['subject'] = htmlspecialchars_uni($dnt_prt_rows['subject']);
 		/*if(my_strlen($dnt_prt_rows['subject']) > 25)
