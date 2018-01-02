@@ -46,7 +46,7 @@ if(!empty($mybb->settings['dnt_post_rate_groups']) && $mybb->settings['dnt_post_
 $lang->load('dnt_post_rate',false,true);
 $plugins->run_hooks("dnt_post_rate_start");
 
-add_breadcrumb($lang->dnt_prt_rates_page_title, THIS_SCRIPT);
+//add_breadcrumb($lang->dnt_prt_rates_page_title, THIS_SCRIPT);
 
 if($mybb->input['action'] == "get_thread_rates")
 {
