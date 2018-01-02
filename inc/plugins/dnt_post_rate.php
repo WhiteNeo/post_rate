@@ -1054,6 +1054,32 @@ function dnt_post_rate_templates()
 {
 	global $mybb, $templatelist;
 	
+	if(!empty($mybb->settings['dnt_post_rate_groups']) && $mybb->settings['dnt_post_rate_groups'] != "-1")
+	{
+		$gid = (int)$mybb->user['usergroup'];
+		if($mybb->user['additionalgroups'])
+			$gids = "{$gid}, {$mybb->user['additionalgroups']}";
+		else
+			$gids = $gid;
+	
+		$dnt_prt_gids = explode(",",$mybb->settings['dnt_post_rate_groups']);
+		
+		if(!empty($gids))
+		{
+			$gids = explode(",",$gids);
+			foreach($gids as $gid)
+			{
+				if(!in_array($gid, $dnt_prt_gids))
+					return false;
+			}
+		}
+		else
+		{
+			if(!in_array($gid, $dnt_prt_gids))
+				return false;		
+		}
+	}	
+	
 	if(THIS_SCRIPT == "dnt_post_rate.php" || THIS_SCRIPT == "showthread.php" || THIS_SCRIPT == "member.php" || THIS_SCRIPT == "forumdisplay.php")
 	{
 		if(isset($templatelist))
@@ -1079,6 +1105,31 @@ function dnt_post_rate_script()
 	}
 	$lang->load('dnt_post_rate',false,true);
 	$dnt_prt_script = "";
+	if(!empty($mybb->settings['dnt_post_rate_groups']) && $mybb->settings['dnt_post_rate_groups'] != "-1")
+	{
+		$gid = (int)$mybb->user['usergroup'];
+		if($mybb->user['additionalgroups'])
+			$gids = "{$gid}, {$mybb->user['additionalgroups']}";
+		else
+			$gids = $gid;
+	
+		$dnt_prt_gids = explode(",",$mybb->settings['dnt_post_rate_groups']);
+		
+		if(!empty($gids))
+		{
+			$gids = explode(",",$gids);
+			foreach($gids as $gid)
+			{
+				if(!in_array($gid, $dnt_prt_gids))
+					return false;
+			}
+		}
+		else
+		{
+			if(!in_array($gid, $dnt_prt_gids))
+				return false;		
+		}
+	}	
 	if(THIS_SCRIPT == "showthread.php" || THIS_SCRIPT == "member.php" || THIS_SCRIPT == "forumdisplay.php")
 	{
 		$dnt_prt_script = "<script type=\"text/javascript\" src=\"{$mybb->asset_url}/jscripts/dnt_prt.js?ver=160\"></script>
@@ -1220,9 +1271,8 @@ function dnt_post_rate_post_rates(&$post)
 	else
 		$dnt_prt_date = "";
 	$post['dnt_prt_see_me'] = false;
-	if($dnt_prt_fids != "")
-		return false;
-	else if($dnt_prt_fids != "-1" && !empty($dnt_prt_fids))
+	$dnt_prt_fids = $mybb->settings['dnt_post_rate_forums'];
+	if($dnt_prt_fids != "-1" && !empty($dnt_prt_fids))
 	{
 		$dnt_prt_fids = explode(",",$mybb->settings['dnt_post_rate_forums']);
 		if(!in_array($fid, $dnt_prt_fids))
@@ -1234,12 +1284,11 @@ function dnt_post_rate_post_rates(&$post)
 		$gid = (int)$mybb->user['usergroup'];
 		if($mybb->user['additionalgroups'])
 			$gids = "{$gid}, {$mybb->user['additionalgroups']}";
-		
-		$dnt_prt_fids = explode(",",$mybb->settings['dnt_post_rate_forums']);
+		else
+			$gids = $gid;
+	
 		$dnt_prt_gids = explode(",",$mybb->settings['dnt_post_rate_groups']);
 		
-		if(!in_array($fid, $dnt_prt_fids))
-			return false;
 		if(!empty($gids))
 		{
 			$gids = explode(",",$gids);
@@ -1385,6 +1434,31 @@ function dnt_post_rate_xmlhttp()
 
 	if($mybb->settings['dnt_post_rate_active'] == 0)
 		return false;
+	if(!empty($mybb->settings['dnt_post_rate_groups']) && $mybb->settings['dnt_post_rate_groups'] != "-1")
+	{
+		$gid = (int)$mybb->user['usergroup'];
+		if($mybb->user['additionalgroups'])
+			$gids = "{$gid}, {$mybb->user['additionalgroups']}";
+		else
+			$gids = $gid;
+	
+		$dnt_prt_gids = explode(",",$mybb->settings['dnt_post_rate_groups']);
+		
+		if(!empty($gids))
+		{
+			$gids = explode(",",$gids);
+			foreach($gids as $gid)
+			{
+				if(!in_array($gid, $dnt_prt_gids))
+					return false;
+			}
+		}
+		else
+		{
+			if(!in_array($gid, $dnt_prt_gids))
+				return false;		
+		}
+	}	
 	if($mybb->get_input('action') == "get_post_rates")
 	{
 		header("Content-type: application/json; charset={$charset}");     
@@ -1973,15 +2047,42 @@ function dnt_post_rate_member()
 	$dnt_prt_templates = "";
 	$dnt_prt_templatesg = "";
 	$dnt_prt_templatesr = "";
+	if(!empty($mybb->settings['dnt_post_rate_groups']) && $mybb->settings['dnt_post_rate_groups'] != "-1")
+	{
+		$gid = (int)$mybb->user['usergroup'];
+		if($mybb->user['additionalgroups'])
+			$gids = "{$gid}, {$mybb->user['additionalgroups']}";
+		else
+			$gids = $gid;
+	
+		$dnt_prt_gids = explode(",",$mybb->settings['dnt_post_rate_groups']);
+		
+		if(!empty($gids))
+		{
+			$gids = explode(",",$gids);
+			foreach($gids as $gid)
+			{
+				if(!in_array($gid, $dnt_prt_gids))
+					return false;
+			}
+		}
+		else
+		{
+			if(!in_array($gid, $dnt_prt_gids))
+				return false;		
+		}
+	}	
 	if ($mybb->settings['dnt_post_rate_memprofile'] == 1)
 	{
 		$url_given = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_given_rates&amp;uid='.(int)$memprofile['uid'];
 		$url_received = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_received_rates&amp;uid='.(int)$memprofile['uid'];	
 		$memprofile['dnt_prt_rates_given'] = $lang->sprintf($lang->dnt_prt_rates_given,(int)$memprofile['dnt_prt_rates_given'], $url_given);
 		$memprofile['dnt_prt_rates_received'] = $lang->sprintf($lang->dnt_prt_rates_received,(int)$memprofile['dnt_prt_rates_received'], $url_received);
-		$dnt_prt_query = $db->simple_select('threads','*',"uid='{$memprofile['uid']}' AND dnt_prt_total>0 ORDER BY dnt_prt_total DESC LIMIT 1");
 		if($mybb->settings['dnt_post_rate_showthread_all'] == 1)
-		{		
+		{
+			$dnt_query = $db->simple_select('dnt_post_rate','COUNT(*) AS bestid, dnt_prt_tid',"dnt_prt_user='{$memprofile['uid']}' GROUP BY dnt_prt_tid HAVING bestid > 0 ORDER BY bestid DESC LIMIT 1");
+			$tid = $db->fetch_field($dnt_query,'dnt_prt_tid');
+			$dnt_prt_query = $db->simple_select('threads','*',"tid={$tid}");			
 			while($thread = $db->fetch_array($dnt_prt_query))
 			{
 				$tid = (int)$thread['tid'];
@@ -1991,20 +2092,24 @@ function dnt_post_rate_member()
 				$subject = "<a href=\"{$subject_link}\">{$subject}</a>";
 				$total = (int)$thread['dnt_prt_total'];
 				$memprofile['dnt_prt_rates'] = unserialize($thread['dnt_prt_rates_threads']);
-			}
+				$total = (int)$memprofile['dnt_prt_rates']['total'];				
+			}			
 		}
 		else
 		{
-			$thread = $db->fetch_array($dnt_prt_query);
-			$tid = (int)$thread['tid'];
-			$pid = (int)$thread['firstpost'];
-			$subject = htmlspecialchars_uni($thread['subject']);
-			$subject_link = get_thread_link($tid);
-			$subject = "<a href=\"{$subject_link}\">{$subject}</a>";
-			$query = $db->simple_select('posts','dnt_prt_rates_posts',"pid={$pid}");
-			$post = $db->fetch_array($query);
-			$memprofile['dnt_prt_rates'] = unserialize($post['dnt_prt_rates_posts']);
-			$total = (int)$memprofile['dnt_prt_rates']['total'];			
+			$dnt_query = $db->simple_select('dnt_post_rate','COUNT(*) AS bestid, dnt_prt_pid',"dnt_prt_user='{$memprofile['uid']}' GROUP BY dnt_prt_pid HAVING bestid > 0 ORDER BY bestid DESC LIMIT 1");
+			$pid = $db->fetch_field($dnt_query,'dnt_prt_pid');
+			$dnt_prt_query = $db->simple_select('posts','*',"pid={$pid}");
+			while($post = $db->fetch_array($dnt_prt_query))
+			{
+				$tid = (int)$post['tid'];
+				$pid = (int)$post['pid'];
+				$subject = htmlspecialchars_uni($post['subject']);
+				$subject_link = get_post_link($pid);
+				$subject = "<a href=\"{$subject_link}\">{$subject}</a>";
+				$memprofile['dnt_prt_rates'] = unserialize($post['dnt_prt_rates_posts']);
+				$total = (int)$memprofile['dnt_prt_rates']['total'];
+			}			
 		}
 		if(isset($tid))
 		{
@@ -2105,6 +2210,39 @@ function dnt_post_rates()
 	$dnt_prt_rates = "";
 	if($mybb->settings['dnt_post_rate_showthread'] == 0)
 		return false;
+	$dnt_prt_fids = $mybb->settings['dnt_post_rate_forums'];
+	if($dnt_prt_fids != "-1" && !empty($dnt_prt_fids))
+	{
+		$dnt_prt_fids = explode(",",$mybb->settings['dnt_post_rate_forums']);
+		$fid = (int)$thread['fid'];
+		if(!in_array($fid, $dnt_prt_fids))
+			return false;		
+	}		
+	if(!empty($mybb->settings['dnt_post_rate_groups']) && $mybb->settings['dnt_post_rate_groups'] != "-1")
+	{
+		$gid = (int)$mybb->user['usergroup'];
+		if($mybb->user['additionalgroups'])
+			$gids = "{$gid}, {$mybb->user['additionalgroups']}";
+		else
+			$gids = $gid;
+	
+		$dnt_prt_gids = explode(",",$mybb->settings['dnt_post_rate_groups']);
+		
+		if(!empty($gids))
+		{
+			$gids = explode(",",$gids);
+			foreach($gids as $gid)
+			{
+				if(!in_array($gid, $dnt_prt_gids))
+					return false;
+			}
+		}
+		else
+		{
+			if(!in_array($gid, $dnt_prt_gids))
+				return false;		
+		}
+	}	
 	$tid = $thread['tid'];
 	if($mybb->settings['dnt_post_rate_showthread_all'] == 1)
 	{	
@@ -2179,7 +2317,7 @@ function dnt_post_rates()
 
 function dnt_post_rate_insert_thread(&$data)
 {
-	global $db, $mybb;	
+	global $db, $mybb;
 	$data->thread_insert_data['dnt_prt_rates_threads'] = "";
 }
 
