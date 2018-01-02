@@ -2034,13 +2034,6 @@ function dnt_post_rate_member()
 				eval("\$post['dnt_crys'] = \"".$templates->get("dnt_prt_crys")."\";");
 			if($angrys > 0)
 				eval("\$post['dnt_angrys'] = \"".$templates->get("dnt_prt_angrys")."\";");
-			if($mybb->settings['dnt_post_rate_highlight'] > 0)
-			{
-				$dnt_to_highlight = (int)$total;
-				$dnt_to_compare = (int)$mybb->settings['dnt_post_rate_highlight'];			
-				if($dnt_to_highlight >= $dnt_to_compare)
-					$dnt_prt_hl_class = " dnt_post_hl";
-			}
 			$dnt_prt_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$tid}&amp;pid={$pid}";
 			$lang->dnt_prt_view_all = $lang->sprintf($lang->dnt_prt_view_all, $dnt_prt_url);
 			$lang->dnt_prt_rates = $subject."<br />";			
