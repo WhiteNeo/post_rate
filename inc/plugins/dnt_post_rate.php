@@ -2082,34 +2082,42 @@ function dnt_post_rate_member()
 		{
 			$dnt_query = $db->simple_select('dnt_post_rate','COUNT(*) AS bestid, dnt_prt_tid',"dnt_prt_user='{$memprofile['uid']}' GROUP BY dnt_prt_tid HAVING bestid > 0 ORDER BY bestid DESC LIMIT 1");
 			$tid = $db->fetch_field($dnt_query,'dnt_prt_tid');
-			$dnt_prt_query = $db->simple_select('threads','*',"tid={$tid}");			
-			while($thread = $db->fetch_array($dnt_prt_query))
+			$tid = (int)$tid;
+			if($tid > 0)
 			{
-				$tid = (int)$thread['tid'];
-				$pid = (int)$thread['firstpost'];
-				$subject = htmlspecialchars_uni($thread['subject']);
-				$subject_link = get_thread_link($tid);
-				$subject = "<a href=\"{$subject_link}\">{$subject}</a>";
-				$total = (int)$thread['dnt_prt_total'];
-				$memprofile['dnt_prt_rates'] = unserialize($thread['dnt_prt_rates_threads']);
-				$total = (int)$memprofile['dnt_prt_rates']['total'];				
-			}			
+				$dnt_prt_query = $db->simple_select('threads','*',"tid={$tid}");			
+				while($thread = $db->fetch_array($dnt_prt_query))
+				{
+					$tid = (int)$thread['tid'];
+					$pid = (int)$thread['firstpost'];
+					$subject = htmlspecialchars_uni($thread['subject']);
+					$subject_link = get_thread_link($tid);
+					$subject = "<a href=\"{$subject_link}\">{$subject}</a>";
+					$total = (int)$thread['dnt_prt_total'];
+					$memprofile['dnt_prt_rates'] = unserialize($thread['dnt_prt_rates_threads']);
+					$total = (int)$memprofile['dnt_prt_rates']['total'];				
+				}
+			}
 		}
 		else
 		{
 			$dnt_query = $db->simple_select('dnt_post_rate','COUNT(*) AS bestid, dnt_prt_pid',"dnt_prt_user='{$memprofile['uid']}' GROUP BY dnt_prt_pid HAVING bestid > 0 ORDER BY bestid DESC LIMIT 1");
 			$pid = $db->fetch_field($dnt_query,'dnt_prt_pid');
-			$dnt_prt_query = $db->simple_select('posts','*',"pid={$pid}");
-			while($post = $db->fetch_array($dnt_prt_query))
+			$pid = (int)$pid;
+			if($pid > 0)
 			{
-				$tid = (int)$post['tid'];
-				$pid = (int)$post['pid'];
-				$subject = htmlspecialchars_uni($post['subject']);
-				$subject_link = get_post_link($pid);
-				$subject = "<a href=\"{$subject_link}\">{$subject}</a>";
-				$memprofile['dnt_prt_rates'] = unserialize($post['dnt_prt_rates_posts']);
-				$total = (int)$memprofile['dnt_prt_rates']['total'];
-			}			
+				$dnt_prt_query = $db->simple_select('posts','*',"pid={$pid}");
+				while($post = $db->fetch_array($dnt_prt_query))
+				{
+					$tid = (int)$post['tid'];
+					$pid = (int)$post['pid'];
+					$subject = htmlspecialchars_uni($post['subject']);
+					$subject_link = get_post_link($pid);
+					$subject = "<a href=\"{$subject_link}\">{$subject}</a>";
+					$memprofile['dnt_prt_rates'] = unserialize($post['dnt_prt_rates_posts']);
+					$total = (int)$memprofile['dnt_prt_rates']['total'];
+				}
+			}
 		}
 		if(isset($tid))
 		{
@@ -2146,8 +2154,6 @@ function dnt_post_rate_member()
 			$post['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total_best, $total);
 			eval("\$dnt_prt_templates = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
 		}
-		else
-			eval("\$dnt_prt_templates = \"".$templates->get("dnt_prt_clasify_post_no_rates_msg")."\";");
 	}
 	
 	if($mybb->settings['dnt_post_rate_top5_given_memprofile'] == 1)

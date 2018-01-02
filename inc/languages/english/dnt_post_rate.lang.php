@@ -27,7 +27,7 @@ $l['dnt_prt_remove_rate_question'] = "Do you want to remove your rate?";
 $l['dnt_prt_remove_rate'] = "Rate removed success...";
 $l['dnt_prt_rates_removed'] = "All rates for this post has been removed";
 $l['dnt_prt_rates_page_title'] = "Post Rates";
-$l['dnt_prt_not_received'] = "Actually there are no rates for this post.";
+$l['dnt_prt_not_received'] = "Actually there are no rates.";
 $l['dnt_prt_error_title'] = "Post Rates Error";
 $l['dnt_prt_error'] = "The request provided are wrong verify you have the right url into your forums....";
 $l['dnt_prt_rates_given'] = "<span style=\"display:block\">Rates Given: <strong><a href=\"{2}\">{1}</a></strong></span>";
