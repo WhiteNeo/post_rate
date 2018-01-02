@@ -9,7 +9,7 @@ $l['dnt_prt_rate'] = "Emociones";
 $l['dnt_prt_rated'] = "Se ha agregado su emoción correctamente";
 $l['dnt_prt_total'] = '<span style="display:block">Este post contiene {1} emociones de usuarios.</span>';
 $l['dnt_prt_view_all'] = '<span style="float:right;"><a href="{1}">Ver Todas</a></span>';
-$l['dnt_prt_total_best'] = "El mejor tema de este usuario con {1} emociones es:<br />";
+$l['dnt_prt_total_best'] = "El mejor mensaje de este usuario con {1} emociones es:<br />";
 $l['dnt_prt_rates_post'] = '<span style="display:block">Emociones de este mensaje: {1}</span>';
 $l['dnt_prt_rates_thread'] = '<span style="display:block">Emociones de este tema: {1}</span>';
 $l['dnt_prt_rates_givenu'] = '<span style="display:block">Emociones brindadas: {1}</span>';
