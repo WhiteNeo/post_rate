@@ -2072,17 +2072,17 @@ function dnt_post_rate_member()
 		while($pclr = $db->fetch_array($queryr))
 		{
 			$pcl['bestid'] = (int)$pclr['bestid'];			
-			if($pclg['dnt_prt_type'] == 1)
+			if($pclr['dnt_prt_type'] == 1)
 				eval("\$dnt_prt_resultsr .= \"".$templates->get("dnt_prt_memprofile1")."\";");
-			if($pclg['dnt_prt_type'] == 2)
+			if($pclr['dnt_prt_type'] == 2)
 				eval("\$dnt_prt_resultsr .= \"".$templates->get("dnt_prt_memprofile2")."\";");
-			if($pclg['dnt_prt_type'] == 3)
+			if($pclr['dnt_prt_type'] == 3)
 				eval("\$dnt_prt_resultsr .= \"".$templates->get("dnt_prt_memprofile3")."\";");
-			if($pclg['dnt_prt_type'] == 4)
+			if($pclr['dnt_prt_type'] == 4)
 				eval("\$dnt_prt_resultsr .= \"".$templates->get("dnt_prt_memprofile4")."\";");
-			if($pclg['dnt_prt_type'] == 5)				
+			if($pclr['dnt_prt_type'] == 5)				
 				eval("\$dnt_prt_resultsr .= \"".$templates->get("dnt_prt_memprofile5")."\";");
-			if($pclg['dnt_prt_type'] == 6)
+			if($pclr['dnt_prt_type'] == 6)
 				eval("\$dnt_prt_resultsr .= \"".$templates->get("dnt_prt_memprofile6")."\";");
 		}		
 	}
