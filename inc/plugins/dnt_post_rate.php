@@ -2033,7 +2033,7 @@ function dnt_post_rate_member()
 			if($crys > 0)
 				eval("\$post['dnt_crys'] = \"".$templates->get("dnt_prt_crys")."\";");
 			if($angrys > 0)
-				eval("\$post['dnt_angrys'] = \"".$templates->get("dnt_prt_wow")."\";");
+				eval("\$post['dnt_angrys'] = \"".$templates->get("dnt_prt_angrys")."\";");
 			if($mybb->settings['dnt_post_rate_highlight'] > 0)
 			{
 				$dnt_to_highlight = (int)$total;
