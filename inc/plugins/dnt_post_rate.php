@@ -340,7 +340,7 @@ function dnt_post_rate_activate()
 	// Creating stylesheet...
 	$stylesheet_css = '.post_rate_list{position:absolute;z-index:9999;background:#fff;right:80px;margin-top:-95px;border-radius: 40px}
 .post_rate_button{color:#fff;text-shadow:1px 1px 1px #000;height:26px;line-height:26px;padding:0 10px;text-decoration:none;margin-left:4px;display:inline-block;cursor:pointer;background:#202020;border-radius:4px;font-size:13px;background:#0F5579 !important}
-.post_rate_btn img{cursor:pointer;transform: scale(1.00);transition: all 0.25s ease-in;}
+.post_rate_btn img{cursor:pointer;margin-top: 2px;transform: scale(1.00);transition: all 0.25s ease-in;}
 .post_rate_btn img:hover{transform: scale(1.25);transition: all 0.25s ease-in;border: 1px dotted #202020}
 .ptr_list{display:none;position:absolute;background:#0b0a0a;color:#e4dada;padding:6px;border-radius:3px;font-size:10px}
 .dnt_prt_list_span {padding: 0 40px;height: 40px;position: relative}
