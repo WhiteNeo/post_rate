@@ -52,7 +52,7 @@ function dnt_post_rate_info()
 	
 	return array(
 		"name" => "Post Rate",
-		"description" => "Clasify your post by users rate".$dpr_config.$dpr_integrate,
+		"description" => "Add emoji reactions to posts".$dpr_config.$dpr_integrate,
 		"website" => "",
 		"author" => "Whiteneo",
 		"authorsite" => "https://soportemybb.es",
@@ -182,7 +182,7 @@ function dnt_post_rate_activate()
 	$new_groupconfig = array(
 		'name' => 'dnt_post_rate', 
 		'title' => 'Post rate plugin',
-		'description' => 'Clasify your posts by users rate plugin settings',
+		'description' => 'Add emoji reactions to posts plugin',
 		'disporder' => $rows+1,
 		'isdefault' => 0
 	);
@@ -195,7 +195,7 @@ function dnt_post_rate_activate()
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_active',
 		'title' => 'Enable / Disable plugin',
-		'description' => 'Here you can set if plugin is enabled or disabled on your boards',
+		'description' => 'Enabled or disabled emoji reactions rating on your board',
 		'optionscode' => 'yesno',
 		'value' => 1,
 		'disporder' => 1,
@@ -204,8 +204,8 @@ function dnt_post_rate_activate()
 	
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_forums',
-		'title' => 'Select forums where this mod applies',
-		'description' => 'Select from the list your forums where this mod take effect',
+		'title' => 'Select forums where emoji reactions are enabled',
+		'description' => 'Select from the list forums where this mod takes effect',
 		'optionscode' => 'forumselect',
 		'value' => "-1",
 		'disporder' => 2,
@@ -214,8 +214,8 @@ function dnt_post_rate_activate()
 
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_groups',
-		'title' => 'Select usergroups who can rate posts',
-		'description' => 'Select usergroups from the list for the users who can use rate posts',
+		'title' => 'Select usergroups who can use emojis in posts',
+		'description' => 'Select usergroups from the list for the users who can use emojis in posts',
 		'optionscode' => 'groupselect',
 		'value' => "-1",
 		'disporder' => 3,
@@ -224,8 +224,8 @@ function dnt_post_rate_activate()
 
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_highlight',
-		'title' => 'Highlight emotions in the posts with this ammount of rates',
-		'description' => 'Set the ammount of rates given to highlight the emotions content inside posts with this ammount or more',
+		'title' => 'Highlight posts with this ammount of emojis',
+		'description' => 'Set the ammount of rates given to highlight posts with emojis contents with this ammount or more',
 		'optionscode' => 'numeric',
 		'value' => 10,
 		'disporder' => 4,
@@ -338,10 +338,10 @@ function dnt_post_rate_activate()
 	}
 
 	// Creating stylesheet...
-	$stylesheet_css = '.post_rate_list{position:absolute;z-index:9999;border:2px solid #0F5579;background:#fff;right:80px;margin-top:-95px;border-radius: 40px}
+	$stylesheet_css = '.post_rate_list{position:absolute;z-index:9999;background:#fff;right:80px;margin-top:-95px;border-radius: 40px}
 .post_rate_button{color:#fff;text-shadow:1px 1px 1px #000;height:26px;line-height:26px;padding:0 10px;text-decoration:none;margin-left:4px;display:inline-block;cursor:pointer;background:#202020;border-radius:4px;font-size:13px;background:#0F5579 !important}
-.post_rate_btn img{cursor:pointer}
-.post_rate_btn img:hover{border: 1px dotted #202020}
+.post_rate_btn img{cursor:pointer;transform: scale(1.00);transition: all 0.25s ease-in;}
+.post_rate_btn img:hover{transform: scale(1.25);transition: all 0.25s ease-in;border: 1px dotted #202020}
 .ptr_list{display:none;position:absolute;background:#0b0a0a;color:#e4dada;padding:6px;border-radius:3px;font-size:10px}
 .dnt_prt_list_span {padding: 0 40px;height: 40px;position: relative}
 .dnt_prt_ulist > span{display:block}
