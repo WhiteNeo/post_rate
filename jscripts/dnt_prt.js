@@ -1,9 +1,9 @@
 /**************************************************************
  *                                                            *
  * DNT_PostRate JavaScript File                               *
- *                                                            *
- * DNT_Shoutbox created by DarkNeo For MyBB 1.8 			  *
- * Website: https://soportemybb.es      	                  *
+ *                                              	      *
+ * DNT_Shoutbox created by DarkNeo For MyBB 1.8		      *
+ * Website: https://soportemybb.es      	              *
  *                                                            *
  **************************************************************/
 function DNTPostRate(lid,tid,pid)
@@ -26,6 +26,8 @@ function DNTPostRate(lid,tid,pid)
 			$("#post_rates_"+pid).remove();
 			$.jGrowl(dnt_prt_success, {theme:'jgrowl_success'});
 			$("#clasify_post_rates_msgs_list"+pid).html(request.templates);
+			if(request.is_popular == 1)
+				$("div.dnt_prt_post"+pid).addClass('dnt_prt_post');
 		}
 	});
 }
@@ -116,7 +118,9 @@ function DNTRemoveRate(lid,tid,pid)
 			$('span[class^="dnt_pcl_reca"]').text(dreca);
 			$("#post_rates_btn_"+pid).removeClass("pcl_div_rate").css("display","inline").removeAttr("onclick").html(request.button);
 			$.jGrowl(dnt_prt_remove_success, {theme:'jgrowl_success'});
-			$("#clasify_post_rates_msgs_list"+pid).html(request.templates);		
+			$("#clasify_post_rates_msgs_list"+pid).html(request.templates);
+			if(request.is_popular == 0)
+				$("div.dnt_prt_post"+pid).removeClass('dnt_prt_post');
 		}
 	});	
 }
