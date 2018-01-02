@@ -313,12 +313,22 @@ function dnt_post_rate_activate()
 	);
 
 	$new_config[] = array(
+		'name' => 'dnt_post_rate_showthread_all',
+		'title' => 'Show all rates into threalist',
+		'description' => 'Set this to No to not show only the first post count into thread lists(Otherwise all posts must be counted for every thread)',
+		'optionscode' => 'yesno',
+		'value' => 1,
+		'disporder' => 13,
+		'gid' => $group['gid']
+	);
+	
+	$new_config[] = array(
 		'name' => 'dnt_post_rate_only_firspost',
 		'title' => 'Use only in first post',
 		'description' => 'Use this mod only for the first post or all posts. Set to No if you wish to show all posts (It requires more querys)',
 		'optionscode' => 'yesno',
 		'value' => 1,
-		'disporder' => 13,
+		'disporder' => 14,
 		'gid' => $group['gid']
 	);
 	
@@ -2029,43 +2039,82 @@ function dnt_post_rate_member()
 
 function dnt_post_rates()
 {
-	global $mybb, $theme, $templates, $lang, $thread, $dnt_prt_rates;
+	global $mybb, $theme, $templates, $lang, $thread, $db, $dnt_prt_rates;
 
 	$lang->load('dnt_post_rate',false,true);	
 	$dnt_prt_rates = "";
 	if($mybb->settings['dnt_post_rate_showthread'] == 0)
 		return false;
 	$tid = $thread['tid'];
-	$thread['dnt_prt_rates_threads'] = unserialize($thread['dnt_prt_rates_threads']);	
-	eval("\$dnt_prt_results1 .= \"".$templates->get("dnt_prt_thread_rates1")."\";");
-	eval("\$dnt_prt_results2 .= \"".$templates->get("dnt_prt_thread_rates2")."\";");
-	eval("\$dnt_prt_results3 .= \"".$templates->get("dnt_prt_thread_rates3")."\";");
-	eval("\$dnt_prt_results4 .= \"".$templates->get("dnt_prt_thread_rates4")."\";");
-	eval("\$dnt_prt_results5 .= \"".$templates->get("dnt_prt_thread_rates5")."\";");
-	eval("\$dnt_prt_results6 .= \"".$templates->get("dnt_prt_thread_rates6")."\";");
-	
-	$likes = (int)$thread['dnt_prt_rates_threads']['likes'];
-	$loves = (int)$thread['dnt_prt_rates_threads']['loves'];
-	$wow = (int)$thread['dnt_prt_rates_threads']['wow'];
-	$smiles = (int)$thread['dnt_prt_rates_threads']['smiles'];
-	$crys = (int)$thread['dnt_prt_rates_threads']['crys'];
-	$angrys = (int)$thread['dnt_prt_rates_threads']['angrys'];
-	
-	$dnt_prt_rates = '<div style="float:right">';	
-	if($likes > 0)
-		eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_likes")."\";");
-	if($loves > 0)
-		eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_loves")."\";");		
-	if($wow > 0)
-		eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_wow")."\";");
-	if($smiles > 0)
-		eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_smiles")."\";");
-	if($crys > 0)
-		eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_crys")."\";");
-	if($angrys > 0)
-		eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_angrys")."\";");
-	$dnt_prt_rates .= '</div>';
-	unset($thread['dnt_prt_rates_threads']);
+	if($mybb->settings['dnt_post_rate_showthread_all'] == 1)
+	{	
+		$thread['dnt_prt_rates_threads'] = unserialize($thread['dnt_prt_rates_threads']);	
+		eval("\$dnt_prt_results1 .= \"".$templates->get("dnt_prt_thread_rates1")."\";");
+		eval("\$dnt_prt_results2 .= \"".$templates->get("dnt_prt_thread_rates2")."\";");
+		eval("\$dnt_prt_results3 .= \"".$templates->get("dnt_prt_thread_rates3")."\";");
+		eval("\$dnt_prt_results4 .= \"".$templates->get("dnt_prt_thread_rates4")."\";");
+		eval("\$dnt_prt_results5 .= \"".$templates->get("dnt_prt_thread_rates5")."\";");
+		eval("\$dnt_prt_results6 .= \"".$templates->get("dnt_prt_thread_rates6")."\";");
+		
+		$likes = (int)$thread['dnt_prt_rates_threads']['likes'];
+		$loves = (int)$thread['dnt_prt_rates_threads']['loves'];
+		$wow = (int)$thread['dnt_prt_rates_threads']['wow'];
+		$smiles = (int)$thread['dnt_prt_rates_threads']['smiles'];
+		$crys = (int)$thread['dnt_prt_rates_threads']['crys'];
+		$angrys = (int)$thread['dnt_prt_rates_threads']['angrys'];
+		
+		$dnt_prt_rates = '<div style="float:right">';	
+		if($likes > 0)
+			eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_likes")."\";");
+		if($loves > 0)
+			eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_loves")."\";");		
+		if($wow > 0)
+			eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_wow")."\";");
+		if($smiles > 0)
+			eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_smiles")."\";");
+		if($crys > 0)
+			eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_crys")."\";");
+		if($angrys > 0)
+			eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_angrys")."\";");
+		$dnt_prt_rates .= '</div>';
+		unset($thread['dnt_prt_rates_threads']);
+	}
+	else
+	{
+		$pid = (int)$thread['firstpost'];
+		$query = $db->simple_select('posts','dnt_prt_rates_posts',"pid={$pid}");
+		$post = $db->fetch_array($query);
+		$post['dnt_prt_rates_posts'] = unserialize($post['dnt_prt_rates_posts']);	
+		eval("\$dnt_prt_results1 .= \"".$templates->get("dnt_prt_thread_rates1")."\";");
+		eval("\$dnt_prt_results2 .= \"".$templates->get("dnt_prt_thread_rates2")."\";");
+		eval("\$dnt_prt_results3 .= \"".$templates->get("dnt_prt_thread_rates3")."\";");
+		eval("\$dnt_prt_results4 .= \"".$templates->get("dnt_prt_thread_rates4")."\";");
+		eval("\$dnt_prt_results5 .= \"".$templates->get("dnt_prt_thread_rates5")."\";");
+		eval("\$dnt_prt_results6 .= \"".$templates->get("dnt_prt_thread_rates6")."\";");
+		
+		$likes = (int)$post['dnt_prt_rates_posts']['likes'];
+		$loves = (int)$post['dnt_prt_rates_posts']['loves'];
+		$wow = (int)$post['dnt_prt_rates_posts']['wow'];
+		$smiles = (int)$post['dnt_prt_rates_posts']['smiles'];
+		$crys = (int)$post['dnt_prt_rates_posts']['crys'];
+		$angrys = (int)$post['dnt_prt_rates_posts']['angrys'];
+		
+		$dnt_prt_rates = '<div style="float:right">';	
+		if($likes > 0)
+			eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_likes")."\";");
+		if($loves > 0)
+			eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_loves")."\";");		
+		if($wow > 0)
+			eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_wow")."\";");
+		if($smiles > 0)
+			eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_smiles")."\";");
+		if($crys > 0)
+			eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_crys")."\";");
+		if($angrys > 0)
+			eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_angrys")."\";");
+		$dnt_prt_rates .= '</div>';
+		unset($post['dnt_prt_rates_posts']);		
+	}
 }
 
 function dnt_post_rate_insert_thread(&$data)
