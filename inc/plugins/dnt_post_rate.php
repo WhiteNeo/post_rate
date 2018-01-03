@@ -283,7 +283,7 @@ function dnt_post_rate_activate()
 
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_top5_given_memprofile',
-		'title' => 'Top 5 emotions given',
+		'title' => 'Top 5 emotions given in profiles',
 		'description' => 'Show the top 5 emotions given by users in user profiles',
 		'optionscode' => 'yesno',
 		'value' => 1,
@@ -293,7 +293,7 @@ function dnt_post_rate_activate()
 
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_top5_received_memprofile',
-		'title' => 'Post rates received and received in memprofile',
+		'title' => 'Top 5 emotions received in profiles',
 		'description' => 'Show the top 5 emotions received by users in user profiles',
 		'optionscode' => 'yesno',
 		'value' => 1,
@@ -336,7 +336,7 @@ function dnt_post_rate_activate()
 		'title' => 'Actual version of post rate plugin.',
 		'description' => 'This is the actual version of your post rate system installed',
 		'optionscode' => 'numeric',
-		'value' => 150,
+		'value' => 161,
 		'disporder' => 0,
 		'gid' => 0
 	);
@@ -1274,11 +1274,11 @@ function dnt_post_rate_post_rates(&$post)
 	$dnt_prt_fids = $mybb->settings['dnt_post_rate_forums'];
 	if($dnt_prt_fids != "-1" && !empty($dnt_prt_fids))
 	{
+		echo $dnt_prt_fids;
 		$dnt_prt_fids = explode(",",$mybb->settings['dnt_post_rate_forums']);
 		if(!in_array($fid, $dnt_prt_fids))
 			return false;		
 	}
-	
 	if(!empty($mybb->settings['dnt_post_rate_groups']) && $mybb->settings['dnt_post_rate_groups'] != "-1")
 	{
 		$gid = (int)$mybb->user['usergroup'];
@@ -1307,6 +1307,7 @@ function dnt_post_rate_post_rates(&$post)
 	}
 	else if($mybb->settings['dnt_post_rate_groups'] == "-1")
 		$post['dnt_prt_see_me'] = true;	
+
 	if($dnt_prt_firstpost == 0 && $mybb->settings['dnt_post_rate_postbit'])
 	{
 		$url_given = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_given_rates&amp;uid='.(int)$post['uid'];
@@ -1348,7 +1349,7 @@ function dnt_post_rate_post_rates(&$post)
 	}	
 	else
 	{
-		if($mybb->user['uid'] != $post['uid'] && $total > 0)
+		if($mybb->user['uid'] != $post['uid'])
 		{
 			$query = $db->simple_select('dnt_post_rate','*',"dnt_prt_sender='{$dnt_prt_sender}' AND dnt_prt_pid='{$pid}'{$dnt_prt_date}", array("limit"=>1));
 			if ($db->num_rows($query) > 0)
@@ -1657,10 +1658,8 @@ function dnt_post_rate_xmlhttp()
 		if($lid == 5)
 			$cryst++;
 		if($lid == 6)
-			$angryst++;		
-		
-		$clasify_threads_rates_total = (int)$likest + (int)$lovest + (int)$wowt + (int)$smilest + (int)$cryst + (int)$angryst;
-		
+			$angryst++;				
+	
 		$thread_rates = array(
 			'likes' => (int)$likest,
 			'loves' => (int)$lovest,
@@ -1668,7 +1667,7 @@ function dnt_post_rate_xmlhttp()
 			'smiles' => (int)$smilest,
 			'crys' => (int)$cryst,
 			'angrys' => (int)$angryst,
-			'total' => (int)$clasify_thread_rates_total
+			'total' => (int)$dnt_prt_total
 		);
 
 		$thread_rates = serialize($thread_rates);
@@ -1882,9 +1881,7 @@ function dnt_post_rate_xmlhttp()
 		if($cryst < 1)
 			$cryst = 0;
 		if($angryst < 1)
-			$angryst = 0;
-		
-		$clasify_threads_rates_total = (int)$likest + (int)$lovest + (int)$wowt + (int)$smilest + (int)$cryst + (int)$angryst;
+			$angryst = 0;		
 		
 		$thread_rates = array(
 			'likes' => (int)$likest,
@@ -1893,7 +1890,7 @@ function dnt_post_rate_xmlhttp()
 			'smiles' => (int)$smilest,
 			'crys' => (int)$cryst,
 			'angrys' => (int)$angryst,
-			'total' => (int)$clasify_thread_rates_total
+			'total' => (int)$dnt_prt_total
 		);
 
 		$thread_rates = serialize($thread_rates);
@@ -2095,7 +2092,7 @@ function dnt_post_rate_member()
 					$subject = "<a href=\"{$subject_link}\">{$subject}</a>";
 					$total = (int)$thread['dnt_prt_total'];
 					$memprofile['dnt_prt_rates'] = unserialize($thread['dnt_prt_rates_threads']);
-					$total = (int)$memprofile['dnt_prt_rates']['total'];				
+					$total = (int)$memprofile['dnt_prt_rates']['total'];		
 				}
 			}
 		}
@@ -2119,7 +2116,7 @@ function dnt_post_rate_member()
 				}
 			}
 		}
-		if(isset($tid))
+		if(isset($tid) && $pid >0 || isset($tid) && $tid >0)
 		{
 			eval("\$dnt_prt_results1 = \"".$templates->get("dnt_prt_thread_rates1")."\";");	
 			eval("\$dnt_prt_results2 = \"".$templates->get("dnt_prt_thread_rates2")."\";");	
