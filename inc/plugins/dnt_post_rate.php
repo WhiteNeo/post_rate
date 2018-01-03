@@ -1271,6 +1271,8 @@ function dnt_post_rate_post_rates(&$post)
 	else
 		$dnt_prt_date = "";
 	$post['dnt_prt_see_me'] = false;
+	$post['dnt_prt_rates_given'] = "";
+	$post['dnt_prt_rates_received'] = "";	
 	$dnt_prt_fids = $mybb->settings['dnt_post_rate_forums'];
 	if($dnt_prt_fids != "-1" && !empty($dnt_prt_fids))
 	{
