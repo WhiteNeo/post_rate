@@ -41,3 +41,6 @@ $l['dnt_prt_cant_rate'] = "No puedes agregar emociones a tus propios mensajes...
 $l['dnt_prt_rate_rated'] = "Ya has agregado una emoción en este mensaje, sólo puedes mandar una a la vez...";
 $l['dnt_prt_rate_dont_rated'] = "Aún no has agregado una emoción en este mensaje...";
 $l['dnt_prt_cant_unrate'] = "No puedes eliminar emociones en tus propios mensajes...";
+$l['dnt_prt_thread_dont_received'] = "No hay emociones en este mensaje aún";
+$l['dnt_prt_dont_received'] = "No hay emociones recibidas para este usuario";
+$l['dnt_prt_dont_given'] = "No hay emociones dadas por este usuario";
