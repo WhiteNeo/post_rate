@@ -362,7 +362,7 @@ function dnt_post_rate_activate()
 .post_rate_btn img{cursor:pointer;margin-top: 2px;transform: scale(1.00);transition: all 0.25s ease-in;}
 .post_rate_btn img:hover{transform: scale(1.25);transition: all 0.25s ease-in;background: #e6e6e6; border-radius: 40px;}
 .ptr_list{display:none;position:absolute;background:#0b0a0a;color:#e4dada;padding:6px;border-radius:3px;font-size:10px}
-.ptr_list_title{display:none;position:absolute;background:#0b0a0a;color:#e4dada;padding:6px;border-radius:10px;font-size:10px}
+.ptr_list_title {display: none;position: absolute;background: #0b0a0a;color: #fff;padding: 6px;border-radius: 12px;font-size: 10px;font-weight: bold;margin-left: -10px;}
 .dnt_prt_list_span {padding: 0 40px;height: 40px;position: relative}
 .dnt_prt_ulist > span{display:block}
 .dnt_prt_list{padding:10px;font-size:13px;display:inline-block;width:98%}
