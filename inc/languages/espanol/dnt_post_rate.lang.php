@@ -27,7 +27,6 @@ $l['dnt_prt_remove_rate_question'] = "Quieres eliminar tu emoción en este mensa
 $l['dnt_prt_remove_rate'] = "Emoción eliminada correctamente...";
 $l['dnt_prt_rates_removed'] = "Todas las emociones para este mensaje han sido eliminadas.";
 $l['dnt_prt_rates_page_title'] = "Emociones";
-$l['dnt_prt_not_received'] = "Actualmente no existen emociones.";
 $l['dnt_prt_has_rated_you'] = " a reaccionado con {2} al usuario {1} en el mensaje <a href=\"{3}\">{4}</a> <span class=\"smalltext\" style=\"float:right\">{5} ({6})</span>";
 $l['dnt_prt_error_title'] = "Error del sistema de emociones";
 $l['dnt_prt_error'] = "La petición que ha solicitado es incorrecta, por favor verifique que la dirección url sea correcta....";
