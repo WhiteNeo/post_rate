@@ -361,7 +361,7 @@ function dnt_post_rate_activate()
 .post_rate_button{color:#fff;text-shadow:1px 1px 1px #000;height:26px;line-height:26px;padding:0 10px;text-decoration:none;margin-left:4px;display:inline-block;cursor:pointer;background:#202020;border-radius:4px;font-size:13px;background:#0F5579 !important}
 .post_rate_btn img{cursor:pointer;margin-top: 2px;transform: scale(1.00);transition: all 0.25s ease-in;}
 .post_rate_btn img:hover{transform: scale(1.25);transition: all 0.25s ease-in;background: #e6e6e6; border-radius: 40px;}
-.ptr_list{display:none;position:absolute;background:#0b0a0a;color:#e4dada;padding:6px;border-radius:3px;font-size:10px;margin-top: 5px;margin-left: 3px;z-index: 1}
+.ptr_list{display:none;position:absolute;background:#0b0a0a;color:#e4dada;padding:6px;border-radius:3px;font-size:10px;margin-top: 20px;margin-left: 2px;z-index: 1}
 .ptr_list_title {display: none;position: absolute;background: #0b0a0a;color: #fff;padding: 6px;border-radius: 12px;font-size: 10px;font-weight: bold;margin-left: -10px;z-index: 1}
 .dnt_prt_list_span {padding: 0 40px;height: 40px;position: relative}
 .dnt_prt_ulist > span{display:block}
@@ -379,11 +379,11 @@ function dnt_post_rate_activate()
 /* Fix for Mozilla Firefox */
 @media screen and (-moz-min-device-pixel-ratio:0) {
 	.dnt_prt_div_rate img{margin-top: -12px}
-	.ptr_list{margin-top:-45px}
 }
 /* Fix for Chrome and Safari */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 	.dnt_prt_div_rate img{margin-top: 0px}
+	.ptr_list{margin-top: 10px;}
 }';
 
 	$stylesheet = array(
