@@ -366,7 +366,7 @@ function dnt_post_rate_activate()
 .dnt_prt_list_span {padding: 0 40px;height: 40px;position: relative}
 .dnt_prt_ulist > span{display:block}
 .dnt_prt_list{padding:10px;font-size:13px;display:inline-block;width:98%}
-.dnt_prt_list img{margin-top: -12px;}
+.dnt_prt_list img{margin-top: -10px;}
 .dnt_post_hl{background-color:rgba(25,119,150,0.3);margin:5px;border-radius:3px;border-left:2px solid #4d5e77}
 .dnt_popular_post{border: 1px dotted; border-radius: 2px; border-color: rgba(112,202,47,0.5); background-color: rgba(139,195,74,0.3)}
 .dnt_prt_div_rate{display:inline-block !important;cursor:pointer}
@@ -375,7 +375,16 @@ function dnt_post_rate_activate()
 .dnt_prt_list_avatar{padding: 3px;border: 1px solid #D8DFEA;width: 30px;height: 30px;border-radius: 50%;margin-top: -10px;position: absolute}
 .clasify_post_norates_msg{background-color:rgba(185,65,25,0.3);margin:5px;color:#6f2f16;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
 .clasify_post_rates_msg{background-color:rgba(102,189,218,0.3);margin:5px;color:#315284;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
-.clasify_post_rates_msg_span{font-size:8px;font-weight:bold;position:absolute;background:#ce5757;padding:1px 3px;color:#f0f0f0;border-radius:4px;border-radius:3px;margin-top:-5px}';
+.clasify_post_rates_msg_span{font-size:8px;font-weight:bold;position:absolute;background:#ce5757;padding:1px 3px;color:#f0f0f0;border-radius:4px;border-radius:3px;margin-top:-5px}
+/* Fix for Mozilla Firefox */
+@media screen and (-moz-min-device-pixel-ratio:0) {
+	.dnt_prt_div_rate img{margin-top: -12px}
+	.ptr_list{margin-top:-45px}
+}
+/* Fix for Chrome and Safari */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	.dnt_prt_div_rate img{margin-top: 0px}';
+}
 
 	$stylesheet = array(
 		"name"			=> "pcl.css",
@@ -440,8 +449,8 @@ function dnt_post_rate_deactivate()
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'dnt_prt_rates_received\']}').'#', '', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'dnt_prt_rates_given\']}').'#', '', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'dnt_prt_rates_received\']}').'#', '', 0);
-	find_replace_templatesets("postbit_", '#'.preg_quote('{$post[\'rates_given\']}').'#', '', 0);
-	find_replace_templatesets("postbit_", '#'.preg_quote('{$post[\'rates_received\']}').'#', '', 0);	
+	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'rates_given\']}').'#', '', 0);
+	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'rates_received\']}').'#', '', 0);	
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'rates_given\']}').'#', '', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'rates_received\']}').'#', '', 0);		
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$memprofile[\'dnt_prt\']}').'#', '', 0);
