@@ -383,8 +383,8 @@ function dnt_post_rate_activate()
 }
 /* Fix for Chrome and Safari */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
-	.dnt_prt_div_rate img{margin-top: 0px}';
-}
+	.dnt_prt_div_rate img{margin-top: 0px}
+}';
 
 	$stylesheet = array(
 		"name"			=> "pcl.css",
