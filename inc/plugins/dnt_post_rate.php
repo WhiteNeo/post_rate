@@ -405,8 +405,8 @@ function dnt_post_rate_activate()
 	find_replace_templatesets("headerinclude", '#'.preg_quote('{$stylesheets}').'#', '{$stylesheets}{$dnt_prt_script}');
 	find_replace_templatesets("forumdisplay_thread", '#'.preg_quote('{$attachment_count}').'#', '{$attachment_count}{$dnt_prt_rates}');		
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$profilefields}').'#', '{$profilefields}{$memprofile[\'dnt_prt\']}{$memprofile[\'top5_given\']}{$memprofile[\'top5_received\']}');
-	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'user_details\']}').'#', '{$post[\'user_details\']}{$post[\'dnt_prt_rates_given\']}{$post[\'dnt_prt_rates_received\']}', 0);
-	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'user_details\']}').'#', '{$post[\'user_details\']}{$post[\'dnt_prt_rates_given\']}{$post[\'dnt_prt_rates_received\']}', 0);	
+	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'user_details\']}').'#', '{$post[\'user_details\']}{$post[\'rates_given\']}{$post[\'rates_received\']}', 0);
+	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'user_details\']}').'#', '{$post[\'user_details\']}{$post[\'rates_given\']}{$post[\'rates_received\']}', 0);	
 	rebuild_settings();
 }
 
@@ -440,6 +440,10 @@ function dnt_post_rate_deactivate()
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'dnt_prt_rates_received\']}').'#', '', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'dnt_prt_rates_given\']}').'#', '', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'dnt_prt_rates_received\']}').'#', '', 0);
+	find_replace_templatesets("postbit_", '#'.preg_quote('{$post[\'rates_given\']}').'#', '', 0);
+	find_replace_templatesets("postbit_", '#'.preg_quote('{$post[\'rates_received\']}').'#', '', 0);	
+	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'rates_given\']}').'#', '', 0);
+	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'rates_received\']}').'#', '', 0);		
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$memprofile[\'dnt_prt\']}').'#', '', 0);
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$memprofile[\'top5_given\']}').'#', '', 0);
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$memprofile[\'top5_received\']}').'#', '', 0);
@@ -1286,8 +1290,6 @@ function dnt_post_rate_post_rates(&$post)
 	else
 		$dnt_prt_date = "";
 	$post['dnt_prt_see_me'] = false;
-	$post['dnt_prt_rates_given'] = "";
-	$post['dnt_prt_rates_received'] = "";	
 	$dnt_prt_fids = $mybb->settings['dnt_post_rate_forums'];
 	if($dnt_prt_fids != "-1" && !empty($dnt_prt_fids))
 	{
@@ -1329,8 +1331,8 @@ function dnt_post_rate_post_rates(&$post)
 	{
 		$url_given = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_given_rates&amp;uid='.(int)$post['uid'];
 		$url_received = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_received_rates&amp;uid='.(int)$post['uid'];	
-		$post['dnt_prt_rates_given'] = $lang->sprintf($lang->dnt_prt_rates_given,'<span id="dnt_prt_giva'.$post['pid'].'">'.(int)$post['dnt_prt_rates_given']."</span>", $url_given);
-		$post['dnt_prt_rates_received'] = $lang->sprintf($lang->dnt_prt_rates_received,'<span id="dnt_prt_reca'.$post['pid'].'">'.(int)$post['dnt_prt_rates_received']."</span>", $url_received);
+		$post['rates_given'] = $lang->sprintf($lang->dnt_prt_rates_given,'<span id="dnt_prt_giva'.$post['pid'].'">'.(int)$post['dnt_prt_rates_given']."</span>", $url_given);
+		$post['rates_received'] = $lang->sprintf($lang->dnt_prt_rates_received,'<span id="dnt_prt_reca'.$post['pid'].'">'.(int)$post['dnt_prt_rates_received']."</span>", $url_received);
 	}
 	else if($dnt_prt_firstpost == 1 && $mybb->settings['dnt_post_rate_postbit'] == 1)
 	{
@@ -1338,13 +1340,13 @@ function dnt_post_rate_post_rates(&$post)
 		{
 			$url_given = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_given_rates&amp;uid='.(int)$post['uid'];
 			$url_received = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_received_rates&amp;uid='.(int)$post['uid'];	
-			$post['dnt_prt_rates_given'] = $lang->sprintf($lang->dnt_prt_rates_given,'<span id="dnt_prt_giva'.$post['pid'].'">'.(int)$post['dnt_prt_rates_given']."</span>", $url_given);
-			$post['dnt_prt_rates_received'] = $lang->sprintf($lang->dnt_prt_rates_received,'<span id="dnt_prt_reca'.$post['pid'].'">'.(int)$post['dnt_prt_rates_received']."</span>", $url_received);
+			$post['rates_given'] = $lang->sprintf($lang->dnt_prt_rates_given,'<span id="dnt_prt_giva'.$post['pid'].'">'.(int)$post['dnt_prt_rates_given']."</span>", $url_given);
+			$post['rates_received'] = $lang->sprintf($lang->dnt_prt_rates_received,'<span id="dnt_prt_reca'.$post['pid'].'">'.(int)$post['dnt_prt_rates_received']."</span>", $url_received);
 		}
 		else
 		{
-			$post['dnt_prt_rates_given'] = '<span id="dnt_prt_giva'.$post['pid'].'" style="display:none"></span>';
-			$post['dnt_prt_rates_received'] = '<span id="dnt_prt_reca'.$post['pid'].'" style="display:none"></span>';
+			$post['rates_given'] = '<span id="dnt_prt_giva'.$post['pid'].'" style="display:none"></span>';
+			$post['rates_received'] = '<span id="dnt_prt_reca'.$post['pid'].'" style="display:none"></span>';
 		}		
 	}
 
