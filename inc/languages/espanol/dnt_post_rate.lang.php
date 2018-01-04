@@ -34,9 +34,9 @@ $l['dnt_prt_error'] = "La petición que ha solicitado es incorrecta, por favor v
 $l['dnt_prt_rates_given'] = "<span style=\"display:block\">Emociones Brindadas: <strong><a href=\"{2}\">{1}</a></strong></span>";
 $l['dnt_prt_rates_received'] = "<span style=\"display:block\">Emociones Recibidas: <strong><a href=\"{2}\">{1}</a></strong></span>";
 $l['dnt_prt_you'] = "Tú";
-$l['dnt_prt_top5_rates_rec'] = "Top 5 emociones recibidas<br />";
-$l['dnt_prt_top5_rates_giv'] = "Top 5 emociones brindadas<br />";
-$l['dnt_prt_stats'] = "Estadísticas del usuario para sus emociones.";
+$l['dnt_prt_top5_rates_rec'] = "Lista de emociones recibidas<br />";
+$l['dnt_prt_top5_rates_giv'] = "Lista de emociones brindadas<br />";
+$l['dnt_prt_stats'] = "Emociones dadas y recibidas.";
 $l['dnt_prt_cant_rate'] = "No puedes agregar emociones a tus propios mensajes...";
 $l['dnt_prt_rate_rated'] = "Ya has agregado una emoción en este mensaje, sólo puedes mandar una a la vez...";
 $l['dnt_prt_rate_dont_rated'] = "Aún no has agregado una emoción en este mensaje...";
