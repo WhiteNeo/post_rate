@@ -56,7 +56,7 @@ function dnt_post_rate_info()
 		"website" => "",
 		"author" => "Whiteneo",
 		"authorsite" => "https://soportemybb.es",
-		"version" => "1.6",
+		"version" => "1.6.2",
 		"codename" => "dnt_post_rate_",
 		"compatibility" => "18*"
 	);
@@ -346,7 +346,7 @@ function dnt_post_rate_activate()
 		'title' => 'Actual version of post rate plugin.',
 		'description' => 'This is the actual version of your post rate system installed',
 		'optionscode' => 'numeric',
-		'value' => 161,
+		'value' => 162,
 		'disporder' => 0,
 		'gid' => 0
 	);
