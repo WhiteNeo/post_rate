@@ -383,7 +383,7 @@ function dnt_post_rate_activate()
 /* Fix for Chrome and Safari */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 	.dnt_prt_div_rate img{margin-top: 0px}
-	.ptr_list{margin-top: 10px;}
+	.ptr_list{margin-top: 5px;}
 }';
 
 	$stylesheet = array(
