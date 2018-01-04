@@ -41,3 +41,6 @@ $l['dnt_prt_cant_rate'] = "You can not rate own posts...";
 $l['dnt_prt_rate_rated'] = "You have rated this post, you can not rate twice...";
 $l['dnt_prt_rate_dont_rated'] = "You have not rated this post yet...";
 $l['dnt_prt_cant_unrate'] = "You can not unrate own posts...";
+$l['dnt_prt_thread_dont_received'] = "There are no emojis yet in this post";
+$l['dnt_prt_received_dont_received'] = "There are no emojis given for this user";
+$l['dnt_prt_given_dont_received'] = "There are no emojis received for this user";
