@@ -34,9 +34,9 @@ $l['dnt_prt_rates_given'] = "<span style=\"display:block\">Rates Given: <strong>
 $l['dnt_prt_rates_received'] = "<span style=\"display:block\">Rates Received: <strong><a href=\"{2}\">{1}</a></strong></span>";
 $l['dnt_prt_has_rated_you'] = " has rated with {2} to {1} on this post <a href=\"{3}\">{4}</a> <span class=\"smalltext\" style=\"float:right\">{5} ({6})</span>";
 $l['dnt_prt_you'] = "You";
-$l['dnt_prt_top5_rates_rec'] = "Top 5 rates received<br />";
-$l['dnt_prt_top5_rates_giv'] = "Top 5 rates given<br />";
-$l['dnt_prt_stats'] = "User Stats for Post Rates.";
+$l['dnt_prt_top5_rates_rec'] = "List of emojis received<br />";
+$l['dnt_prt_top5_rates_giv'] = "List of emojis given<br />";
+$l['dnt_prt_stats'] = "Emojis given and received.";
 $l['dnt_prt_cant_rate'] = "You can not rate own posts...";
 $l['dnt_prt_rate_rated'] = "You have rated this post, you can not rate twice...";
 $l['dnt_prt_rate_dont_rated'] = "You have not rated this post yet...";
