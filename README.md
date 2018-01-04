@@ -25,8 +25,8 @@ $memprofile['top5_received']
 
 postbit and postbit_classic
 ```HTML
-{$post['pcl_rates_given']}
-{$post['pcl_rates_received']}
+{$post['rates_given']}
+{$post['rates_received']}
 {$post['clasify_post_rates']}
 ---------------- Make sure that vars are into that template. ----------------
 ------------------- Addittionaly you can use this ones ----------------------
@@ -37,22 +37,23 @@ postbit and postbit_classic
 {$post['crys']}
 {$post['angrys']}
 ```
-You can use in order to organize your mod at own needs, but many of them are not ajax capable, only the needed ones and really necesary.
 
-All changes can make into this posible things:
+* You can use in order to organize your mod at own needs, but many of them are not ajax capable, only the needed ones and really necesary.
 
-Post Rates templates inside your theme (admincp -> styles &templates -> yourtheme)
-Language vars (inside inc/languages/yourlang/dnt_post_rates.lang.php)
-Stylesheet (admincp -> styles &templates -> yourtheme) search for pcl.css (Edit at your owns)
+* All changes can make into this posible things:
 
-If you need to convert from some other system (Only ThankYouMyBB System, Thankyoulike system and Simple Likes System are available)
+* Post Rates templates inside your theme (admincp -> styles &templates -> yourtheme)
+* Language vars (inside inc/languages/yourlang/dnt_post_rates.lang.php)
+* Stylesheet (admincp -> styles &templates -> yourtheme) search for pcl.css (Edit at your owns)
 
-Open extras folder and upload converter.php file to forum root.
+* If you need to convert from some other system (Only ThankYouMyBB System, Thankyoulike system and Simple Likes System are available)
 
-Install Post Rate System.
+* Open extras folder and upload converter.php file to forum root.
+
+* Install Post Rate System.
 
 * Keep in mind all current data would be deleted, so is is necesary to follow the right stepts to do this
 
-And then go to that url into your server. (Yourforum/converter.php), make sure you are logued in as admin.
+* And then go to that url into your server. (Yourforum/converter.php), make sure you are logued in as admin.
 
-Once this process have end then remove this file.
+* Once this process have end then remove this file.
