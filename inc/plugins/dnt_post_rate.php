@@ -39,7 +39,7 @@ function dnt_post_rate_info()
 		if(myalerts_is_activated() && !dnt_post_rate_myalerts_status() && $dpr_verify >= 2.0)
 			$dpr_integrate = '<br /><a href="index.php?module=config-plugins&amp;action=dnt_post_rate_myalerts_integrate" style="float: right;">'.htmlspecialchars_uni($lang->dnt_prt_integrate_alerts).'</a>';			
 	}
-	
+
 	if(isset($mybb->settings['dnt_post_rate_active']))
 		$dpr_config = '<div style="float: right;"><a href="index.php?module=config&amp;action=change&amp;search=dnt_post_rate" style="color:#035488; background: url(../images/icons/brick.png) no-repeat 0px 18px; padding: 21px; text-decoration: none;">'.htmlspecialchars_uni($lang->dnt_prt_configure).'</a></div>';
 
@@ -273,8 +273,8 @@ function dnt_post_rate_activate()
 
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_memprofile',
-		'title' => 'Post rates received and given in memprofile',
-		'description' => 'Show this stats on member profiles information',
+		'title' => 'Post rates received and given in user profile',
+		'description' => 'Show emotions given and received and link to it into member profiles',
 		'optionscode' => 'yesno',
 		'value' => 1,
 		'disporder' => 9,
@@ -283,8 +283,8 @@ function dnt_post_rate_activate()
 
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_top5_given_memprofile',
-		'title' => 'Top 5 emotions given in profiles',
-		'description' => 'Show the top 5 emotions given by users in user profiles',
+		'title' => 'List emotions given in user profile',
+		'description' => 'Show emotions given by users listed in user profiles',
 		'optionscode' => 'yesno',
 		'value' => 1,
 		'disporder' => 10,
@@ -293,8 +293,8 @@ function dnt_post_rate_activate()
 
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_top5_received_memprofile',
-		'title' => 'Top 5 emotions received in profiles',
-		'description' => 'Show the top 5 emotions received by users in user profiles',
+		'title' => 'List emotions received in user profile',
+		'description' => 'Show emotions received by users listed in user profiles',
 		'optionscode' => 'yesno',
 		'value' => 1,
 		'disporder' => 11,
@@ -332,6 +332,16 @@ function dnt_post_rate_activate()
 	);
 	
 	$new_config[] = array(
+		'name' => 'dnt_post_rate_minify',
+		'title' => 'Minify javascript',
+		'description' => 'Use this to renderize your website besides using external libraries or codes that would broke js. Set to No if you wish to use normal js code',
+		'optionscode' => 'yesno',
+		'value' => 0,
+		'disporder' => 15,
+		'gid' => $group['gid']
+	);	
+	
+	$new_config[] = array(
 		'name' => 'dnt_post_rate_version',
 		'title' => 'Actual version of post rate plugin.',
 		'description' => 'This is the actual version of your post rate system installed',
@@ -352,6 +362,7 @@ function dnt_post_rate_activate()
 .post_rate_btn img{cursor:pointer;margin-top: 2px;transform: scale(1.00);transition: all 0.25s ease-in;}
 .post_rate_btn img:hover{transform: scale(1.25);transition: all 0.25s ease-in;background: #e6e6e6; border-radius: 40px;}
 .ptr_list{display:none;position:absolute;background:#0b0a0a;color:#e4dada;padding:6px;border-radius:3px;font-size:10px}
+.ptr_list_title{display:none;position:absolute;background:#0b0a0a;color:#e4dada;padding:6px;border-radius:10px;font-size:10px}
 .dnt_prt_list_span {padding: 0 40px;height: 40px;position: relative}
 .dnt_prt_ulist > span{display:block}
 .dnt_prt_list{padding:10px;font-size:13px;display:inline-block;width:98%}
@@ -377,7 +388,7 @@ function dnt_post_rate_activate()
 
 	// Insert stylesheet to db...
 	$sid = $db->insert_query('themestylesheets', $stylesheet);
-	$db->update_query('themestylesheets', array('cachefile' => "psc.css"), "sid='{$sid}'", 1);
+	$db->update_query('themestylesheets', array('cachefile' => "pcl.css"), "sid='{$sid}'", 1);
 	$query = $db->simple_select('themes', 'tid');
 	while($theme = $db->fetch_array($query))
 	{
@@ -678,12 +689,12 @@ function dnt_prt_templates_make()
 		'title' => 'dnt_prt_post_clasify_post_rates',
 		'template' => "<div class=\"post_rate_button\" id=\"post_rates_btn_{\$pid}\" onclick=\"DNTShowMenu({\$pid})\">{\$lang->dnt_prt_rate}</div>
 <div id=\"post_rates_{\$pid}\" class=\"post_rate_list\" style=\"display:none;\">
-	<span onclick=\"javascript:DNTPostRate(1, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.gif\" alt=\"{\$lang->dnt_prt_like}\" title=\"{\$lang->dnt_prt_like}\" /></span>
-	<span onclick=\"javascript:DNTPostRate(2, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.gif\" alt=\"{\$lang->dnt_prt_love}\" title=\"{\$lang->dnt_prt_love}\" /></span>
-	<span onclick=\"javascript:DNTPostRate(3, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.gif\" alt=\"{\$lang->dnt_prt_wow}\" title=\"{\$lang->dnt_prt_wow}\" /></span>
-	<span onclick=\"javascript:DNTPostRate(4, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.gif\" alt=\"{\$lang->dnt_prt_smile}\" title=\"{\$lang->dnt_prt_smile}\" /></span>
-	<span onclick=\"javascript:DNTPostRate(5, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.gif\" alt=\"{\$lang->dnt_prt_cry}\" title=\"{\$lang->dnt_prt_cry}\" /></span>
-	<span onclick=\"javascript:DNTPostRate(6, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.gif\" alt=\"{\$lang->dnt_prt_angry}\" title=\"{\$lang->dnt_prt_angry}\" /></span>
+	<span onclick=\"javascript:DNTPostRate(1, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.gif\" alt=\"{\$lang->dnt_prt_like}\" title=\"{\$lang->dnt_prt_like}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_like}</span></span>
+	<span onclick=\"javascript:DNTPostRate(2, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.gif\" alt=\"{\$lang->dnt_prt_love}\" title=\"{\$lang->dnt_prt_love}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_love}</span></span>
+	<span onclick=\"javascript:DNTPostRate(3, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.gif\" alt=\"{\$lang->dnt_prt_wow}\" title=\"{\$lang->dnt_prt_wow}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_wow}</span></span>
+	<span onclick=\"javascript:DNTPostRate(4, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.gif\" alt=\"{\$lang->dnt_prt_smile}\" title=\"{\$lang->dnt_prt_smile}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_smile}</span></span>
+	<span onclick=\"javascript:DNTPostRate(5, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.gif\" alt=\"{\$lang->dnt_prt_cry}\" title=\"{\$lang->dnt_prt_cry}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_cry}</span></span>
+	<span onclick=\"javascript:DNTPostRate(6, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.gif\" alt=\"{\$lang->dnt_prt_angry}\" title=\"{\$lang->dnt_prt_angry}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_angry}</span></span>
 </div>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -1132,7 +1143,11 @@ function dnt_post_rate_script()
 	}	
 	if(THIS_SCRIPT == "showthread.php" || THIS_SCRIPT == "member.php" || THIS_SCRIPT == "forumdisplay.php")
 	{
-		$dnt_prt_script = "<script type=\"text/javascript\" src=\"{$mybb->asset_url}/jscripts/dnt_prt.js?ver=160\"></script>
+		if($mybb->settings['dnt_post_rate_minify'])
+			$dnt_prt_min = ".min.js";
+		else
+			$dnt_prt_min = ".js";
+		$dnt_prt_script = "<script type=\"text/javascript\" src=\"{$mybb->asset_url}/jscripts/dnt_prt{$dnt_prt_min}?ver=162\"></script>
 <script type=\"text/javascript\">
 	var dnt_prt_success = \"{$lang->dnt_prt_rated}\";
 	var dnt_prt_remove_question = \"{$lang->dnt_prt_remove_rate_question}\";
@@ -1765,6 +1780,7 @@ function dnt_post_rate_xmlhttp()
 		if($angrys > 0)
 			eval("\$post['dnt_angrys'] = \"".$templates->get("dnt_prt_angrys")."\";");
 
+		$is_popular = "none";
 		if($mybb->settings['dnt_post_rate_highlight'] > 0)
 		{
 			$dnt_to_highlight = (int)$total;
@@ -1774,6 +1790,10 @@ function dnt_post_rate_xmlhttp()
 				$dnt_prt_hl_class = " dnt_post_hl";
 				$dnt_prt_hl_post = " dnt_popular_post";		
 			}
+			if($dnt_to_compare == $dnt_to_highlight)
+				$is_popular = 1;
+			else if ($dnt_to_compare == $dnt_to_highlight-1)
+				$is_popular = 0;			
 		}
 		$dnt_prt_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$tid}&amp;pid={$pid}";
 		$lang->dnt_prt_view_all = $lang->sprintf($lang->dnt_prt_view_all, $dnt_prt_url);
@@ -1795,10 +1815,6 @@ function dnt_post_rate_xmlhttp()
 			eval("\$dnt_prt_results .= \"".$templates->get("dnt_prt_results_6")."\";");		
 	
 		$rate = $dnt_prt_results;
-		if(!empty($dnt_prt_hl_post))
-			$is_popular = 1;
-		else
-			$is_popular = 0;		
 		$dnt_prt_data = array(
 			'receive' => $dnt_prt_dataiu,
 			'post_rate_id' => (int)$lid,
@@ -1987,6 +2003,7 @@ function dnt_post_rate_xmlhttp()
 		if($angrys > 0)
 			eval("\$post['dnt_angrys'] = \"".$templates->get("dnt_prt_angrys")."\";");
 
+		$is_popular = "none";		
 		if($mybb->settings['dnt_post_rate_highlight'] > 0)
 		{
 			$dnt_to_highlight = (int)$total;
@@ -1996,6 +2013,10 @@ function dnt_post_rate_xmlhttp()
 				$dnt_prt_hl_class = " dnt_post_hl";
 				$dnt_prt_hl_post = " dnt_popular_post";		
 			}
+			if($dnt_to_compare == $dnt_to_highlight)
+				$is_popular = 1;
+			else if ($dnt_to_compare == $dnt_to_highlight-1)
+				$is_popular = 0;			
 		}
 		$dnt_prt_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$post['tid']}&amp;pid={$post['pid']}";
 		$lang->dnt_prt_view_all = $lang->sprintf($lang->dnt_prt_view_all, $dnt_prt_url);		
@@ -2021,10 +2042,6 @@ function dnt_post_rate_xmlhttp()
 		
 		eval("\$button = \"".$templates->get("dnt_prt_post_clasify_post_rates")."\";");
 	
-		if(!empty($dnt_prt_hl_post))
-			$is_popular = 1;
-		else
-			$is_popular = 0;
 		$dnt_prt_data = array(
 			'post_rate_tid' => (int)$tid,
 			'dnt_prt_user' => (int)$uid,
@@ -2157,7 +2174,7 @@ function dnt_post_rate_member()
 	
 	if($mybb->settings['dnt_post_rate_top5_given_memprofile'] == 1)
 	{
-		$queryg = $db->simple_select('dnt_post_rate','COUNT(*) AS bestid, dnt_prt_type',"dnt_prt_sender='{$memprofile['uid']}' GROUP BY dnt_prt_type HAVING bestid > 0 ORDER BY bestid DESC LIMIT 5");		
+		$queryg = $db->simple_select('dnt_post_rate','COUNT(*) AS bestid, dnt_prt_type',"dnt_prt_sender='{$memprofile['uid']}' GROUP BY dnt_prt_type HAVING bestid > 0 ORDER BY dnt_prt_type ASC LIMIT 6");		
 		while($pclg = $db->fetch_array($queryg))
 		{
 			$pcl['bestid'] = (int)$pclg['bestid'];
@@ -2178,7 +2195,7 @@ function dnt_post_rate_member()
 
 	if($mybb->settings['dnt_post_rate_top5_received_memprofile'] == 1)
 	{
-		$queryr = $db->simple_select('dnt_post_rate','COUNT(*) AS bestid, dnt_prt_type',"dnt_prt_user='{$memprofile['uid']}' GROUP BY dnt_prt_type HAVING bestid > 0 ORDER BY bestid DESC LIMIT 5");	
+		$queryr = $db->simple_select('dnt_post_rate','COUNT(*) AS bestid, dnt_prt_type',"dnt_prt_user='{$memprofile['uid']}' GROUP BY dnt_prt_type HAVING bestid > 0 ORDER BY dnt_prt_type ASC LIMIT 6");	
 		while($pclr = $db->fetch_array($queryr))
 		{
 			$pcl['bestid'] = (int)$pclr['bestid'];			
