@@ -514,7 +514,9 @@ function dnt_prt_templates_make()
 			<strong>{\$lang->dnt_prt_rates}</strong>
 		</div>
 	</div>
-	{\$dnt_prt_list}
+	<div class=\"trow1\">
+		{\$dnt_prt_list}
+	</div>
 </table>",
 		'sid' => '-2',
 		'version' => '1800',
