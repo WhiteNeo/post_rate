@@ -237,6 +237,7 @@ if($mybb->input['action'] == "get_thread_rates")
 
 	if(!$dnt_prt_list)
 	{
+		$lang->dnt_prt_not_received = $lang->dnt_prt_thread_dont_received;
 		eval("\$dnt_prt_list = \"".$templates->get("dnt_prt_list_none")."\";");
 	}
 
@@ -410,6 +411,7 @@ else if($mybb->input['action'] == "get_received_rates")
 
 	if(!$dnt_prt_list)
 	{
+		$lang->dnt_prt_not_received = $lang->dnt_prt_dont_received;
 		eval("\$dnt_prt_list = \"".$templates->get("dnt_prt_list_none")."\";");
 	}
 
@@ -583,6 +585,7 @@ else if($mybb->input['action'] == "get_given_rates")
 
 	if(!$dnt_prt_list)
 	{
+		$lang->dnt_prt_not_received = $lang->dnt_prt_dont_given;		
 		eval("\$dnt_prt_list = \"".$templates->get("dnt_prt_list_none")."\";");
 	}
 
