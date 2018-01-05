@@ -1293,10 +1293,13 @@ function removeAlertRpt($tid, $pid)
 	{
 		return false;
 	}
-	$tid = (int)$mybb->input['tid'];
-	$pid = (int)$mybb->input['pid'];
-	$uid = (int)$mybb->user['uid'];
-	$db->delete_query("alerts","from_user_id='{$uid}' AND object_id='{$pid}' AND unread=1 LIMIT 1");
+	if(function_exists('myalerts_is_activated') && myalerts_is_activated() && dnt_post_rate_myalerts_status())
+	{
+		$tid = (int)$mybb->input['tid'];
+		$pid = (int)$mybb->input['pid'];
+		$uid = (int)$mybb->user['uid'];
+		$db->delete_query("alerts","from_user_id='{$uid}' AND object_id='{$pid}' AND unread=1 LIMIT 1");
+	}
 }
 
 function dnt_post_rate_post_rates(&$post)
