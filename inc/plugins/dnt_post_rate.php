@@ -226,7 +226,7 @@ function dnt_post_rate_activate()
 		'title' => 'Highlight posts with this ammount of emojis',
 		'description' => 'Set the ammount of rates given to highlight posts with emojis contents with this ammount or more',
 		'optionscode' => 'numeric',
-		'value' => 10,
+		'value' => 50,
 		'disporder' => 4,
 		'gid' => $group['gid']
 	);
@@ -236,7 +236,7 @@ function dnt_post_rate_activate()
 		'title' => 'Limit to search data',
 		'description' => 'Set limit in days to search into database, by default 30 days (Leave empty or set to 0 for no limits)',
 		'optionscode' => 'numeric',
-		'value' => 30,
+		'value' => 0,
 		'disporder' => 5,
 		'gid' => $group['gid']
 	);
@@ -246,7 +246,7 @@ function dnt_post_rate_activate()
 		'title' => 'Limit to search userlist',
 		'description' => 'Set limit of max number of users to show into modal hover and default counter, by default 10 (Leave empty or set to 0 to load emotion type and saves 1 query, besides loads usernames and date and use 1 query).',
 		'optionscode' => 'numeric',
-		'value' => 10,
+		'value' => 15,
 		'disporder' => 6,
 		'gid' => $group['gid']
 	);
@@ -256,7 +256,7 @@ function dnt_post_rate_activate()
 		'title' => 'Items to load per page into emotions page',
 		'description' => 'Set limit of max number of items to whos on every new page called by this mod to list emotions by users, by default 20',
 		'optionscode' => 'numeric',
-		'value' => 10,
+		'value' => 20,
 		'disporder' => 7,
 		'gid' => $group['gid']
 	);
@@ -883,7 +883,11 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_uname',
-		'template' => "<div class=\"dnt_prt_ulist\"><strong>{\$dnt_prt_name}</strong><br />{\$dnt_prt_uname}{\$dnt_prt_total}</div>",
+		'template' => "<div class=\"dnt_prt_ulist\">
+	<strong>{\$dnt_prt_name}</strong><br />
+	{\$dnt_prt_uname}
+	{\$dnt_prt_total}
+</div>",
 		'sid' => '-2',
 		'version' => '1800',
 		'dateline' => TIME_NOW
@@ -1538,8 +1542,12 @@ function dnt_post_rate_xmlhttp()
 			$dnt_prt_date = "";
 		$template = "";
 		if($limit_users > 0)
-		{	
-			$dnt_prt_query = $db->query("SELECT COUNT(dp.dnt_prt_id) AS totitems, dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
+		{
+			$numtot_query = $db->query("SELECT COUNT(*) as totitems FROM ".TABLE_PREFIX."dnt_post_rate
+			WHERE {$sta} AND dnt_prt_type='{$lid}'{$dnt_prt_date}
+			ORDER BY dnt_prt_date DESC LIMIT {$limit_users}");
+			$dnt_prt_total = $db->fetch_field($numtot_query, 'totitems');			
+			$dnt_prt_query = $db->query("SELECT dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
 			LEFT JOIN ".TABLE_PREFIX."users u
 			ON (dp.dnt_prt_sender=u.uid)
 			WHERE dnt_prt_tid='{$tid}' AND dnt_prt_pid='{$pid}' AND dnt_prt_type='{$lid}'{$dnt_prt_date}
@@ -1555,7 +1563,7 @@ function dnt_post_rate_xmlhttp()
 			if($lid == 5)
 				$dnt_prt_name = $lang->dnt_prt_cry;
 			if($lid == 6)
-				$dnt_prt_name = $lang->dnt_prt_angry;			
+				$dnt_prt_name = $lang->dnt_prt_angry;
 			while($dnt_prt_rows = $db->fetch_array($dnt_prt_query))
 			{
 				$dnt_prt_total = (int)$dnt_prt_rows['totitems'];
@@ -1571,7 +1579,7 @@ function dnt_post_rate_xmlhttp()
 				$dnt_prt_total = $lang->sprintf($lang->dnt_prt_total_items, $dnt_prt_total);
 			}
 			else			
-				$dnt_prt_total = "";			
+				$dnt_prt_total = "";
 			eval("\$template = \"".$templates->get("dnt_prt_uname")."\";");		
 			echo json_encode($template);
 			exit;		
@@ -1617,7 +1625,11 @@ function dnt_post_rate_xmlhttp()
 				$sta = "dnt_prt_tid='{$tid}'";
 			else
 				$sta = "dnt_prt_tid='{$tid}' AND dnt_prt_pid={$pid}";
-			$dnt_prt_query = $db->query("SELECT COUNT(dp.dnt_prt_id) as totitems, dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
+			$numtot_query = $db->query("SELECT COUNT(*) as totitems FROM ".TABLE_PREFIX."dnt_post_rate
+			WHERE {$sta} AND dnt_prt_type='{$lid}'{$dnt_prt_date}
+			ORDER BY dnt_prt_date DESC LIMIT {$limit_users}");
+			$dnt_prt_total = $db->fetch_field($numtot_query, 'totitems');				
+			$dnt_prt_query = $db->query("SELECT dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
 			LEFT JOIN ".TABLE_PREFIX."users u
 			ON (dp.dnt_prt_sender=u.uid)
 			WHERE {$sta} AND dnt_prt_type='{$lid}'{$dnt_prt_date}
@@ -1635,8 +1647,7 @@ function dnt_post_rate_xmlhttp()
 			if($lid == 6)
 				$dnt_prt_name = $lang->dnt_prt_angry;			
 			while($dnt_prt_rows = $db->fetch_array($dnt_prt_query))
-			{
-				$dnt_prt_total = (int)$dnt_prt_rows['totitems'];				
+			{			
 				$dnt_prt_date = my_date($mybb->settings['dateformat'], $dnt_prt_rows['dnt_prt_date']);
 				$uname = htmlspecialchars_uni($dnt_prt_rows['username']);
 				if(empty($uname))
