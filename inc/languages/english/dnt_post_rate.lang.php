@@ -43,3 +43,4 @@ $l['dnt_prt_cant_unrate'] = "You can not unrate own posts...";
 $l['dnt_prt_thread_dont_received'] = "There are no emojis yet in this post";
 $l['dnt_prt_dont_received'] = "There are no emojis received for this user";
 $l['dnt_prt_dont_given'] = "There are no emojis given for this user";
+$l['dnt_prt_antiflood'] = "You must wait {1} seconds to perform this action";
