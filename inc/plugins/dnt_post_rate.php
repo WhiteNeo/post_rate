@@ -393,9 +393,10 @@ function dnt_post_rate_activate()
 .dnt_prt_div_rate img{width:19px;height:19px;position:absolute}
 .dnt_prt_div_rate span{margin-left:20px;font-weight:bold}
 .dnt_prt_list_avatar{padding: 3px;border: 1px solid #D8DFEA;width: 30px;height: 30px;border-radius: 50%;margin-top: -10px;position: absolute}
-.clasify_post_norates_msg{background-color:rgba(185,65,25,0.3);margin:5px;color:#6f2f16;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
-.clasify_post_rates_msg{background-color:rgba(102,189,218,0.3);margin:5px;color:#315284;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
+.clasify_post_norates_msg{background-color:rgba(185,65,25,0.3);margin:5px;color:#6f2f16;font-weight:bold;font-size:11px;padding:10px;border-radius:3px;display: block;width: 95%}
+.clasify_post_rates_msg{background-color:rgba(102,189,218,0.3);margin:5px;color:#315284;font-weight:bold;font-size:11px;padding:10px;border-radius:3px;display: block;width: 95%}
 .clasify_post_rates_msg_span{font-size:8px;font-weight:bold;position:absolute;background:#ce5757;padding:1px 3px;color:#f0f0f0;border-radius:4px;border-radius:3px;margin-top:-5px}
+.clasify_post_rates_msg img{cursor:pointer}
 // Fix for Mozilla Firefox //
 @media screen and (-moz-min-device-pixel-ratio:0) {
 	.dnt_prt_div_rate img{margin-top: -12px}
