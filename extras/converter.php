@@ -28,13 +28,13 @@ $thx = array();
 			$req = $db->simple_select('posts','tid',"pid={$pid}");
 			$result = $db->fetch_array($req);			
 			$thx[] = array(
-				'pcl_type'		=> 1,
-				'pcl_tid'		=> (int) $result['tid'],
-				'pcl_pid'	 	=> (int) $thanks['pid'],
-				'pcl_sender'	=> (int) $thanks['adduid'],
-				'pcl_user'		=> (int) $thanks['uid'],
-				'pcl_date'		=> (int) $thanks['time'],
-				'pcl_count'		=> 1
+				'dnt_prt_type'		=> 1,
+				'dnt_prt_tid'		=> (int) $result['tid'],
+				'dnt_prt_pid'	 	=> (int) $thanks['pid'],
+				'dnt_prt_sender'	=> (int) $thanks['adduid'],
+				'dnt_prt_user'		=> (int) $thanks['uid'],
+				'dnt_prt_date'		=> (int) $thanks['time'],
+				'dnt_prt_count'		=> 1
 			);
 			$batch++;
 			$total++;
@@ -58,13 +58,13 @@ $thx = array();
 			$req = $db->simple_select('posts','tid',"pid={$pid}");
 			$result = $db->fetch_array($req);			
 			$thx[] = array(
-				'pcl_type'		=> 1,			
-				'pcl_tid'		=> (int) $result['tid'],
-				'pcl_pid'	 	=> (int) $thanks['pid'],
-				'pcl_sender'	=> (int) $thanks['uid'],
-				'pcl_user'		=> (int) $thanks['puid'],
-				'pcl_date'		=> (int) $thanks['dateline'],
-				'pcl_count'		=> 1				
+				'dnt_prt_type'		=> 1,			
+				'dnt_prt_tid'		=> (int) $result['tid'],
+				'dnt_prt_pid'	 	=> (int) $thanks['pid'],
+				'dnt_prt_sender'	=> (int) $thanks['uid'],
+				'dnt_prt_user'		=> (int) $thanks['puid'],
+				'dnt_prt_date'		=> (int) $thanks['dateline'],
+				'dnt_prt_count'		=> 1				
 			);
 			$batch++;
 			$total++;
@@ -88,13 +88,13 @@ $thx = array();
 			$req = $db->simple_select('posts','tid,dateline,uid',"pid={$pid}");
 			$result = $db->fetch_array($req);
 			$thx[] = array(
-				'pcl_type'		=> 1,			
-				'pcl_tid'		=> (int) $result['tid'],
-				'pcl_pid'	 	=> (int) $thanks['post_id'],
-				'pcl_user'		=> (int) $result['uid'],				
-				'pcl_sender'	=> (int) $thanks['user_uid'],
-				'pcl_date'		=> (int) $result['dateline'],
-				'pcl_count'		=> 1				
+				'dnt_prt_type'		=> 1,			
+				'dnt_prt_tid'		=> (int) $result['tid'],
+				'dnt_prt_pid'	 	=> (int) $thanks['post_id'],
+				'dnt_prt_user'		=> (int) $result['uid'],				
+				'dnt_prt_sender'	=> (int) $thanks['user_uid'],
+				'dnt_prt_date'		=> (int) $result['dateline'],
+				'dnt_prt_count'		=> 1				
 			);
 			$batch++;
 			$total++;
