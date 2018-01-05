@@ -330,14 +330,34 @@ function dnt_post_rate_activate()
 		'disporder' => 14,
 		'gid' => $group['gid']
 	);
+
+	$new_config[] = array(
+		'name' => 'dnt_post_rate_remove',
+		'title' => 'Users can remove emojis given?',
+		'description' => 'Enable if you like users can remove own emojis given or not',
+		'optionscode' => 'yesno',
+		'value' => 1,
+		'disporder' => 15,
+		'gid' => $group['gid']
+	);	
 	
+	$new_config[] = array(
+		'name' => 'dnt_post_rate_antiflood',
+		'title' => 'Enable antiflood',
+		'description' => 'Applies to only non moderatos a protection with 30 seconds between emojis given, prevent spam.',
+		'optionscode' => 'yesno',
+		'value' => 1,
+		'disporder' => 16,
+		'gid' => $group['gid']
+	);	
+
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_minify',
 		'title' => 'Minify javascript',
 		'description' => 'Use this to renderize your website besides using external libraries or codes that would broke js. Set to No if you wish to use normal js code',
 		'optionscode' => 'yesno',
-		'value' => 0,
-		'disporder' => 15,
+		'value' => 1,
+		'disporder' => 17,
 		'gid' => $group['gid']
 	);	
 	
@@ -630,7 +650,7 @@ function dnt_prt_templates_make()
 	
 	$templatearray = array(
 		'title' => 'dnt_prt_results_1',
-		'template' => "<div onclick=\"javascript:DNTRemoveRate(1,{\$tid},{\$pid})\" id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
+		'template' => "<div {\$post[\'dnt_prt_remove\']}id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
 	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.png\" alt=\"{\$lang->dnt_prt_like}\" title=\"{\$lang->dnt_prt_like}\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_like}</span>
 </div>",
@@ -642,7 +662,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_results_2',
-		'template' => "<div onclick=\"javascript:DNTRemoveRate(2,{\$tid},{\$pid})\" id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
+		'template' => "<div {\$post[\'dnt_prt_remove\']}id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
 	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.png\" alt=\"{\$lang->dnt_prt_love}\" title=\"{\$lang->dnt_prt_love}\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_love}</span>
 </div>",
@@ -654,7 +674,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_results_3',
-		'template' => "<div onclick=\"javascript:DNTRemoveRate(3,{\$tid},{\$pid})\" id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
+		'template' => "<div {\$post[\'dnt_prt_remove\']}id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
 	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.png\" alt=\"{\$lang->dnt_prt_wow}\" title=\"{\$lang->dnt_prt_wow}\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_wow}</span>
 </div>",
@@ -666,7 +686,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_results_4',
-		'template' => "<div onclick=\"javascript:DNTRemoveRate(4,{\$tid},{\$pid})\" id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
+		'template' => "<div {\$post[\'dnt_prt_remove\']}id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
 	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.png\" alt=\"{\$lang->dnt_prt_smile}\" title=\"{\$lang->dnt_prt_smile}\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_smile}</span>
 </div>",
@@ -678,7 +698,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_results_5',
-		'template' => "<div onclick=\"javascript:DNTRemoveRate(5,{\$tid},{\$pid})\" id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
+		'template' => "<div {\$post[\'dnt_prt_remove\']}id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
 	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.png\" alt=\"{\$lang->dnt_prt_cry}\" title=\"{\$lang->dnt_prt_cry}\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_cry}</span>
 </div>",
@@ -690,7 +710,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_results_6',
-		'template' => "<div onclick=\"javascript:DNTRemoveRate(6,{\$tid},{\$pid})\" id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
+		'template' => "<div {\$post[\'dnt_prt_remove\']}id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
 	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.png\" alt=\"{\$lang->dnt_prt_angry}\" title=\"{\$lang->dnt_prt_angry}\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_angry}</span>
 </div>",
@@ -1371,7 +1391,8 @@ function dnt_post_rate_post_rates(&$post)
 	$smiles = (int)$post['dnt_prt_rates_posts']['smiles'];
 	$crys = (int)$post['dnt_prt_rates_posts']['crys'];
 	$angrys = (int)$post['dnt_prt_rates_posts']['angrys'];
-	$total = (int)$post['dnt_prt_rates_posts']['total'];	
+	$total = (int)$post['dnt_prt_rates_posts']['total'];
+	
 	if($post['uid'] == $mybb->user['uid'])
 	{
 		$post['dnt_prt_see_me'] = false;
@@ -1386,6 +1407,10 @@ function dnt_post_rate_post_rates(&$post)
 				$post['dnt_prt_see_me'] = false;
 				while($dnt_prt_result = $db->fetch_array($query))
 				{
+					if($mybb->settings['dnt_post_rate_remove'] == 1)
+						$post['dnt_prt_remove'] = "onclick=\"javascript:DNTRemoveRate({$dnt_prt_result['dnt_prt_type']},{$tid},{$pid})\"";
+					else
+						$post['dnt_prt_remove'] =  "";					
 					if($dnt_prt_result['dnt_prt_type'] == 1)
 						eval("\$dnt_prt_results = \"".$templates->get("dnt_prt_results_1")."\";");
 					if($dnt_prt_result['dnt_prt_type'] == 2)
@@ -1637,17 +1662,20 @@ function dnt_post_rate_xmlhttp()
 		}
 		else
 		{
-			$query = $db->simple_select('dnt_post_rate','*',"dnt_prt_sender={$uid}{$dnt_prt_date} ORDER BY dnt_prt_date DESC", array("limit"=>1));			
-			$datar = $db->fetch_array($query);			
-			$datac = $datar['dnt_prt_date'] + 30;
-			$datan = time();
-			$timer_txt = $datac - $datan;
-			$lang->dnt_prt_antiflood = $lang->sprintf($lang->dnt_prt_antiflood,$timer_txt);
-			if($datan < $datac)
+			if($mybb->settings['dnt_post_rate_antiflood'] == 1)
 			{
-				xmlhttp_error($lang->dnt_prt_antiflood);
-				return false;
-				exit;				
+				$query = $db->simple_select('dnt_post_rate','*',"dnt_prt_sender={$uid}{$dnt_prt_date} ORDER BY dnt_prt_date DESC", array("limit"=>1));			
+				$datar = $db->fetch_array($query);			
+				$datac = $datar['dnt_prt_date'] + 30;
+				$datan = time();
+				$timer_txt = $datac - $datan;
+				$lang->dnt_prt_antiflood = $lang->sprintf($lang->dnt_prt_antiflood,$timer_txt);
+				if($datan < $datac)
+				{
+					xmlhttp_error($lang->dnt_prt_antiflood);
+					return false;
+					exit;				
+				}				
 			}
 			$dnt_prt_dataiu = "insert";
 			$dnt_prt_count = 1;
@@ -1825,6 +1853,10 @@ function dnt_post_rate_xmlhttp()
 		$post['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total, $clasify_post_rates_total);		
 		eval("\$template = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
 
+		if($mybb->settings['dnt_post_rate_remove'] == 1)
+			$post['dnt_prt_remove'] = "onclick=\"javascript:DNTRemoveRate({$lid},{$tid},{$pid})\"";
+			else
+		$post['dnt_prt_remove'] =  "";			
 		if($lid == 1)
 			eval("\$dnt_prt_results .= \"".$templates->get("dnt_prt_results_1")."\";");
 		if($lid == 2)
@@ -1869,6 +1901,12 @@ function dnt_post_rate_xmlhttp()
 			$dnt_prt_date = " AND dnt_prt_date>='{$dnt_prt_date_limit}'";
 		else
 			$dnt_prt_date = "";
+		if($mybb->settings['dnt_post_rate_remove'] == 0)
+		{
+			xmlhttp_error($lang->dnt_prt_cant_unrate);
+			return false;
+			exit;
+		}		
 		$query = $db->simple_select("dnt_post_rate","*","dnt_prt_tid='{$tid}' AND dnt_prt_pid='{$pid}' AND dnt_prt_sender='{$uid}'{$dnt_prt_date}", array("limit"=>1));
 		if($db->num_rows($query) == 0)
 		{
@@ -1884,16 +1922,19 @@ function dnt_post_rate_xmlhttp()
 			return false;
 			exit;
 		}		
-		$datac = $datar['dnt_prt_date'] + 30;
-		$datan = time();
-		$timer_txt = $datac - $datan;
-		$lang->dnt_prt_antiflood = $lang->sprintf($lang->dnt_prt_antiflood,$timer_txt);
-		if($datan < $datac)
+		if($mybb->settings['dnt_post_rate_antiflood'] == 1)
 		{
-			xmlhttp_error($lang->dnt_prt_antiflood);
-			return false;
-			exit;				
-		}
+			$datac = $datar['dnt_prt_date'] + 30;
+			$datan = time();
+			$timer_txt = $datac - $datan;
+			$lang->dnt_prt_antiflood = $lang->sprintf($lang->dnt_prt_antiflood,$timer_txt);
+			if($datan < $datac)
+			{
+				xmlhttp_error($lang->dnt_prt_antiflood);
+				return false;
+				exit;				
+			}				
+		}		
 		$db->delete_query("dnt_post_rate","dnt_prt_tid='{$tid}' AND dnt_prt_pid='{$pid}' AND dnt_prt_sender='{$uid}'{$dnt_prt_date}");
 		$thread = get_thread($tid);
 		if($thread['dnt_prt_total'] > 0)
@@ -2061,7 +2102,11 @@ function dnt_post_rate_xmlhttp()
 			eval("\$template = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
 		else
 			eval("\$template = \"".$templates->get("dnt_prt_clasify_post_no_rates_msg")."\";");
-		
+	
+		if($mybb->settings['dnt_post_rate_remove'] == 1)
+			$post['dnt_prt_remove'] = "onclick=\"javascript:DNTRemoveRate({$lid},{$tid},{$pid})\"";
+			else
+		$post['dnt_prt_remove'] =  "";	
 		if($lid == 1)
 			eval("\$dnt_prt_results .= \"".$templates->get("dnt_prt_results_1")."\";");
 		if($lid == 2)
