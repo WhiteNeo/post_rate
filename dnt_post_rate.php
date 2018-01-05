@@ -132,7 +132,7 @@ if($mybb->input['action'] == "get_thread_rates")
 	if($perpage == 0)
 		$perpage = 20;
 	$items_founded = (int)$numtot;
-	if($mybb->input['lid'] == "all")
+	if(if($mybb->settings['dnt_post_rate_showthread_all'] == 1))
 		$lang->dnt_prt_rates = $lang->sprintf($lang->dnt_prt_rates_thread, $items_founded);
 	else
 		$lang->dnt_prt_rates = $lang->sprintf($lang->dnt_prt_rates_post, $items_founded);		
@@ -210,7 +210,10 @@ if($mybb->input['action'] == "get_thread_rates")
 		{
 			$dnt_prt_rows['subject'] = my_substr($dnt_prt_rows['subject'], 0, 25)."...";
 		}*/
-		$dnt_prt_rows['url'] = $mybb->settings['bburl'] ."/". get_post_link($dnt_prt_rows['pid'], $dnt_prt_rows['tid']) . "#pid" . $dnt_prt_rows['pid'];
+		if($mybb->settings['dnt_post_rate_showthread_all'] == 1)
+			$dnt_prt_rows['url'] = $mybb->settings['bburl'] ."/". get_thread_link($dnt_prt_rows['tid']);			
+		else	
+			$dnt_prt_rows['url'] = $mybb->settings['bburl'] ."/". get_post_link($dnt_prt_rows['pid'], $dnt_prt_rows['tid']) . "#pid" . $dnt_prt_rows['pid'];
 		if($dnt_prt_rows['dnt_prt_user'] > 0)
 		{
 			if($dnt_prt_rows['dnt_prt_user'] == $mybb->user['uid'])
