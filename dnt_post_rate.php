@@ -132,7 +132,7 @@ if($mybb->input['action'] == "get_thread_rates")
 	if($perpage == 0)
 		$perpage = 20;
 	$items_founded = (int)$numtot;
-	if(if($mybb->settings['dnt_post_rate_showthread_all'] == 1))
+	if($mybb->settings['dnt_post_rate_showthread_all'] == 1)
 		$lang->dnt_prt_rates = $lang->sprintf($lang->dnt_prt_rates_thread, $items_founded);
 	else
 		$lang->dnt_prt_rates = $lang->sprintf($lang->dnt_prt_rates_post, $items_founded);		
