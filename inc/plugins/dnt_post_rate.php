@@ -436,6 +436,8 @@ function dnt_post_rate_activate()
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$profilefields}').'#', '{$profilefields}{$memprofile[\'dnt_prt\']}{$memprofile[\'top5_given\']}{$memprofile[\'top5_received\']}');
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'user_details\']}').'#', '{$post[\'user_details\']}{$post[\'rates_given\']}{$post[\'rates_received\']}', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'user_details\']}').'#', '{$post[\'user_details\']}{$post[\'rates_given\']}{$post[\'rates_received\']}', 0);
+	find_replace_templatesets("postbit", '#'.preg_quote('post_content').'#', 'post_content{$post[\'dnt_prt_hl_post\']}', 0);
+	find_replace_templatesets("postbit_classic", '#'.preg_quote('post_content').'#', 'post_content{$post[\'dnt_prt_hl_post\']}', 0);
 	
 	rebuild_settings();
 }
@@ -471,12 +473,15 @@ function dnt_post_rate_deactivate()
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'dnt_prt_rates_given\']}').'#', '', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'dnt_prt_rates_received\']}').'#', '', 0);
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'rates_given\']}').'#', '', 0);
-	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'rates_received\']}').'#', '', 0);	
+	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'rates_received\']}').'#', '', 0);		
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'rates_given\']}').'#', '', 0);
-	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'rates_received\']}').'#', '', 0);		
+	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'rates_received\']}').'#', '', 0);
+	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'dnt_prt_hl_post\']}').'#', '', 0);	
+	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'dnt_prt_hl_post\']}').'#', '', 0);	
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$memprofile[\'dnt_prt\']}').'#', '', 0);
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$memprofile[\'top5_given\']}').'#', '', 0);
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$memprofile[\'top5_received\']}').'#', '', 0);
+	
 	rebuild_settings();
 }
 
@@ -1310,8 +1315,7 @@ function dnt_post_rate_post_rates(&$post)
 		return false;
 	}
 	$lang->load('dnt_post_rate',false,true);
-	$dnt_prt_firstpost = (int)$mybb->settings['dnt_post_rate_only_firspost'];		
-
+	$dnt_prt_firstpost = (int)$mybb->settings['dnt_post_rate_only_firspost'];
 	$tid = (int)$post['tid'];
 	$fid = (int)$post['fid'];
 	$pid = (int)$post['pid'];
@@ -1470,7 +1474,7 @@ function dnt_post_rate_post_rates(&$post)
 			if($dnt_to_highlight >= $dnt_to_compare)
 			{
 				$dnt_prt_hl_class = " dnt_post_hl";
-				$dnt_prt_hl_post = " dnt_popular_post";		
+				$post['dnt_prt_hl_post'] = " dnt_popular_post";		
 			}
 		}
 		$dnt_prt_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$post['tid']}&amp;pid={$post['pid']}";
@@ -1478,7 +1482,7 @@ function dnt_post_rate_post_rates(&$post)
 		$clasify_post_rates_msg = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_wow'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_angrys'];
 		$post['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total, $total);
 		eval("\$post['clasify_post_rates_msg'] = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
-		$post['message'] = "<div class=\"dnt_prt_post{$post['pid']}{$dnt_prt_hl_post}\">".$post['message'].$post['clasify_post_rates_msg']."</div>";
+		$post['message'] .= '<div id="clasify_post_rates_msgs_list'.$pid.'">'.$post['clasify_post_rates_msg']."</div>";
 	}
 	else
 	{
