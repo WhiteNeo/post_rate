@@ -44,3 +44,4 @@ $l['dnt_prt_thread_dont_received'] = "No hay emociones en este mensaje aún";
 $l['dnt_prt_dont_received'] = "No hay emociones recibidas para este usuario";
 $l['dnt_prt_dont_given'] = "No hay emociones dadas por este usuario";
 $l['dnt_prt_antiflood'] = "Debes esperar {1} segundos para realizar esta acción";
+$l['dnt_prt_total_items'] = "y {1} más...";
