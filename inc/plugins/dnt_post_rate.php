@@ -2215,7 +2215,7 @@ function dnt_post_rate_member()
 					$tid = (int)$post['tid'];
 					$pid = (int)$post['pid'];
 					$subject = htmlspecialchars_uni($post['subject']);
-					$subject_link = get_post_link($pid,$tid."#pid".$pid);
+					$subject_link = get_post_link($pid,$tid)."#pid".$pid;
 					$subject = "<a href=\"{$subject_link}\">{$subject}</a>";
 					$memprofile['dnt_prt_rates'] = unserialize($post['dnt_prt_rates_posts']);
 					$total = (int)$memprofile['dnt_prt_rates']['total'];
