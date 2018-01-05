@@ -1304,7 +1304,6 @@ function dnt_post_rate_post_rates(&$post)
 	$dnt_prt_fids = $mybb->settings['dnt_post_rate_forums'];
 	if($dnt_prt_fids != "-1" && !empty($dnt_prt_fids))
 	{
-		echo $dnt_prt_fids;
 		$dnt_prt_fids = explode(",",$mybb->settings['dnt_post_rate_forums']);
 		if(!in_array($fid, $dnt_prt_fids))
 			return false;		
@@ -1629,7 +1628,7 @@ function dnt_post_rate_xmlhttp()
 			return false;
 			exit;
 		}		
-		$dnt_prt_query = $db->simple_select('dnt_post_rate','*',"dnt_prt_sender={$uid} AND dnt_prt_tid='{$tid}' AND dnt_prt_pid='{$pid}'{$dnt_prt_date}", array("limit"=>1));		
+		$dnt_prt_query = $db->simple_select('dnt_post_rate','*',"dnt_prt_sender={$uid} AND dnt_prt_tid='{$tid}' AND dnt_prt_pid='{$pid}'{$dnt_prt_date}", array("limit"=>1));
 		if($db->num_rows($dnt_prt_query) > 0)
 		{
 			xmlhttp_error($lang->dnt_prt_rate_rated);
@@ -1638,6 +1637,18 @@ function dnt_post_rate_xmlhttp()
 		}
 		else
 		{
+			$query = $db->simple_select('dnt_post_rate','*',"dnt_prt_sender={$uid}{$dnt_prt_date} ORDER BY dnt_prt_date DESC", array("limit"=>1));			
+			$datar = $db->fetch_array($query);			
+			$datac = $datar['dnt_prt_date'] + 30;
+			$datan = time();
+			$timer_txt = $datac - $datan;
+			$lang->dnt_prt_antiflood = $lang->sprintf($lang->dnt_prt_antiflood,$timer_txt);
+			if($datan < $datac)
+			{
+				xmlhttp_error($lang->dnt_prt_antiflood);
+				return false;
+				exit;				
+			}
 			$dnt_prt_dataiu = "insert";
 			$dnt_prt_count = 1;
 		}
@@ -1865,13 +1876,24 @@ function dnt_post_rate_xmlhttp()
 			return false;
 			exit;
 		}
-		$resultid = $db->fetch_field($query, 'dnt_prt_user');
+		$datar = $db->fetch_array($query);
+		$resultid = $datar['dnt_prt_user'];
 		if($resultid == $uid)
 		{
 			xmlhttp_error($lang->dnt_prt_cant_unrate);
 			return false;
 			exit;
 		}		
+		$datac = $datar['dnt_prt_date'] + 30;
+		$datan = time();
+		$timer_txt = $datac - $datan;
+		$lang->dnt_prt_antiflood = $lang->sprintf($lang->dnt_prt_antiflood,$timer_txt);
+		if($datan < $datac)
+		{
+			xmlhttp_error($lang->dnt_prt_antiflood);
+			return false;
+			exit;				
+		}
 		$db->delete_query("dnt_post_rate","dnt_prt_tid='{$tid}' AND dnt_prt_pid='{$pid}' AND dnt_prt_sender='{$uid}'{$dnt_prt_date}");
 		$thread = get_thread($tid);
 		if($thread['dnt_prt_total'] > 0)
@@ -2141,7 +2163,7 @@ function dnt_post_rate_member()
 					$tid = (int)$post['tid'];
 					$pid = (int)$post['pid'];
 					$subject = htmlspecialchars_uni($post['subject']);
-					$subject_link = get_post_link($pid);
+					$subject_link = get_post_link($pid,$tid."#pid".$pid);
 					$subject = "<a href=\"{$subject_link}\">{$subject}</a>";
 					$memprofile['dnt_prt_rates'] = unserialize($post['dnt_prt_rates_posts']);
 					$total = (int)$memprofile['dnt_prt_rates']['total'];
@@ -2845,9 +2867,9 @@ function dnt_post_rate_update15_run()
 		return false;
 	$lang->load('dnt_post_rate',false,true);	
 	if(!$db->field_exists("dnt_prt_pid", "dnt_post_rate"))
-		$db->write_query("ALTER TABLE `".TABLE_PREFIX."dnt_post_rate ADD dnt_prt_pid` int(10) NOT NULL DEFAULT '0'");
+		$db->write_query("ALTER TABLE `".TABLE_PREFIX."dnt_post_rate` ADD `dnt_prt_pid` int(10) NOT NULL DEFAULT '0'");
 	if(!$db->field_exists("dnt_prt_rates_threads", "threads") && $db->field_exists("dnt_prt_rates", "threads"))
-		$db->query("RENAME TABLE ".TABLE_PREFIX."dnt_prt_rates TO ".TABLE_PREFIX."dnt_prt_rates_threads");
+		$db->query("RENAME TABLE `".TABLE_PREFIX."dnt_prt_rates` TO `".TABLE_PREFIX."dnt_prt_rates_threads`");
 	else if(!$db->field_exists("dnt_prt_rates_threads", "threads"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` ADD `dnt_prt_rates_threads` int(10) NOT NULL DEFAULT '0'");		
 	if(!$db->field_exists("dnt_prt_total", "threads"))
@@ -2879,32 +2901,32 @@ function dnt_post_rate_update16()
 	global $db, $mybb, $lang;
 	if(!$mybb->settings['dnt_post_rate_active'] || !empty($session->is_spider))
 		return false;
-	if($db->field_exists("pcl_id", "dnt_post_rate"))
+	if($db->field_exists("pcl_id", "dnt_post_rate") && !$db->field_exists("dnt_prt_id", "dnt_post_rate"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."dnt_post_rate` CHANGE `pcl_id` `dnt_prt_id` INT(10) NOT NULL AUTO_INCREMENT");	
-	if($db->field_exists("pcl_type", "dnt_post_rate"))
+	if($db->field_exists("pcl_type", "dnt_post_rate") && !$db->field_exists("dnt_prt_type", "dnt_post_rate"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."dnt_post_rate` CHANGE `pcl_type` `dnt_prt_type` INT(5) NOT NULL DEFAULT '0'");	
-	if($db->field_exists("pcl_user", "dnt_post_rate"))
+	if($db->field_exists("pcl_user", "dnt_post_rate") && !$db->field_exists("dnt_prt_user", "dnt_post_rate"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."dnt_post_rate` CHANGE `pcl_user` `dnt_prt_user` INT(10) NOT NULL DEFAULT '0'");	
-	if($db->field_exists("pcl_sender", "dnt_post_rate"))
+	if($db->field_exists("pcl_sender", "dnt_post_rate") && !$db->field_exists("dnt_prt_sender", "dnt_post_rate"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."dnt_post_rate` CHANGE `pcl_sender` `dnt_prt_sender` INT(10) NOT NULL DEFAULT '0'");	
-	if($db->field_exists("pcl_tid", "dnt_post_rate"))
+	if($db->field_exists("pcl_tid", "dnt_post_rate") && !$db->field_exists("dnt_prt_tid", "dnt_post_rate"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."dnt_post_rate` CHANGE `pcl_tid` `dnt_prt_tid` INT(10) NOT NULL DEFAULT '0'");	
-	if($db->field_exists("pcl_pid", "dnt_post_rate"))
+	if($db->field_exists("pcl_pid", "dnt_post_rate") && !$db->field_exists("dnt_prt_pid", "dnt_post_rate"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."dnt_post_rate` CHANGE `pcl_pid` `dnt_prt_pid` INT(10) NOT NULL DEFAULT '0'");	
-	if($db->field_exists("pcl_count", "dnt_post_rate"))
+	if($db->field_exists("pcl_count", "dnt_post_rate") && !$db->field_exists("dnt_prt_count", "dnt_post_rate"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."dnt_post_rate` CHANGE `pcl_count` `dnt_prt_count` INT(10) NOT NULL DEFAULT '0'");	
-	if($db->field_exists("pcl_date", "dnt_post_rate"))
+	if($db->field_exists("pcl_date", "dnt_post_rate") && !$db->field_exists("dnt_prt_date", "dnt_post_rate"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."dnt_post_rate` CHANGE `pcl_date` `dnt_prt_date` INT(10) NOT NULL DEFAULT '0'");	
 
-	if($db->field_exists("pcl_rates_posts", "posts"))
+	if($db->field_exists("pcl_rates_posts", "posts") && !$db->field_exists("dnt_prt_rates_posts", "posts"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."posts` CHANGE `pcl_rates_posts` `dnt_prt_rates_posts` text NOT NULL");
-	if($db->field_exists("pcl_rates_threads", "threads"))
+	if($db->field_exists("pcl_rates_threads", "threads") && !$db->field_exists("dnt_prt_rates_threads", "threads"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` CHANGE `pcl_rates_threads` `dnt_prt_rates_threads` text NOT NULL");
-	if($db->field_exists("pcl_total", "threads"))
+	if($db->field_exists("pcl_total", "threads") && !$db->field_exists("dnt_prt_total", "threads"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` CHANGE `pcl_total` `dnt_prt_total` int(10) NOT NULL DEFAULT '0'");
-	if($db->field_exists("pcl_rates_given", "users"))
+	if($db->field_exists("pcl_rates_given", "users") && !$db->field_exists("dnt_prt_rates_given", "users"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` CHANGE `pcl_rates_given` `dnt_prt_rates_given` int(10) NOT NULL DEFAULT '0'");
-	if($db->field_exists("pcl_rates_received", "users"))
+	if($db->field_exists("pcl_rates_received", "users") && !$db->field_exists("dnt_prt_rates_received", "users"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` CHANGE `pcl_rates_received` `dnt_prt_rates_received` int(10) NOT NULL DEFAULT '0'");
 	$db->update_query('settings',array('value' => 160),"name='dnt_post_rate_version'");
 	rebuild_settings();
@@ -2918,9 +2940,9 @@ function dnt_post_rate_update161()
 	if(!$mybb->settings['dnt_post_rate_active'] || !empty($session->is_spider))
 		return false;
 
-	if($db->field_exists("pcl_rates_given", "users"))
+	if($db->field_exists("pcl_rates_given", "users") && !$db->field_exists("dnt_prt_rates_given", "users"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` CHANGE `pcl_rates_given` `dnt_prt_rates_given` int(10) NOT NULL DEFAULT '0'");
-	if($db->field_exists("pcl_rates_received", "users"))
+	if($db->field_exists("pcl_rates_received", "users") && !$db->field_exists("dnt_prt_rates_received", "users"))
 		$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` CHANGE `pcl_rates_received` `dnt_prt_rates_received` int(10) NOT NULL DEFAULT '0'");
 	$db->update_query('settings',array('value' => 161),"name='dnt_post_rate_version'");
 	rebuild_settings();
