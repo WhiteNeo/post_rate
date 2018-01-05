@@ -393,10 +393,9 @@ function dnt_post_rate_activate()
 .dnt_prt_div_rate img{width:19px;height:19px;position:absolute}
 .dnt_prt_div_rate span{margin-left:20px;font-weight:bold}
 .dnt_prt_list_avatar{padding: 3px;border: 1px solid #D8DFEA;width: 30px;height: 30px;border-radius: 50%;margin-top: -10px;position: absolute}
-.clasify_post_norates_msg{background-color:rgba(185,65,25,0.3);margin:5px;color:#6f2f16;font-weight:bold;font-size:11px;padding:10px;border-radius:3px;display: block;width: 95%}
-.clasify_post_rates_msg{background-color:rgba(102,189,218,0.3);margin:5px;color:#315284;font-weight:bold;font-size:11px;padding:10px;border-radius:3px;display: block;width: 95%}
+.clasify_post_norates_msg{background-color:rgba(185,65,25,0.3);margin:5px;color:#6f2f16;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
+.clasify_post_rates_msg{background-color:rgba(102,189,218,0.3);margin:5px;color:#315284;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
 .clasify_post_rates_msg_span{font-size:8px;font-weight:bold;position:absolute;background:#ce5757;padding:1px 3px;color:#f0f0f0;border-radius:4px;border-radius:3px;margin-top:-5px}
-.clasify_post_rates_msg img{cursor:pointer}
 // Fix for Mozilla Firefox //
 @media screen and (-moz-min-device-pixel-ratio:0) {
 	.dnt_prt_div_rate img{margin-top: -12px}
@@ -897,7 +896,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_thread_rates1',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.png\" alt=\"{\$lang->dnt_prt_like}\" title=\"{\$lang->dnt_prt_like}\" onmouseover=\"javascript:DNTPostRatesMember(1, {\$tid})\" onmouseout=\"javascript:DNTPostRatesMemberRemove(1, {\$tid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=1&amp;tid={\$tid}\'\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.png\" alt=\"{\$lang->dnt_prt_like}\" title=\"{\$lang->dnt_prt_like}\" />
 	<span id=\"prt_list1_pid{\$tid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -907,7 +906,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_thread_rates2',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.png\" alt=\"{\$lang->dnt_prt_love}\" title=\"{\$lang->dnt_prt_love}\" onmouseover=\"javascript:DNTPostRatesMember(2, {\$tid})\" onmouseout=\"javascript:DNTPostRatesMemberRemove(2, {\$tid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=2&amp;tid={\$tid}\'\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.png\" alt=\"{\$lang->dnt_prt_love}\" title=\"{\$lang->dnt_prt_love}\" />
 	<span id=\"prt_list2_pid{\$tid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -917,7 +916,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_thread_rates3',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.png\" alt=\"{\$lang->dnt_prt_wow}\" title=\"{\$lang->dnt_prt_wow}\" onmouseover=\"javascript:DNTPostRatesMember(3, {\$tid})\" onmouseout=\"javascript:DNTPostRatesMemberRemove(3, {\$tid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=3&amp;tid={\$tid}\'\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.png\" alt=\"{\$lang->dnt_prt_wow}\" title=\"{\$lang->dnt_prt_wow}\" />
 	<span id=\"prt_list3_pid{\$tid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -927,7 +926,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_thread_rates4',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.png\" alt=\"{\$lang->dnt_prt_smile}\" title=\"{\$lang->dnt_prt_smile}\" onmouseover=\"javascript:DNTPostRatesMember(4, {\$tid})\" onmouseout=\"javascript:DNTPostRatesMemberRemove(4, {\$tid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=4&amp;tid={\$tid}\'\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.png\" alt=\"{\$lang->dnt_prt_smile}\" title=\"{\$lang->dnt_prt_smile}\" />
 	<span id=\"prt_list4_pid{\$tid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -937,7 +936,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_thread_rates5',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.png\" alt=\"{\$lang->dnt_prt_cry}\" title=\"{\$lang->dnt_prt_cry}\" onmouseover=\"javascript:DNTPostRatesMember(5, {\$tid})\" onmouseout=\"javascript:DNTPostRatesMemberRemove(5, {\$tid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=5&amp;tid={\$tid}\'\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.png\" alt=\"{\$lang->dnt_prt_cry}\" title=\"{\$lang->dnt_prt_cry}\" />
 	<span id=\"prt_list5_pid{\$tid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -947,7 +946,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_thread_rates6',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.png\" alt=\"{\$lang->dnt_prt_angry}\" title=\"{\$lang->dnt_prt_angry}\" onmouseover=\"javascript:DNTPostRatesMember(6, {\$tid})\" onmouseout=\"javascript:DNTPostRatesMemberRemove(6, {\$tid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=6&amp;tid={\$tid}\'\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.png\" alt=\"{\$lang->dnt_prt_angry}\" title=\"{\$lang->dnt_prt_angry}\" />
 	<span id=\"prt_list6_pid{\$tid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -958,7 +957,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_memprofile1',
 		'template' => "<span class=\"clasify_post_rates_msg_span\">{\$pcl[\'bestid\']}</span>
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.png\" alt=\"{\$lang->dnt_prt_like}\" title=\"{\$lang->dnt_prt_like}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.png\" alt=\"{\$lang->dnt_prt_like}\" title=\"{\$lang->dnt_prt_like}\" style=\"cursor:context-menu\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_like}</span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -969,7 +968,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_memprofile2',
 		'template' => "<span class=\"clasify_post_rates_msg_span\">{\$pcl[\'bestid\']}</span>
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.png\" alt=\"{\$lang->dnt_prt_love}\" title=\"{\$lang->dnt_prt_love}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.png\" alt=\"{\$lang->dnt_prt_love}\" title=\"{\$lang->dnt_prt_love}\" style=\"cursor:context-menu\" />
 	<span style=\"color:#e61b3f;\">{\$lang->dnt_prt_love}</span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -980,7 +979,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_memprofile3',
 		'template' => "<span class=\"clasify_post_rates_msg_span\">{\$pcl[\'bestid\']}</span>
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.png\" alt=\"{\$lang->dnt_prt_wow}\" title=\"{\$lang->dnt_prt_wow}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.png\" alt=\"{\$lang->dnt_prt_wow}\" title=\"{\$lang->dnt_prt_wow}\" style=\"cursor:context-menu\" />
 	<span style=\"color:#cfcd35;\">{\$lang->dnt_prt_wow}</span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -991,7 +990,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_memprofile4',
 		'template' => "<span class=\"clasify_post_rates_msg_span\">{\$pcl[\'bestid\']}</span>
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.png\" alt=\"{\$lang->dnt_prt_smile}\" title=\"{\$lang->dnt_prt_smile}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.png\" alt=\"{\$lang->dnt_prt_smile}\" title=\"{\$lang->dnt_prt_smile}\" style=\"cursor:context-menu\" />
 	<span style=\"color:#cfcd35;\">{\$lang->dnt_prt_smile}</span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -1002,7 +1001,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_memprofile5',
 		'template' => "<span class=\"clasify_post_rates_msg_span\">{\$pcl[\'bestid\']}</span>
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.png\" alt=\"{\$lang->dnt_prt_cry}\" title=\"{\$lang->dnt_prt_cry}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.png\" alt=\"{\$lang->dnt_prt_cry}\" title=\"{\$lang->dnt_prt_cry}\" style=\"cursor:context-menu\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_cry}</span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -1013,7 +1012,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_memprofile6',
 		'template' => "<span class=\"clasify_post_rates_msg_span\">{\$pcl[\'bestid\']}</span>
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.png\" alt=\"{\$lang->dnt_prt_angry}\" title=\"{\$lang->dnt_prt_angry}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.png\" alt=\"{\$lang->dnt_prt_angry}\" title=\"{\$lang->dnt_prt_angry}\" style=\"cursor:context-menu\" />
 	<span style=\"color:#c22e0f;\">{\$lang->dnt_prt_angry}</span>",
 		'sid' => '-2',
 		'version' => '1800',
