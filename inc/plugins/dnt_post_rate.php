@@ -584,7 +584,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_list_rate1',
 		'template' => "<div class=\"dnt_prt_div_rate\">
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.png\" alt=\"{\$lang->dnt_prt_like}\" title=\"{\$lang->dnt_prt_like}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.png\" alt=\"{\$lang->dnt_prt_like}\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_like}</span>
 </div>",
 		'sid' => '-2',
@@ -596,7 +596,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_list_rate2',
 		'template' => "<div class=\"dnt_prt_div_rate\">
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.png\" alt=\"{\$lang->dnt_prt_love}\" title=\"{\$lang->dnt_prt_love}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.png\" alt=\"{\$lang->dnt_prt_love}\" />
 	<span style=\"color:#e61b3f;\">{\$lang->dnt_prt_love}</span>
 </div>",
 		'sid' => '-2',
@@ -608,7 +608,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_list_rate3',
 		'template' => "<div class=\"dnt_prt_div_rate\">
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.png\" alt=\"{\$lang->dnt_prt_wow}\" title=\"{\$lang->dnt_prt_wow}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.png\" alt=\"{\$lang->dnt_prt_wow}\" />
 	<span style=\"color:#cfcd35;\">{\$lang->dnt_prt_wow}</span>
 </div>",
 		'sid' => '-2',
@@ -620,7 +620,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_list_rate4',
 		'template' => "<div class=\"dnt_prt_div_rate\">
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.png\" alt=\"{\$lang->dnt_prt_smile}\" title=\"{\$lang->dnt_prt_smile}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.png\" alt=\"{\$lang->dnt_prt_smile}\" />
 	<span style=\"color:#cfcd35;\">{\$lang->dnt_prt_smile}</span>
 </div>",
 		'sid' => '-2',
@@ -632,7 +632,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_list_rate5',
 		'template' => "<div class=\"dnt_prt_div_rate\">
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.png\" alt=\"{\$lang->dnt_prt_cry}\" title=\"{\$lang->dnt_prt_cry}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.png\" alt=\"{\$lang->dnt_prt_cry}\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_cry}</span>
 </div>",
 		'sid' => '-2',
@@ -644,7 +644,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_list_rate6',
 		'template' => "<div class=\"dnt_prt_div_rate\">
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.png\" alt=\"{\$lang->dnt_prt_angry}\" title=\"{\$lang->dnt_prt_angry}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.png\" alt=\"{\$lang->dnt_prt_angry}\" />
 	<span style=\"color:#c22e0f;\">{\$lang->dnt_prt_angry}</span>
 </div>",
 		'sid' => '-2',
@@ -656,7 +656,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_results_1',
 		'template' => "<div {\$post[\'dnt_prt_remove\']}id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.png\" alt=\"{\$lang->dnt_prt_like}\" title=\"{\$lang->dnt_prt_like}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.png\" alt=\"{\$lang->dnt_prt_like}\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_like}</span>
 </div>",
 		'sid' => '-2',
@@ -668,7 +668,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_results_2',
 		'template' => "<div {\$post[\'dnt_prt_remove\']}id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.png\" alt=\"{\$lang->dnt_prt_love}\" title=\"{\$lang->dnt_prt_love}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.png\" alt=\"{\$lang->dnt_prt_love}\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_love}</span>
 </div>",
 		'sid' => '-2',
@@ -680,7 +680,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_results_3',
 		'template' => "<div {\$post[\'dnt_prt_remove\']}id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.png\" alt=\"{\$lang->dnt_prt_wow}\" title=\"{\$lang->dnt_prt_wow}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.png\" alt=\"{\$lang->dnt_prt_wow}\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_wow}</span>
 </div>",
 		'sid' => '-2',
@@ -692,7 +692,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_results_4',
 		'template' => "<div {\$post[\'dnt_prt_remove\']}id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.png\" alt=\"{\$lang->dnt_prt_smile}\" title=\"{\$lang->dnt_prt_smile}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.png\" alt=\"{\$lang->dnt_prt_smile}\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_smile}</span>
 </div>",
 		'sid' => '-2',
@@ -704,7 +704,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_results_5',
 		'template' => "<div {\$post[\'dnt_prt_remove\']}id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.png\" alt=\"{\$lang->dnt_prt_cry}\" title=\"{\$lang->dnt_prt_cry}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.png\" alt=\"{\$lang->dnt_prt_cry}\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_cry}</span>
 </div>",
 		'sid' => '-2',
@@ -716,7 +716,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_results_6',
 		'template' => "<div {\$post[\'dnt_prt_remove\']}id=\"post_rates_btn_{\$pid}\" class=\"dnt_prt_div_rate\">
-	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.png\" alt=\"{\$lang->dnt_prt_angry}\" title=\"{\$lang->dnt_prt_angry}\" />
+	<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.png\" alt=\"{\$lang->dnt_prt_angry}\" />
 	<span style=\"color:#1b43b6;\">{\$lang->dnt_prt_angry}</span>
 </div>",
 		'sid' => '-2',
@@ -729,12 +729,12 @@ function dnt_prt_templates_make()
 		'title' => 'dnt_prt_post_clasify_post_rates',
 		'template' => "<div class=\"post_rate_button\" id=\"post_rates_btn_{\$pid}\" onclick=\"DNTShowMenu({\$pid})\">{\$lang->dnt_prt_rate}</div>
 <div id=\"post_rates_{\$pid}\" class=\"post_rate_list\" style=\"display:none;\">
-	<span onclick=\"javascript:DNTPostRate(1, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.gif\" alt=\"{\$lang->dnt_prt_like}\" title=\"{\$lang->dnt_prt_like}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_like}</span></span>
-	<span onclick=\"javascript:DNTPostRate(2, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.gif\" alt=\"{\$lang->dnt_prt_love}\" title=\"{\$lang->dnt_prt_love}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_love}</span></span>
-	<span onclick=\"javascript:DNTPostRate(3, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.gif\" alt=\"{\$lang->dnt_prt_wow}\" title=\"{\$lang->dnt_prt_wow}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_wow}</span></span>
-	<span onclick=\"javascript:DNTPostRate(4, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.gif\" alt=\"{\$lang->dnt_prt_smile}\" title=\"{\$lang->dnt_prt_smile}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_smile}</span></span>
-	<span onclick=\"javascript:DNTPostRate(5, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.gif\" alt=\"{\$lang->dnt_prt_cry}\" title=\"{\$lang->dnt_prt_cry}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_cry}</span></span>
-	<span onclick=\"javascript:DNTPostRate(6, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.gif\" alt=\"{\$lang->dnt_prt_angry}\" title=\"{\$lang->dnt_prt_angry}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_angry}</span></span>
+	<span onclick=\"javascript:DNTPostRate(1, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.gif\" alt=\"{\$lang->dnt_prt_like}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_like}</span></span>
+	<span onclick=\"javascript:DNTPostRate(2, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.gif\" alt=\"{\$lang->dnt_prt_love}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_love}</span></span>
+	<span onclick=\"javascript:DNTPostRate(3, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.gif\" alt=\"{\$lang->dnt_prt_wow}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_wow}</span></span>
+	<span onclick=\"javascript:DNTPostRate(4, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.gif\" alt=\"{\$lang->dnt_prt_smile}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_smile}</span></span>
+	<span onclick=\"javascript:DNTPostRate(5, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.gif\" alt=\"{\$lang->dnt_prt_cry}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_cry}</span></span>
+	<span onclick=\"javascript:DNTPostRate(6, {\$tid}, {\$pid})\" class=\"post_rate_btn\"><img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.gif\" alt=\"{\$lang->dnt_prt_angry}\" /><span class=\"ptr_list_title\">{\$lang->dnt_prt_angry}</span></span>
 </div>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -744,7 +744,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_results1',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.png\" alt=\"{\$lang->dnt_prt_like}\" title=\"{\$lang->dnt_prt_like}\" onmouseover=\"javascript:DNTPostRates(1, {\$tid}, {\$pid})\" onmouseout=\"javascript:DNTPostRatesRemove(1, {\$tid}, {\$pid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=1&amp;tid={\$tid}&amp;pid={\$pid}\'\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.png\" alt=\"{\$lang->dnt_prt_like}\" onmouseover=\"javascript:DNTPostRates(1, {\$tid}, {\$pid})\" onmouseout=\"javascript:DNTPostRatesRemove(1, {\$tid}, {\$pid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=1&amp;tid={\$tid}&amp;pid={\$pid}\'\" />
 	<span id=\"prt_list1_pid{\$pid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -754,7 +754,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_results2',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.png\" alt=\"{\$lang->dnt_prt_love}\" title=\"{\$lang->dnt_prt_love}\" onmouseover=\"javascript:DNTPostRates(2, {\$tid}, {\$pid})\" onmouseout=\"javascript:DNTPostRatesRemove(2, {\$tid}, {\$pid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=2&amp;tid={\$tid}&amp;pid={\$pid}\'\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.png\" alt=\"{\$lang->dnt_prt_love}\" onmouseover=\"javascript:DNTPostRates(2, {\$tid}, {\$pid})\" onmouseout=\"javascript:DNTPostRatesRemove(2, {\$tid}, {\$pid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=2&amp;tid={\$tid}&amp;pid={\$pid}\'\" />
 	<span id=\"prt_list2_pid{\$pid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -764,7 +764,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_results3',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.png\" alt=\"{\$lang->dnt_prt_wow}\" title=\"{\$lang->dnt_prt_wow}\" onmouseover=\"javascript:DNTPostRates(3, {\$tid}, {\$pid})\" onmouseout=\"javascript:DNTPostRatesRemove(3, {\$tid}, {\$pid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=3&amp;tid={\$tid}&amp;pid={\$pid}\'\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.png\" alt=\"{\$lang->dnt_prt_wow}\" onmouseover=\"javascript:DNTPostRates(3, {\$tid}, {\$pid})\" onmouseout=\"javascript:DNTPostRatesRemove(3, {\$tid}, {\$pid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=3&amp;tid={\$tid}&amp;pid={\$pid}\'\" />
 	<span id=\"prt_list3_pid{\$pid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -774,7 +774,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_results4',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.png\" alt=\"{\$lang->dnt_prt_smile}\" title=\"{\$lang->dnt_prt_smile}\" onmouseover=\"javascript:DNTPostRates(4, {\$tid}, {\$pid})\" onmouseout=\"javascript:DNTPostRatesRemove(4, {\$tid}, {\$pid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=4&amp;tid={\$tid}&amp;pid={\$pid}\'\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.png\" alt=\"{\$lang->dnt_prt_smile}\" onmouseover=\"javascript:DNTPostRates(4, {\$tid}, {\$pid})\" onmouseout=\"javascript:DNTPostRatesRemove(4, {\$tid}, {\$pid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=4&amp;tid={\$tid}&amp;pid={\$pid}\'\" />
 	<span id=\"prt_list4_pid{\$pid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -784,7 +784,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_results5',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.png\" alt=\"{\$lang->dnt_prt_cry}\" title=\"{\$lang->dnt_prt_cry}\" onmouseover=\"javascript:DNTPostRates(5, {\$tid}, {\$pid})\" onmouseout=\"javascript:DNTPostRatesRemove(5, {\$tid}, {\$pid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=5&amp;tid={\$tid}&amp;pid={\$pid}\'\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.png\" alt=\"{\$lang->dnt_prt_cry}\" onmouseover=\"javascript:DNTPostRates(5, {\$tid}, {\$pid})\" onmouseout=\"javascript:DNTPostRatesRemove(5, {\$tid}, {\$pid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=5&amp;tid={\$tid}&amp;pid={\$pid}\'\" />
 	<span id=\"prt_list5_pid{\$pid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -794,7 +794,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_results6',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.png\" alt=\"{\$lang->dnt_prt_angry}\" title=\"{\$lang->dnt_prt_angry}\" onmouseover=\"javascript:DNTPostRates(6, {\$tid}, {\$pid})\" onmouseout=\"javascript:DNTPostRatesRemove(6, {\$tid}, {\$pid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=6&amp;tid={\$tid}&amp;pid={\$pid}\'\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.png\" alt=\"{\$lang->dnt_prt_angry}\" onmouseover=\"javascript:DNTPostRates(6, {\$tid}, {\$pid})\" onmouseout=\"javascript:DNTPostRatesRemove(6, {\$tid}, {\$pid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=6&amp;tid={\$tid}&amp;pid={\$pid}\'\" />
 	<span id=\"prt_list6_pid{\$pid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -883,7 +883,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_uname',
-		'template' => "<div class=\"dnt_prt_ulist\">{\$dnt_prt_uname}</div>",
+		'template' => "<div class=\"dnt_prt_ulist\"><strong>{\$dnt_prt_name}</strong><br />{\$dnt_prt_uname}{\$dnt_prt_total}</div>",
 		'sid' => '-2',
 		'version' => '1800',
 		'dateline' => TIME_NOW
@@ -901,7 +901,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_thread_rates1',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.png\" alt=\"{\$lang->dnt_prt_like}\" title=\"{\$lang->dnt_prt_like}\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/like.png\" alt=\"{\$lang->dnt_prt_like}\" onmouseover=\"javascript:DNTPostRatesMember(1, {\$tid})\" onmouseout=\"javascript:DNTPostRatesMemberRemove(1, {\$tid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=1&amp;tid={\$tid}\'\" />
 	<span id=\"prt_list1_pid{\$tid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -911,7 +911,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_thread_rates2',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.png\" alt=\"{\$lang->dnt_prt_love}\" title=\"{\$lang->dnt_prt_love}\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/love.png\" alt=\"{\$lang->dnt_prt_love}\" onmouseover=\"javascript:DNTPostRatesMember(2, {\$tid})\" onmouseout=\"javascript:DNTPostRatesMemberRemove(2, {\$tid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=2&amp;tid={\$tid}\'\" />
 	<span id=\"prt_list2_pid{\$tid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -921,7 +921,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_thread_rates3',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.png\" alt=\"{\$lang->dnt_prt_wow}\" title=\"{\$lang->dnt_prt_wow}\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/wow.png\" alt=\"{\$lang->dnt_prt_wow}\" onmouseover=\"javascript:DNTPostRatesMember(3, {\$tid})\" onmouseout=\"javascript:DNTPostRatesMemberRemove(3, {\$tid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=3&amp;tid={\$tid}\'\" />
 	<span id=\"prt_list3_pid{\$tid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -931,7 +931,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_thread_rates4',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.png\" alt=\"{\$lang->dnt_prt_smile}\" title=\"{\$lang->dnt_prt_smile}\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/smile.png\" alt=\"{\$lang->dnt_prt_smile}\" onmouseover=\"javascript:DNTPostRatesMember(4, {\$tid})\" onmouseout=\"javascript:DNTPostRatesMemberRemove(4, {\$tid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=4&amp;tid={\$tid}\'\" />
 	<span id=\"prt_list4_pid{\$tid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -941,7 +941,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_thread_rates5',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.png\" alt=\"{\$lang->dnt_prt_cry}\" title=\"{\$lang->dnt_prt_cry}\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/cry.png\" alt=\"{\$lang->dnt_prt_cry}\" onmouseover=\"javascript:DNTPostRatesMember(5, {\$tid})\" onmouseout=\"javascript:DNTPostRatesMemberRemove(5, {\$tid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=5&amp;tid={\$tid}\'\" />
 	<span id=\"prt_list5_pid{\$tid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -951,7 +951,7 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_thread_rates6',
-		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.png\" alt=\"{\$lang->dnt_prt_angry}\" title=\"{\$lang->dnt_prt_angry}\" />
+		'template' => "<img src=\"{\$mybb->settings[\'bburl\']}/images/dnt_rates/angry.png\" alt=\"{\$lang->dnt_prt_angry}\" onmouseover=\"javascript:DNTPostRatesMember(6, {\$tid})\" onmouseout=\"javascript:DNTPostRatesMemberRemove(6, {\$tid})\" onclick=\"location.href=\'dnt_post_rate.php?action=get_thread_rates&amp;lid=6&amp;tid={\$tid}\'\" />
 	<span id=\"prt_list6_pid{\$tid}\" class=\"ptr_list\"></span>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -1539,23 +1539,43 @@ function dnt_post_rate_xmlhttp()
 		$template = "";
 		if($limit_users > 0)
 		{	
-			$dnt_prt_query = $db->query("SELECT dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
+			$dnt_prt_query = $db->query("SELECT COUNT(dp.dnt_prt_id) AS totitems, dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
 			LEFT JOIN ".TABLE_PREFIX."users u
 			ON (dp.dnt_prt_sender=u.uid)
 			WHERE dnt_prt_tid='{$tid}' AND dnt_prt_pid='{$pid}' AND dnt_prt_type='{$lid}'{$dnt_prt_date}
 			ORDER BY dnt_prt_date DESC LIMIT {$limit_users}");
+			if($lid == 1)
+				$dnt_prt_name = $lang->dnt_prt_like;
+			if($lid == 2)
+				$dnt_prt_name = $lang->dnt_prt_love;
+			if($lid == 3)
+				$dnt_prt_name = $lang->dnt_prt_wow;
+			if($lid == 4)
+				$dnt_prt_name = $lang->dnt_prt_smile;
+			if($lid == 5)
+				$dnt_prt_name = $lang->dnt_prt_cry;
+			if($lid == 6)
+				$dnt_prt_name = $lang->dnt_prt_angry;			
 			while($dnt_prt_rows = $db->fetch_array($dnt_prt_query))
 			{
+				$dnt_prt_total = (int)$dnt_prt_rows['totitems'];
 				$dnt_prt_date = my_date($mybb->settings['dateformat'], $dnt_prt_rows['dnt_prt_date']);
 				$uname = htmlspecialchars_uni($dnt_prt_rows['username']);
 				if(empty($uname))
 					$uname = $lang->guest;
 				eval("\$dnt_prt_uname .= \"".$templates->get("dnt_prt_uname_rows")."\";"); 		
 			}
+			if($dnt_prt_total > $limit_users)
+			{
+				$dnt_prt_total = $limit_users - $dnt_prt_total;
+				$dnt_prt_total = $lang->sprintf($lang->dnt_prt_total_items, $dnt_prt_total);
+			}
+			else			
+				$dnt_prt_total = "";			
 			eval("\$template = \"".$templates->get("dnt_prt_uname")."\";");		
 			echo json_encode($template);
 			exit;		
-		}
+		}	
 		else
 		{
 			if($lid == 1)
@@ -1597,19 +1617,39 @@ function dnt_post_rate_xmlhttp()
 				$sta = "dnt_prt_tid='{$tid}'";
 			else
 				$sta = "dnt_prt_tid='{$tid}' AND dnt_prt_pid={$pid}";
-			$dnt_prt_query = $db->query("SELECT dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
+			$dnt_prt_query = $db->query("SELECT COUNT(dp.dnt_prt_id) as totitems, dp.*, u.username FROM ".TABLE_PREFIX."dnt_post_rate dp
 			LEFT JOIN ".TABLE_PREFIX."users u
 			ON (dp.dnt_prt_sender=u.uid)
 			WHERE {$sta} AND dnt_prt_type='{$lid}'{$dnt_prt_date}
 			ORDER BY dnt_prt_date DESC LIMIT {$limit_users}");
+			if($lid == 1)
+				$dnt_prt_name = $lang->dnt_prt_like;
+			if($lid == 2)
+				$dnt_prt_name = $lang->dnt_prt_love;
+			if($lid == 3)
+				$dnt_prt_name = $lang->dnt_prt_wow;
+			if($lid == 4)
+				$dnt_prt_name = $lang->dnt_prt_smile;
+			if($lid == 5)
+				$dnt_prt_name = $lang->dnt_prt_cry;
+			if($lid == 6)
+				$dnt_prt_name = $lang->dnt_prt_angry;			
 			while($dnt_prt_rows = $db->fetch_array($dnt_prt_query))
 			{
+				$dnt_prt_total = (int)$dnt_prt_rows['totitems'];				
 				$dnt_prt_date = my_date($mybb->settings['dateformat'], $dnt_prt_rows['dnt_prt_date']);
 				$uname = htmlspecialchars_uni($dnt_prt_rows['username']);
 				if(empty($uname))
 					$uname = $lang->guest;
 				eval("\$dnt_prt_uname .= \"".$templates->get("dnt_prt_uname_rows")."\";"); 		
 			}
+			if($dnt_prt_total > $limit_users)
+			{
+				$dnt_prt_total = $limit_users - $dnt_prt_total;
+				$dnt_prt_total = $lang->sprintf($lang->dnt_prt_total_items, $dnt_prt_total);
+			}
+			else			
+				$dnt_prt_total = "";
 			eval("\$template = \"".$templates->get("dnt_prt_uname")."\";");		
 			echo json_encode($template);
 			exit;
