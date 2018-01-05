@@ -56,7 +56,7 @@ function dnt_post_rate_info()
 		"website" => "",
 		"author" => "Whiteneo",
 		"authorsite" => "https://soportemybb.es",
-		"version" => "1.6.2",
+		"version" => "1.6.3",
 		"codename" => "dnt_post_rate_",
 		"compatibility" => "18*"
 	);
@@ -366,7 +366,7 @@ function dnt_post_rate_activate()
 		'title' => 'Actual version of post rate plugin.',
 		'description' => 'This is the actual version of your post rate system installed',
 		'optionscode' => 'numeric',
-		'value' => 162,
+		'value' => 163,
 		'disporder' => 0,
 		'gid' => 0
 	);
@@ -375,7 +375,7 @@ function dnt_post_rate_activate()
 	{
 		$db->insert_query("settings", $content);
 	}
-
+	
 	// Creating stylesheet...
 	$stylesheet_css = '.post_rate_list{position:absolute;z-index:9999;background:#fff;right:80px;margin-top:-95px;border-radius: 40px}
 .post_rate_button{color:#fff;text-shadow:1px 1px 1px #000;height:26px;line-height:26px;padding:0 10px;text-decoration:none;margin-left:4px;display:inline-block;cursor:pointer;background:#202020;border-radius:4px;font-size:13px;background:#0F5579 !important}
@@ -396,11 +396,11 @@ function dnt_post_rate_activate()
 .clasify_post_norates_msg{background-color:rgba(185,65,25,0.3);margin:5px;color:#6f2f16;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
 .clasify_post_rates_msg{background-color:rgba(102,189,218,0.3);margin:5px;color:#315284;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
 .clasify_post_rates_msg_span{font-size:8px;font-weight:bold;position:absolute;background:#ce5757;padding:1px 3px;color:#f0f0f0;border-radius:4px;border-radius:3px;margin-top:-5px}
-/* Fix for Mozilla Firefox */
+// Fix for Mozilla Firefox //
 @media screen and (-moz-min-device-pixel-ratio:0) {
 	.dnt_prt_div_rate img{margin-top: -12px}
 }
-/* Fix for Chrome and Safari */
+// Fix for Chrome and Safari //
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 	.dnt_prt_div_rate img{margin-top: 0px}
 	.ptr_list{margin-top: 5px;}
@@ -426,7 +426,7 @@ function dnt_post_rate_activate()
 		update_theme_stylesheet_list($theme['tid'], false, true);			
 	}	
 	// Add templates:
-	dnt_prt_templates_make();
+	dnt_prt_templates_make();	
 	// Edit some existing templates
 	require_once MYBB_ROOT."/inc/adminfunctions_templates.php";
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'button_edit\']}').'#', '{$post[\'clasify_post_rates\']}{$post[\'button_edit\']}');
@@ -435,7 +435,8 @@ function dnt_post_rate_activate()
 	find_replace_templatesets("forumdisplay_thread", '#'.preg_quote('{$attachment_count}').'#', '{$attachment_count}{$dnt_prt_rates}');		
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$profilefields}').'#', '{$profilefields}{$memprofile[\'dnt_prt\']}{$memprofile[\'top5_given\']}{$memprofile[\'top5_received\']}');
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'user_details\']}').'#', '{$post[\'user_details\']}{$post[\'rates_given\']}{$post[\'rates_received\']}', 0);
-	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'user_details\']}').'#', '{$post[\'user_details\']}{$post[\'rates_given\']}{$post[\'rates_received\']}', 0);	
+	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'user_details\']}').'#', '{$post[\'user_details\']}{$post[\'rates_given\']}{$post[\'rates_received\']}', 0);
+	
 	rebuild_settings();
 }
 
@@ -450,7 +451,7 @@ function dnt_post_rate_deactivate()
 	// Delete config groups
 	$db->delete_query("settings", "name LIKE ('dnt_post_rate_%')");
 	$db->delete_query("settinggroups", "name='dnt_post_rate'");
-   // Delete stylesheet
+	// Delete stylesheet
    	$db->delete_query('themestylesheets', "name='pcl.css'");
 	$query = $db->simple_select('themes', 'tid');
 	while($theme = $db->fetch_array($query))
@@ -459,7 +460,7 @@ function dnt_post_rate_deactivate()
 		update_theme_stylesheet_list($theme['tid']);
 	}
 	//Remove templates:
-	dnt_prt_templates_remove();
+	dnt_prt_templates_remove();		
 	require_once MYBB_ROOT."/inc/adminfunctions_templates.php";
 	find_replace_templatesets("headerinclude", '#'.preg_quote('{$dnt_prt_script}').'#', '', 0);	
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'clasify_post_rates\']}').'#', '', 0);
@@ -476,7 +477,6 @@ function dnt_post_rate_deactivate()
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$memprofile[\'dnt_prt\']}').'#', '', 0);
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$memprofile[\'top5_given\']}').'#', '', 0);
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$memprofile[\'top5_received\']}').'#', '', 0);
-	
 	rebuild_settings();
 }
 
