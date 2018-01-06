@@ -2220,14 +2220,14 @@ function dnt_post_rate_member()
 				}
 			}
 		}
-		if(isset($tid) && $pid >0 || isset($tid) && $tid >0)
+		if(isset($tid) && $pid > 0 || isset($tid) && $tid > 0)
 		{
-			eval("\$dnt_prt_results1 = \"".$templates->get("dnt_prt_thread_rates1")."\";");	
-			eval("\$dnt_prt_results2 = \"".$templates->get("dnt_prt_thread_rates2")."\";");	
-			eval("\$dnt_prt_results3 = \"".$templates->get("dnt_prt_thread_rates3")."\";");	
-			eval("\$dnt_prt_results4 = \"".$templates->get("dnt_prt_thread_rates4")."\";");	
-			eval("\$dnt_prt_results5 = \"".$templates->get("dnt_prt_thread_rates5")."\";");	
-			eval("\$dnt_prt_results6 = \"".$templates->get("dnt_prt_thread_rates6")."\";");	
+			eval("\$dnt_prt_results1 = \"".$templates->get("dnt_prt_results1")."\";");
+			eval("\$dnt_prt_results2 = \"".$templates->get("dnt_prt_results2")."\";");
+			eval("\$dnt_prt_results3 = \"".$templates->get("dnt_prt_results3")."\";");
+			eval("\$dnt_prt_results4 = \"".$templates->get("dnt_prt_results4")."\";");
+			eval("\$dnt_prt_results5 = \"".$templates->get("dnt_prt_results5")."\";");
+			eval("\$dnt_prt_results6 = \"".$templates->get("dnt_prt_results6")."\";");				
 			
 			$likes = (int)$memprofile['dnt_prt_rates']['likes'];
 			$loves = (int)$memprofile['dnt_prt_rates']['loves'];
