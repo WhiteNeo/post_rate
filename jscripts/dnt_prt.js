@@ -27,7 +27,10 @@ function DNTPostRate(lid,tid,pid)
 			$.jGrowl(dnt_prt_success, {theme:'jgrowl_success'});
 			$("#clasify_post_rates_msgs_list"+pid).html(request.templates);
 			if(request.is_popular == 1)
-				$("div.dnt_prt_post"+pid).addClass('dnt_prt_post');
+			{
+				$("div.dnt_prt_post"+pid).addClass('dnt_post_hl');
+				$("div#post_"+pid).next("div.post_content").addClass('dnt_popular_post');
+			}
 		}
 	});
 }
@@ -120,7 +123,10 @@ function DNTRemoveRate(lid,tid,pid)
 			$.jGrowl(dnt_prt_remove_success, {theme:'jgrowl_success'});
 			$("#clasify_post_rates_msgs_list"+pid).html(request.templates);
 			if(request.is_popular == 0)
-				$("div.dnt_prt_post"+pid).removeClass('dnt_prt_post');
+			{
+				$("div.dnt_prt_post"+pid).removeClass('dnt_post_hl');
+				$("div#post_"+pid).next("div.post_content").removeClass('dnt_popular_post');
+			}
 		}
 	});	
 }

@@ -1355,15 +1355,14 @@ function dnt_post_rate_post_rates(&$post)
 			foreach($gids as $gid)
 			{
 				if(!in_array($gid, $dnt_prt_gids))
-					return false;
+					$post['dnt_prt_see_me'] = false;
 			}
 		}
 		else
 		{
 			if(!in_array($gid, $dnt_prt_gids))
-				return false;		
-		}
-		$post['dnt_prt_see_me'] = false;		
+				$post['dnt_prt_see_me'] = false;	
+		}			
 	}
 	else if($mybb->settings['dnt_post_rate_groups'] == "-1")
 		$post['dnt_prt_see_me'] = true;	
@@ -1864,9 +1863,16 @@ function dnt_post_rate_xmlhttp()
 		$update_data_post = array(
 			"dnt_prt_rates_posts" => $db->escape_string($post_rates)
 		);
-		
+
+		$update_data_thread = array(
+			"dnt_prt_rates_threads_post" => $db->escape_string($post_rates)
+		);
+			
 		if(isset($update_data_post))
+		{
 			$db->update_query("posts", $update_data_post, "tid='{$tid}' AND pid='{$pid}'");
+			$db->update_query("threads", $update_data_thread, "tid='{$tid}'");			
+		}
 	
 		recordAlertRpt($tid, $pid);	
 
@@ -2111,10 +2117,16 @@ function dnt_post_rate_xmlhttp()
 	
 		$update_data_post = array(
 			"dnt_prt_rates_posts" => $db->escape_string($post_rates)
-		);
+		);		
+		$update_data_thread = array(
+			"dnt_prt_rates_threads_post" => $db->escape_string($post_rates)
+		);		
 		if(isset($update_data_post))
-		$db->update_query("posts", $update_data_post, "tid='{$tid}' AND pid='{$pid}'");		
-
+		{
+			$db->update_query("posts", $update_data_post, "tid='{$tid}' AND pid='{$pid}'");
+			$db->update_query("threads", $update_data_thread, "tid='{$tid}'");
+			
+		}
 		removeAlertRpt($tid, $pid);	
 
 		eval("\$dnt_prt_results1 = \"".$templates->get("dnt_prt_results1")."\";");
@@ -2378,31 +2390,6 @@ function dnt_post_rates()
 		if(!in_array($fid, $dnt_prt_fids))
 			return false;		
 	}		
-	if(!empty($mybb->settings['dnt_post_rate_groups']) && $mybb->settings['dnt_post_rate_groups'] != "-1")
-	{
-		$gid = (int)$mybb->user['usergroup'];
-		if($mybb->user['additionalgroups'])
-			$gids = "{$gid}, {$mybb->user['additionalgroups']}";
-		else
-			$gids = $gid;
-	
-		$dnt_prt_gids = explode(",",$mybb->settings['dnt_post_rate_groups']);
-		
-		if(!empty($gids))
-		{
-			$gids = explode(",",$gids);
-			foreach($gids as $gid)
-			{
-				if(!in_array($gid, $dnt_prt_gids))
-					return false;
-			}
-		}
-		else
-		{
-			if(!in_array($gid, $dnt_prt_gids))
-				return false;		
-		}
-	}	
 	$tid = $thread['tid'];
 	if($mybb->settings['dnt_post_rate_showthread_all'] == 1)
 	{	
@@ -2439,10 +2426,7 @@ function dnt_post_rates()
 	}
 	else
 	{
-		$pid = (int)$thread['firstpost'];
-		$query = $db->simple_select('posts','dnt_prt_rates_posts',"pid={$pid}");
-		$post = $db->fetch_array($query);
-		$post['dnt_prt_rates_posts'] = unserialize($post['dnt_prt_rates_posts']);	
+		$thread['dnt_prt_rates_threads_post'] = unserialize($thread['dnt_prt_rates_threads_post']);	
 		eval("\$dnt_prt_results1 .= \"".$templates->get("dnt_prt_thread_rates1")."\";");
 		eval("\$dnt_prt_results2 .= \"".$templates->get("dnt_prt_thread_rates2")."\";");
 		eval("\$dnt_prt_results3 .= \"".$templates->get("dnt_prt_thread_rates3")."\";");
@@ -2450,12 +2434,12 @@ function dnt_post_rates()
 		eval("\$dnt_prt_results5 .= \"".$templates->get("dnt_prt_thread_rates5")."\";");
 		eval("\$dnt_prt_results6 .= \"".$templates->get("dnt_prt_thread_rates6")."\";");
 		
-		$likes = (int)$post['dnt_prt_rates_posts']['likes'];
-		$loves = (int)$post['dnt_prt_rates_posts']['loves'];
-		$wow = (int)$post['dnt_prt_rates_posts']['wow'];
-		$smiles = (int)$post['dnt_prt_rates_posts']['smiles'];
-		$crys = (int)$post['dnt_prt_rates_posts']['crys'];
-		$angrys = (int)$post['dnt_prt_rates_posts']['angrys'];
+		$likes = (int)$thread['dnt_prt_rates_threads_post']['likes'];
+		$loves = (int)$thread['dnt_prt_rates_threads_post']['loves'];
+		$wow = (int)$thread['dnt_prt_rates_threads_post']['wow'];
+		$smiles = (int)$thread['dnt_prt_rates_threads_post']['smiles'];
+		$crys = (int)$thread['dnt_prt_rates_threads_post']['crys'];
+		$angrys = (int)$thread['dnt_prt_rates_threads_post']['angrys'];
 		
 		$dnt_prt_rates = '<div style="float:right">';	
 		if($likes > 0)
@@ -2471,7 +2455,7 @@ function dnt_post_rates()
 		if($angrys > 0)
 			eval("\$dnt_prt_rates .= \"".$templates->get("dnt_prt_angrys")."\";");
 		$dnt_prt_rates .= '</div>';
-		unset($post['dnt_prt_rates_posts']);		
+		unset($thread['dnt_prt_rates_threads_post']);		
 	}
 }
 
@@ -2632,6 +2616,7 @@ function do_dnt_prt_threads_recount()
 	if ($cur_page == 1)
 	{
 		$db->write_query("UPDATE ".TABLE_PREFIX."threads SET dnt_prt_rates_threads=''");
+		$db->write_query("UPDATE ".TABLE_PREFIX."threads SET dnt_prt_rates_threads_post=''");
 		$db->write_query("UPDATE ".TABLE_PREFIX."posts SET dnt_prt_rates_posts=''");
 		$db->write_query("UPDATE ".TABLE_PREFIX."threads SET dnt_prt_total='0'");		
 	}
@@ -2678,7 +2663,8 @@ function do_dnt_prt_threads_recount()
 			);
 			$pcl['dnt_prt_rates'] = serialize($pcl['dnt_prt_rates']);
 			$db->update_query("threads", array("dnt_prt_rates_threads" => $db->escape_string($pcl['dnt_prt_rates']), "dnt_prt_total" => $db->escape_string($total)), "tid='{$pcl['dnt_prt_tid']}'");
-			$db->update_query("posts", array("dnt_prt_rates_posts" => $db->escape_string($pcl['dnt_prt_rates'])), "pid='{$pcl['dnt_prt_pid']}'");		
+			$db->update_query("posts", array("dnt_prt_rates_posts" => $db->escape_string($pcl['dnt_prt_rates'])), "pid='{$pcl['dnt_prt_pid']}'");
+			$db->update_query("threads", array("dnt_prt_rates_threads_post" => $db->escape_string($pcl['dnt_prt_rates'])), "firstpost='{$pcl['dnt_prt_pid']}'");			
 		}		
 	}
 	else
@@ -2714,7 +2700,7 @@ function do_dnt_prt_threads_recount()
 				'total' => (int)$total
 			);
 			$pcl['dnt_prt_rates'] = serialize($pcl['dnt_prt_rates']);
-			$db->update_query("threads", array("dnt_prt_rates_threads" => $db->escape_string($pcl['dnt_prt_rates']), "dnt_prt_total" => $db->escape_string($total)), "tid='{$pcl['dnt_prt_tid']}'");		
+			$db->update_query("threads", array("dnt_prt_rates_threads_post" => $db->escape_string($pcl['dnt_prt_rates']), "dnt_prt_total" => $db->escape_string($total)), "tid='{$pcl['dnt_prt_tid']}'");		
 		}
 		
 		$query = $db->simple_select("dnt_post_rate", "*", '', array('order_by' => 'dnt_prt_pid', 'group_by' => 'dnt_prt_pid', 'order_dir' => 'asc', 'limit_start' => $start, 'limit' => $per_page));
@@ -2745,6 +2731,7 @@ function do_dnt_prt_threads_recount()
 			);
 			$pcl['dnt_prt_rates'] = serialize($pcl['dnt_prt_rates']);
 			$db->update_query("posts", array("dnt_prt_rates_posts" => $db->escape_string($pcl['dnt_prt_rates'])), "pid='{$pcl['dnt_prt_pid']}'");		
+			$db->update_query("threads", array("dnt_prt_rates_threads_post" => $db->escape_string($pcl['dnt_prt_rates'])), "firstpost='{$pcl['dnt_prt_pid']}'");			
 		}		
 	}
 	
@@ -3051,4 +3038,22 @@ function dnt_post_rate_update161()
 	rebuild_settings();
 	flash_message($lang->dnt_prt_update_version, 'success');
 	admin_redirect('index.php?module=config-plugins');
+}
+
+function dnt_post_rate_update163()
+{
+	global $db, $mybb, $lang;
+	if(!$mybb->settings['dnt_post_rate_active'] || !empty($session->is_spider))
+		return false;
+	if(!$db->field_exists("dnt_prt_rates_threads_post", "threads"))
+	{
+		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` ADD `dnt_prt_rates_threads_post` text NOT NULL");
+	}
+	$db->update_query('settings',array('value' => 163),"name='dnt_post_rate_version'");
+	rebuild_settings();
+	require_once MYBB_ROOT."/inc/adminfunctions_templates.php";
+	find_replace_templatesets("postbit", '#'.preg_quote('post_content').'#', 'post_content{$post[\'dnt_prt_hl_post\']}', 0);
+	find_replace_templatesets("postbit_classic", '#'.preg_quote('post_content').'#', 'post_content{$post[\'dnt_prt_hl_post\']}', 0);	
+	flash_message($lang->dnt_prt_update_version, 'success');
+	admin_redirect('index.php?module=config-plugins');	
 }
