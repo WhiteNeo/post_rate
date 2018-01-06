@@ -18,31 +18,6 @@ if($mybb->settings['dnt_post_rate_active'] == 0)
 }
 
 $templatelist .= "dnt_prt_page,dnt_prt_content,dnt_prt_list,dnt_prt_list_none,dnt_prt_list_rate1,dnt_prt_list_rate2,dnt_prt_list_rate3,dnt_prt_list_rate4,dnt_prt_list_rate5,dnt_prt_list_rate6";
-
-if(!empty($mybb->settings['dnt_post_rate_groups']) && $mybb->settings['dnt_post_rate_groups'] != "-1")
-{
-	$gid = (int)$mybb->user['usergroup'];
-	if($mybb->user['additionalgroups'])
-		$gids = "{$gid}, {$mybb->user['additionalgroups']}";
-	
-	$dnt_prt_gids = explode(",",$mybb->settings['dnt_post_rate_groups']);
-	
-	if(!empty($gids))
-	{
-		$gids = explode(",",$gids);
-		foreach($gids as $gid)
-		{
-			if(!in_array($gid, $dnt_prt_gids))
-				return false;
-		}
-	}
-	else
-	{
-		if(!in_array($gid, $dnt_prt_gids))
-			return false;		
-	}		
-}
-
 $lang->load('dnt_post_rate',false,true);
 $plugins->run_hooks("dnt_post_rate_start");
 
