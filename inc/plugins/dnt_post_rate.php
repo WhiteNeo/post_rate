@@ -1290,7 +1290,6 @@ function dnt_post_rate_post_rates(&$post)
 		$dnt_prt_date = " AND dnt_prt_date>='{$dnt_prt_date_limit}'";
 	else
 		$dnt_prt_date = "";
-	$post['dnt_prt_see_me'] = false;
 	$dnt_prt_fids = $mybb->settings['dnt_post_rate_forums'];
 	if($dnt_prt_fids != "-1" && !empty($dnt_prt_fids))
 	{
@@ -1301,6 +1300,7 @@ function dnt_post_rate_post_rates(&$post)
 	if(!empty($mybb->settings['dnt_post_rate_groups']) && $mybb->settings['dnt_post_rate_groups'] != "-1")
 	{
 		$gid = (int)$mybb->user['usergroup'];
+		$post['dnt_prt_see_me'] = true;	
 		if($mybb->user['additionalgroups'])
 			$gids = "{$gid}, {$mybb->user['additionalgroups']}";
 		else
@@ -1321,7 +1321,7 @@ function dnt_post_rate_post_rates(&$post)
 		{
 			if(!in_array($gid, $dnt_prt_gids))
 				$post['dnt_prt_see_me'] = false;	
-		}			
+		}
 	}
 	else if($mybb->settings['dnt_post_rate_groups'] == "-1")
 		$post['dnt_prt_see_me'] = true;	
@@ -1361,7 +1361,7 @@ function dnt_post_rate_post_rates(&$post)
 	$crys = (int)$post['dnt_prt_rates_posts']['crys'];
 	$angrys = (int)$post['dnt_prt_rates_posts']['angrys'];
 	$total = (int)$post['dnt_prt_rates_posts']['total'];
-	
+
 	if($post['uid'] == $mybb->user['uid'])
 	{
 		$post['dnt_prt_see_me'] = false;
@@ -1394,16 +1394,12 @@ function dnt_post_rate_post_rates(&$post)
 						eval("\$dnt_prt_results = \"".$templates->get("dnt_prt_results_6")."\";");
 					$post['clasify_post_rates']	= $dnt_prt_results;
 				}				
-			}
-			else
-			{
-				$post['dnt_prt_see_me'] = true;
-			}		
+			}	
 		}
 	}	
 	
 	if($post['dnt_prt_see_me'] === true)
-	{		
+	{
 		eval("\$post['clasify_post_rates'] = \"".$templates->get("dnt_prt_post_clasify_post_rates")."\";");
 	}
 
@@ -1457,32 +1453,7 @@ function dnt_post_rate_xmlhttp()
 	global $db, $lang, $theme, $templates, $thread, $mybb, $charset;
 
 	if($mybb->settings['dnt_post_rate_active'] == 0)
-		return false;
-	if(!empty($mybb->settings['dnt_post_rate_groups']) && $mybb->settings['dnt_post_rate_groups'] != "-1")
-	{
-		$gid = (int)$mybb->user['usergroup'];
-		if($mybb->user['additionalgroups'])
-			$gids = "{$gid}, {$mybb->user['additionalgroups']}";
-		else
-			$gids = $gid;
-	
-		$dnt_prt_gids = explode(",",$mybb->settings['dnt_post_rate_groups']);
-		
-		if(!empty($gids))
-		{
-			$gids = explode(",",$gids);
-			foreach($gids as $gid)
-			{
-				if(!in_array($gid, $dnt_prt_gids))
-					return false;
-			}
-		}
-		else
-		{
-			if(!in_array($gid, $dnt_prt_gids))
-				return false;		
-		}
-	}	
+		return false;	
 	if($mybb->get_input('action') == "get_post_rates")
 	{
 		header("Content-type: application/json; charset={$charset}");     
@@ -1501,6 +1472,10 @@ function dnt_post_rate_xmlhttp()
 		$template = "";
 		if($limit_users > 0)
 		{
+			if($mybb->settings['dnt_post_rate_showthread_all'] == 1)
+				$sta = "dnt_prt_tid='{$tid}'";
+			else
+				$sta = "dnt_prt_tid='{$tid}' AND dnt_prt_pid={$pid}";			
 			$numtot_query = $db->query("SELECT COUNT(*) as totitems FROM ".TABLE_PREFIX."dnt_post_rate
 			WHERE {$sta} AND dnt_prt_type='{$lid}'{$dnt_prt_date}
 			ORDER BY dnt_prt_date DESC LIMIT {$limit_users}");
@@ -1641,8 +1616,33 @@ function dnt_post_rate_xmlhttp()
 			echo json_encode($template);
 			exit;			
 		}
-	} 	
-	else if($mybb->get_input('action') == "clasify_post_rate")
+	} 
+	if(!empty($mybb->settings['dnt_post_rate_groups']) && $mybb->settings['dnt_post_rate_groups'] != "-1")
+	{
+		$gid = (int)$mybb->user['usergroup'];
+		if($mybb->user['additionalgroups'])
+			$gids = "{$gid}, {$mybb->user['additionalgroups']}";
+		else
+			$gids = $gid;
+	
+		$dnt_prt_gids = explode(",",$mybb->settings['dnt_post_rate_groups']);
+		
+		if(!empty($gids))
+		{
+			$gids = explode(",",$gids);
+			foreach($gids as $gid)
+			{
+				if(!in_array($gid, $dnt_prt_gids))
+					return false;
+			}
+		}
+		else
+		{
+			if(!in_array($gid, $dnt_prt_gids))
+				return false;		
+		}
+	}	
+	if($mybb->get_input('action') == "clasify_post_rate")
 	{
 		header("Content-type: application/json; charset={$charset}");     
 		$lang->load('dnt_post_rate',false,true);		
@@ -2172,31 +2172,6 @@ function dnt_post_rate_member()
 	$dnt_prt_templates = "";
 	$dnt_prt_templatesg = "";
 	$dnt_prt_templatesr = "";
-	if(!empty($mybb->settings['dnt_post_rate_groups']) && $mybb->settings['dnt_post_rate_groups'] != "-1")
-	{
-		$gid = (int)$mybb->user['usergroup'];
-		if($mybb->user['additionalgroups'])
-			$gids = "{$gid}, {$mybb->user['additionalgroups']}";
-		else
-			$gids = $gid;
-	
-		$dnt_prt_gids = explode(",",$mybb->settings['dnt_post_rate_groups']);
-		
-		if(!empty($gids))
-		{
-			$gids = explode(",",$gids);
-			foreach($gids as $gid)
-			{
-				if(!in_array($gid, $dnt_prt_gids))
-					return false;
-			}
-		}
-		else
-		{
-			if(!in_array($gid, $dnt_prt_gids))
-				return false;		
-		}
-	}	
 	if ($mybb->settings['dnt_post_rate_memprofile'] == 1)
 	{
 		$url_given = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_given_rates&amp;uid='.(int)$memprofile['uid'];
