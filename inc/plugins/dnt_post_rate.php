@@ -1500,7 +1500,6 @@ function dnt_post_rate_xmlhttp()
 				$dnt_prt_name = "<b>{$lang->dnt_prt_angry}</b><br />";
 			while($dnt_prt_rows = $db->fetch_array($dnt_prt_query))
 			{
-				$dnt_prt_total = (int)$dnt_prt_rows['totitems'];
 				$dnt_prt_date = my_date($mybb->settings['dateformat'], $dnt_prt_rows['dnt_prt_date']);
 				$uname = htmlspecialchars_uni($dnt_prt_rows['username']);
 				if(empty($uname))
@@ -1509,7 +1508,7 @@ function dnt_post_rate_xmlhttp()
 			}
 			if($dnt_prt_total > $limit_users)
 			{
-				$dnt_prt_total = $limit_users - $dnt_prt_total;
+				$dnt_prt_total = $dnt_prt_total - $limit_users;
 				$dnt_prt_total = $lang->sprintf($lang->dnt_prt_total_items, $dnt_prt_total);
 			}
 			else			
@@ -1520,6 +1519,8 @@ function dnt_post_rate_xmlhttp()
 		}	
 		else
 		{
+			$dnt_prt_name = "";
+			$dnt_prt_total = "";
 			if($lid == 1)
 				$dnt_prt_uname = "<b>{$lang->dnt_prt_like}</b><br />";
 			if($lid == 2)
@@ -1590,7 +1591,7 @@ function dnt_post_rate_xmlhttp()
 			}
 			if($dnt_prt_total > $limit_users)
 			{
-				$dnt_prt_total = $limit_users - $dnt_prt_total;
+				$dnt_prt_total = $dnt_prt_total - $limit_users;
 				$dnt_prt_total = $lang->sprintf($lang->dnt_prt_total_items, $dnt_prt_total);
 			}
 			else			
@@ -1601,6 +1602,8 @@ function dnt_post_rate_xmlhttp()
 		}
 		else
 		{
+			$dnt_prt_name = "";
+			$dnt_prt_total = "";			
 			if($lid == 1)
 				$dnt_prt_uname = "<b>{$lang->dnt_prt_like}</b><br />";
 			if($lid == 2)
@@ -2992,5 +2995,5 @@ function dnt_post_rate_update163()
 	find_replace_templatesets("postbit", '#'.preg_quote('post_content').'#', 'post_content{$post[\'dnt_prt_hl_post\']}', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('post_content').'#', 'post_content{$post[\'dnt_prt_hl_post\']}', 0);	
 	flash_message($lang->dnt_prt_update_version, 'success');
-	admin_redirect('index.php?module=config-plugins');	
+	admin_redirect('index.php?module=config-plugins');
 }
