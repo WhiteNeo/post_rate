@@ -27,12 +27,12 @@ $l['dnt_prt_remove_rate_question'] = "Quieres eliminar tu emoción en este mensa
 $l['dnt_prt_remove_rate'] = "Emoción eliminada correctamente...";
 $l['dnt_prt_rates_removed'] = "Todas las emociones para este mensaje han sido eliminadas.";
 $l['dnt_prt_rates_page_title'] = "Emociones";
-$l['dnt_prt_has_rated_you'] = " a reaccionado con {2} al usuario {1} en el mensaje <a href=\"{3}\">{4}</a> <span class=\"smalltext\" style=\"float:right\">{5} ({6})</span>";
+$l['dnt_prt_has_rated_you'] = " reaccionó con {2} para {1} en el mensaje <a href=\"{3}\">{4}</a> <span class=\"smalltext\" style=\"float:right\">{5} ({6})</span>";
 $l['dnt_prt_error_title'] = "Error del sistema de emociones";
 $l['dnt_prt_error'] = "La petición que ha solicitado es incorrecta, por favor verifique que la dirección url sea correcta....";
 $l['dnt_prt_rates_given'] = "<span style=\"display:block\">Emociones Brindadas: <strong><a href=\"{2}\">{1}</a></strong></span>";
 $l['dnt_prt_rates_received'] = "<span style=\"display:block\">Emociones Recibidas: <strong><a href=\"{2}\">{1}</a></strong></span>";
-$l['dnt_prt_you'] = "Tú";
+$l['dnt_prt_you'] = "Ti";
 $l['dnt_prt_top5_rates_rec'] = "Lista de emociones recibidas<br />";
 $l['dnt_prt_top5_rates_giv'] = "Lista de emociones brindadas<br />";
 $l['dnt_prt_stats'] = "Emociones dadas y recibidas.";

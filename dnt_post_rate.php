@@ -117,7 +117,7 @@ if($mybb->input['action'] == "get_thread_rates")
 	else
 		$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_thread_rates&amp;lid={$lid}&amp;dnt_prt_tid={$tid}");
 		
-	$query = $db->query("SELECT dp.*, u.*, ru.uid as ruid, ru.username as runame, ru.usergroup as rug, ru.displaygroup as rudg, t.fid, t.tid, t.visible, t.firstpost, p.subject, p.pid FROM ".TABLE_PREFIX."dnt_post_rate dp
+	$query = $db->query("SELECT dp.*, u.*, ru.uid as ruid, ru.username as runame, ru.usergroup as rug, ru.displaygroup as rdg, t.fid, t.tid, t.visible, t.firstpost, p.subject, p.pid FROM ".TABLE_PREFIX."dnt_post_rate dp
 		LEFT JOIN ".TABLE_PREFIX."users u
 		ON (dp.dnt_prt_sender=u.uid)
 		LEFT JOIN ".TABLE_PREFIX."users ru
@@ -194,7 +194,7 @@ if($mybb->input['action'] == "get_thread_rates")
 			if($dnt_prt_rows['dnt_prt_user'] == $mybb->user['uid'])
 			{
 				$dnt_prt_rows['runame'] = $lang->dnt_prt_you;
-				$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $mybb->user['usergroup'], $mybb->user['displaygroup']);
+				$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $dnt_prt_rows['rug'], $dnt_prt_rows['rdg']);
 				$dnt_prt_rows['runame'] = build_profile_link($dnt_prt_rows['runame'], $mybb->user['uid']);
 			}			
 			else
@@ -296,7 +296,7 @@ else if($mybb->input['action'] == "get_received_rates")
 	
 	$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_received_rates&amp;uid={$mybb->input['uid']}");
 		
-	$query = $db->query("SELECT dp.*, u.*, ru.username as runame, ru.uid as ruid, ru.usergroup as rug, ru.displaygroup as rudg, t.fid, t.tid, t.visible, p.subject, p.pid FROM ".TABLE_PREFIX."dnt_post_rate dp
+	$query = $db->query("SELECT dp.*, u.*, ru.username as runame, ru.uid as ruid, ru.usergroup as rug, ru.displaygroup as rdg, t.fid, t.tid, t.visible, p.subject, p.pid FROM ".TABLE_PREFIX."dnt_post_rate dp
 		LEFT JOIN ".TABLE_PREFIX."users u
 		ON (dp.dnt_prt_sender=u.uid)
 		LEFT JOIN ".TABLE_PREFIX."users ru
@@ -369,7 +369,7 @@ else if($mybb->input['action'] == "get_received_rates")
 			if($dnt_prt_rows['ruid'] == $mybb->user['uid'])
 			{
 				$dnt_prt_rows['runame'] = $lang->dnt_prt_you;
-				$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $mybb->user['usergroup'], $mybb->user['displaygroup']);
+				$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $dnt_prt_rows['rug'], $dnt_prt_rows['rdg']);
 				$dnt_prt_rows['runame'] = build_profile_link($dnt_prt_rows['runame'], $mybb->user['uid']);
 			}			
 			else
@@ -471,7 +471,7 @@ else if($mybb->input['action'] == "get_given_rates")
 	
 	$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_given_rates&amp;uid={$mybb->input['uid']}");
 		
-	$query = $db->query("SELECT dp.*, u.*, ru.username as runame, ru.usergroup as rug, ru.displaygroup as rudg, ru.uid as ruid, t.fid, t.tid, t.visible, t.firstpost, p.subject, p.pid FROM ".TABLE_PREFIX."dnt_post_rate dp
+	$query = $db->query("SELECT dp.*, u.*, ru.username as runame, ru.usergroup as rug, ru.displaygroup as rdg, ru.uid as ruid, t.fid, t.tid, t.visible, t.firstpost, p.subject, p.pid FROM ".TABLE_PREFIX."dnt_post_rate dp
 		LEFT JOIN ".TABLE_PREFIX."users u
 		ON (dp.dnt_prt_sender=u.uid)
 		LEFT JOIN ".TABLE_PREFIX."users ru
@@ -544,7 +544,7 @@ else if($mybb->input['action'] == "get_given_rates")
 			if($dnt_prt_rows['ruid'] == $mybb->user['uid'])
 			{
 				$dnt_prt_rows['runame'] = $lang->dnt_prt_you;
-				$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $mybb->user['usergroup'], $mybb->user['displaygroup']);
+				$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $dnt_prt_rows['rug'], $dnt_prt_rows['rdg']);
 				$dnt_prt_rows['runame'] = build_profile_link($dnt_prt_rows['runame'], $mybb->user['uid']);
 			}			
 			else
