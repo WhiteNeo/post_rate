@@ -6,7 +6,7 @@
  */
  
 $l['dnt_prt_rate'] = "Emociones";
-$l['dnt_prt_rated'] = "Se ha agregado su emoción correctamente";
+$l['dnt_prt_rated'] = "Se ha agregado su emoción correctamente\nda click en tu emoción para removerla";
 $l['dnt_prt_total'] = '<span style="display:block">Este post contiene {1} emociones de usuarios.</span>';
 $l['dnt_prt_view_all'] = '<span style="float:right;"><a href="{1}">Ver Todas</a></span>';
 $l['dnt_prt_total_best'] = "El mejor mensaje de este usuario con {1} emociones es:<br />";
@@ -44,4 +44,6 @@ $l['dnt_prt_thread_dont_received'] = "No hay emociones en este mensaje aún";
 $l['dnt_prt_dont_received'] = "No hay emociones recibidas para este usuario";
 $l['dnt_prt_dont_given'] = "No hay emociones dadas por este usuario";
 $l['dnt_prt_antiflood'] = "Debes esperar {1} segundos para realizar esta acción";
-$l['dnt_prt_total_items'] = "y {1} más...";
+$l['dnt_prt_total_items'] = "<i>y {1} más...</i>";
+$l['dnt_prt_guests'] = "Tú debes <a href=\"member.php?action=register\">registrarte para ver estos contenidos</a>.";
+$l['dnt_prt_remove_rate_error'] = "No tienes permiso de eliminar tus emociones";
