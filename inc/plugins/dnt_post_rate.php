@@ -2613,7 +2613,7 @@ function do_dnt_prt_threads_recount()
 			$pcl['dnt_prt_rates'] = serialize($pcl['dnt_prt_rates']);
 			$db->update_query("threads", array("dnt_prt_rates_threads" => $db->escape_string($pcl['dnt_prt_rates']), "dnt_prt_total" => $db->escape_string($total)), "tid='{$pcl['dnt_prt_tid']}'");
 			$db->update_query("posts", array("dnt_prt_rates_posts" => $db->escape_string($pcl['dnt_prt_rates'])), "pid='{$pcl['dnt_prt_pid']}'");
-			$db->update_query("threads", array("dnt_prt_rates_threads_post" => $db->escape_string($pcl['dnt_prt_rates'])), "firstpost='{$pcl['dnt_prt_pid']}'");			
+			$db->update_query("threads", array("dnt_prt_rates_threads_post" => $db->escape_string($pcl['dnt_prt_rates'])), "tid='{$pcl['dnt_prt_tid']}' AND firstpost='{$pcl['dnt_prt_pid']}'");			
 		}		
 	}
 	else
@@ -2649,7 +2649,7 @@ function do_dnt_prt_threads_recount()
 				'total' => (int)$total
 			);
 			$pcl['dnt_prt_rates'] = serialize($pcl['dnt_prt_rates']);
-			$db->update_query("threads", array("dnt_prt_rates_threads_post" => $db->escape_string($pcl['dnt_prt_rates']), "dnt_prt_total" => $db->escape_string($total)), "tid='{$pcl['dnt_prt_tid']}'");		
+			$db->update_query("threads", array("dnt_prt_rates_threads" => $db->escape_string($pcl['dnt_prt_rates']), "dnt_prt_total" => $db->escape_string($total)), "tid='{$pcl['dnt_prt_tid']}'");		
 		}
 		
 		$query = $db->simple_select("dnt_post_rate", "*", '', array('order_by' => 'dnt_prt_pid', 'group_by' => 'dnt_prt_pid', 'order_dir' => 'asc', 'limit_start' => $start, 'limit' => $per_page));
@@ -2680,7 +2680,7 @@ function do_dnt_prt_threads_recount()
 			);
 			$pcl['dnt_prt_rates'] = serialize($pcl['dnt_prt_rates']);
 			$db->update_query("posts", array("dnt_prt_rates_posts" => $db->escape_string($pcl['dnt_prt_rates'])), "pid='{$pcl['dnt_prt_pid']}'");		
-			$db->update_query("threads", array("dnt_prt_rates_threads_post" => $db->escape_string($pcl['dnt_prt_rates'])), "firstpost='{$pcl['dnt_prt_pid']}'");			
+			$db->update_query("threads", array("dnt_prt_rates_threads_post" => $db->escape_string($pcl['dnt_prt_rates'])), "tid='{$pcl['dnt_prt_tid']}' AND firstpost='{$pcl['dnt_prt_pid']}'");			
 		}		
 	}
 	
