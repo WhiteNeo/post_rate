@@ -384,12 +384,12 @@ function dnt_post_rate_activate()
 	}
 	
 	// Creating stylesheet...
-	$stylesheet_css = '.post_rate_list{position:absolute;z-index:9999;background:#fff;right:80px;margin-top:-95px;border-radius: 40px}
-.post_rate_button{color:#fff;text-shadow:1px 1px 1px #000;height:26px;line-height:26px;padding:0 10px;text-decoration:none;margin-left:4px;display:inline-block;cursor:pointer;background:#202020;border-radius:4px;font-size:13px;background:#0F5579 !important}
+	$stylesheet_css = '.post_rate_list{position:absolute;z-index:9999;background:#fff;margin: -95px 0px 0px 420px;border-radius: 40px}
+.post_rate_button{color:#fff;text-shadow:1px 1px 1px #000;height:26px;line-height:26px;padding:0 10px;text-decoration:none;margin-left:4px;display:inline-block;cursor:pointer;border-radius:4px;font-size:13px;background:#0F5579}
 .post_rate_btn img{cursor:pointer;margin-top: 2px;transform: scale(1.00);transition: all 0.25s ease-in;}
 .post_rate_btn img:hover{transform: scale(1.25);transition: all 0.25s ease-in;background: #e6e6e6; border-radius: 40px;}
-.ptr_list{display:none;position:absolute;background:#0b0a0a;color:#e4dada;padding:6px;border-radius:3px;font-size:10px;margin-top: 20px;margin-left: 2px;z-index: 1}
-.ptr_list_title {display: none;position: absolute;background: #0b0a0a;color: #fff;padding: 6px;border-radius: 12px;font-size: 10px;font-weight: bold;margin-left: -10px;z-index: 1}
+.ptr_list{display:none;position:absolute;background:#0b0a0a;color:#e4dada;padding:6px;border-radius:3px;font-size:10px;margin-top: 20px;margin-left: 2px; z-index: 999999;width:auto;font-weight: normal;}
+.ptr_list_title {display: none;position: absolute;background: #0b0a0a;color: #fff;padding: 6px;border-radius: 12px;font-size: 9px;font-weight: bold;margin-left: -10px;z-index: 999999;text-align: center;min-width: 55px;width: auto;font-weight: normal;}
 .dnt_prt_list_span {padding: 0 40px;height: 40px;position: relative}
 .dnt_prt_ulist > span{display:block}
 .dnt_prt_list{padding:10px;font-size:13px;display:inline-block;width:98%}
@@ -401,10 +401,10 @@ function dnt_post_rate_activate()
 .dnt_prt_div_rate span{margin-left:20px;font-weight:bold}
 .dnt_prt_list .dnt_prt_div_rate{cursor:context-menu}
 .dnt_prt_list_avatar{padding: 3px;border: 1px solid #D8DFEA;width: 30px;height: 30px;border-radius: 50%;margin-top: -10px;position: absolute}
-.clasify_post_norates_msg{background-color:rgba(185,65,25,0.3);margin:5px;color:#6f2f16;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
-.clasify_post_rates_msg{background-color:rgba(102,189,218,0.3);margin:5px;color:#315284;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
-.clasify_post_rates_msg img{cursor:pointer}
+.clasify_post_norates_msg{background-color:rgba(185,65,25,0.3);margin:5px;color:#6f2f16;font-weight:bold;font-size:11px;padding:10px;border-radius:3px;display: block;width: 95%;}
+.clasify_post_rates_msg{background-color:rgba(102,189,218,0.3);margin:5px;color:#315284;font-weight:bold;font-size:11px;padding:10px;border-radius:3pxdisplay: block;width: 95%;}
 .clasify_post_rates_msg_span{font-size:8px;font-weight:bold;position:absolute;background:#ce5757;padding:1px 3px;color:#f0f0f0;border-radius:4px;border-radius:3px;margin-top:-5px}
+.clasify_post_rates_msg img{cursor:pointer}
 @media screen and (-moz-min-device-pixel-ratio:0) {
 	.dnt_prt_div_rate img{margin-top: -12px}
 }
@@ -412,7 +412,14 @@ function dnt_post_rate_activate()
 	.dnt_prt_div_rate img{margin-top: 0px}
 	.ptr_list{margin-top: 5px;}
 	.dnt_prt_div_rate img {margin-top: -1px}
+}
+@media only screen and (min-device-width : 320px) and (max-device-width : 550px) {
+	.post_rate_list{position:absolute;z-index:9999;background:#fff;right: 90px;margin-top: -65px;border-radius: 35px}
+	.post_rate_button {color: #fff;text-shadow: 1px 1px 1px #000;height: 27px;line-height: 25px;padding: 0 6px;text-decoration: none;display: inline-block;cursor: pointer;border-radius: 4px;font-size: 12px;background: #0F5579 !important;position: absolute;margin: -29px 0px 0px 32px;}
+	.post_rate_btn img{cursor:pointer;margin-top: 2px;transform: scale(1.00);transition: all 0.25s ease-in;width: 35px;height: 35px;}
+	.post_rate_btn img:hover{transform: scale(1.25);transition: all 0.25s ease-in;background: #e6e6e6; border-radius: 40px;}f0f0f0;border-radius:4px;border-radius:3px;margin-top:-5px}	
 }';
+
 
 	$stylesheet = array(
 		"name"			=> "pcl.css",
