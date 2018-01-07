@@ -132,7 +132,7 @@ function DNTRemoveRate(lid,tid,pid)
 }
 function DNTCantRemoveRate(pid)
 {
-	$.jGrowl(dnt_prt_remove_error, {theme:'jgrowl_errow'});
+	$.jGrowl(dnt_prt_remove_error, {theme:'jgrowl_error'});
 }
 function DNTShowMenu(pid)
 {
