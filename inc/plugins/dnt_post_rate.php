@@ -1835,6 +1835,7 @@ function dnt_post_rate_xmlhttp()
 		if(isset($update_data_post))
 		{
 			$db->update_query("posts", $update_data_post, "tid='{$tid}' AND pid='{$pid}'");
+			if($thread['firstpost'] == $pid)			
 			$db->update_query("threads", $update_data_thread, "tid='{$tid}'");			
 		}
 	
@@ -2088,6 +2089,7 @@ function dnt_post_rate_xmlhttp()
 		if(isset($update_data_post))
 		{
 			$db->update_query("posts", $update_data_post, "tid='{$tid}' AND pid='{$pid}'");
+			if($thread['firstpost'] == $pid)			
 			$db->update_query("threads", $update_data_thread, "tid='{$tid}'");
 			
 		}
