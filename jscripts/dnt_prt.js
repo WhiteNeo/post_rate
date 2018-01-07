@@ -119,7 +119,7 @@ function DNTRemoveRate(lid,tid,pid)
 			var dreca = $('span#dnt_prt_reca'+pid).text();
 			dreca--;
 			$('span#dnt_prt_reca'+pid).text(dreca);
-			$("#post_rates_btn_"+pid).removeClass("pcl_div_rate").css("display","inline").removeAttr("onclick").html(request.button);
+			$("#post_rates_btn_"+pid).removeClass("dnt_prt_div_rate").css("display","inline").removeAttr("onclick").html(request.button);
 			$.jGrowl(dnt_prt_remove_success, {theme:'jgrowl_success'});
 			$("#clasify_post_rates_msgs_list"+pid).html(request.templates);
 			if(request.is_popular == 0)
@@ -132,7 +132,7 @@ function DNTRemoveRate(lid,tid,pid)
 }
 function DNTCantRemoveRate(pid)
 {
-	$.jGrowl(dnt_prt_remove_error, {theme:'jgrowl_error'});
+	$.jGrowl(dnt_prt_remove_error, {theme:'jgrowl_errow'});
 }
 function DNTShowMenu(pid)
 {
