@@ -130,6 +130,10 @@ function DNTRemoveRate(lid,tid,pid)
 		}
 	});	
 }
+function DNTCantRemoveRate(pid)
+{
+	$.jGrowl(dnt_prt_remove_error, {theme:'jgrowl_errow'});
+}
 function DNTShowMenu(pid)
 {
 	var dntumenu = $("#post_rates_"+pid);
