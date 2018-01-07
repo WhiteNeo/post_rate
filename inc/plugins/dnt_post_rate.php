@@ -399,6 +399,7 @@ function dnt_post_rate_activate()
 .dnt_prt_div_rate{display:inline-block !important;cursor:pointer}
 .dnt_prt_div_rate img{width:19px;height:19px;position:absolute}
 .dnt_prt_div_rate span{margin-left:20px;font-weight:bold}
+.dnt_prt_list .dnt_prt_div_rate{cursor:context-menu}
 .dnt_prt_list_avatar{padding: 3px;border: 1px solid #D8DFEA;width: 30px;height: 30px;border-radius: 50%;margin-top: -10px;position: absolute}
 .clasify_post_norates_msg{background-color:rgba(185,65,25,0.3);margin:5px;color:#6f2f16;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
 .clasify_post_rates_msg{background-color:rgba(102,189,218,0.3);margin:5px;color:#315284;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
@@ -891,7 +892,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_uname',
 		'template' => "<div class=\"dnt_prt_ulist\">
-	<strong>{\$dnt_prt_name}</strong><br />
+	{\$dnt_prt_name}
 	{\$dnt_prt_uname}
 	{\$dnt_prt_total}
 </div>",
@@ -1379,7 +1380,7 @@ function dnt_post_rate_post_rates(&$post)
 					if($mybb->settings['dnt_post_rate_remove'] == 1)
 						$post['dnt_prt_remove'] = "onclick=\"javascript:DNTRemoveRate({$dnt_prt_result['dnt_prt_type']},{$tid},{$pid})\"";
 					else
-						$post['dnt_prt_remove'] =  "";					
+						$post['dnt_prt_remove'] =  "onclick=\"javascript:DNTCantRemoveRate({$pid})\"";				
 					if($dnt_prt_result['dnt_prt_type'] == 1)
 						eval("\$dnt_prt_results = \"".$templates->get("dnt_prt_results_1")."\";");
 					if($dnt_prt_result['dnt_prt_type'] == 2)
@@ -1486,17 +1487,17 @@ function dnt_post_rate_xmlhttp()
 			WHERE dnt_prt_tid='{$tid}' AND dnt_prt_pid='{$pid}' AND dnt_prt_type='{$lid}'{$dnt_prt_date}
 			ORDER BY dnt_prt_date DESC LIMIT {$limit_users}");
 			if($lid == 1)
-				$dnt_prt_name = $lang->dnt_prt_like;
+				$dnt_prt_name = "<b>{$lang->dnt_prt_like}</b><br />";
 			if($lid == 2)
-				$dnt_prt_name = $lang->dnt_prt_love;
+				$dnt_prt_name = "<b>{$lang->dnt_prt_love}</b><br />";
 			if($lid == 3)
-				$dnt_prt_name = $lang->dnt_prt_wow;
+				$dnt_prt_name = "<b>{$lang->dnt_prt_wow}</b><br />";
 			if($lid == 4)
-				$dnt_prt_name = $lang->dnt_prt_smile;
+				$dnt_prt_name = "<b>{$lang->dnt_prt_smile}</b><br />";
 			if($lid == 5)
-				$dnt_prt_name = $lang->dnt_prt_cry;
+				$dnt_prt_name = "<b>{$lang->dnt_prt_cry}</b><br />";
 			if($lid == 6)
-				$dnt_prt_name = $lang->dnt_prt_angry;
+				$dnt_prt_name = "<b>{$lang->dnt_prt_angry}</b><br />";
 			while($dnt_prt_rows = $db->fetch_array($dnt_prt_query))
 			{
 				$dnt_prt_total = (int)$dnt_prt_rows['totitems'];
@@ -1520,17 +1521,17 @@ function dnt_post_rate_xmlhttp()
 		else
 		{
 			if($lid == 1)
-				$dnt_prt_uname = $lang->dnt_prt_like;
-			else if($lid == 2)
-				$dnt_prt_uname = $lang->dnt_prt_love;
-			else if($lid == 3)
-				$dnt_prt_uname = $lang->dnt_prt_wow;
-			else if($lid == 4)
-				$dnt_prt_uname = $lang->dnt_prt_smile;
-			else if($lid == 5)
-				$dnt_prt_uname = $lang->dnt_prt_cry;
-			else if($lid == 6)
-				$dnt_prt_uname = $lang->dnt_prt_angry;			
+				$dnt_prt_uname = "<b>{$lang->dnt_prt_like}</b><br />";
+			if($lid == 2)
+				$dnt_prt_uname = "<b>{$lang->dnt_prt_love}</b><br />";
+			if($lid == 3)
+				$dnt_prt_uname = "<b>{$lang->dnt_prt_wow}</b><br />";
+			if($lid == 4)
+				$dnt_prt_uname = "<b>{$lang->dnt_prt_smile}</b><br />";
+			if($lid == 5)
+				$dnt_prt_uname = "<b>{$lang->dnt_prt_cry}</b><br />";
+			if($lid == 6)
+				$dnt_prt_uname = "<b>{$lang->dnt_prt_angry}</b><br />";
 			eval("\$template = \"".$templates->get("dnt_prt_uname")."\";");
 			echo json_encode($template);
 			exit;			
@@ -1568,17 +1569,17 @@ function dnt_post_rate_xmlhttp()
 			WHERE {$sta} AND dnt_prt_type='{$lid}'{$dnt_prt_date}
 			ORDER BY dnt_prt_date DESC LIMIT {$limit_users}");
 			if($lid == 1)
-				$dnt_prt_name = $lang->dnt_prt_like;
+				$dnt_prt_name = "<b>{$lang->dnt_prt_like}</b><br />";
 			if($lid == 2)
-				$dnt_prt_name = $lang->dnt_prt_love;
+				$dnt_prt_name = "<b>{$lang->dnt_prt_love}</b><br />";
 			if($lid == 3)
-				$dnt_prt_name = $lang->dnt_prt_wow;
+				$dnt_prt_name = "<b>{$lang->dnt_prt_wow}</b><br />";
 			if($lid == 4)
-				$dnt_prt_name = $lang->dnt_prt_smile;
+				$dnt_prt_name = "<b>{$lang->dnt_prt_smile}</b><br />";
 			if($lid == 5)
-				$dnt_prt_name = $lang->dnt_prt_cry;
+				$dnt_prt_name = "<b>{$lang->dnt_prt_cry}</b><br />";
 			if($lid == 6)
-				$dnt_prt_name = $lang->dnt_prt_angry;			
+				$dnt_prt_name = "<b>{$lang->dnt_prt_angry}</b><br />";
 			while($dnt_prt_rows = $db->fetch_array($dnt_prt_query))
 			{			
 				$dnt_prt_date = my_date($mybb->settings['dateformat'], $dnt_prt_rows['dnt_prt_date']);
@@ -1601,17 +1602,17 @@ function dnt_post_rate_xmlhttp()
 		else
 		{
 			if($lid == 1)
-				$dnt_prt_uname = $lang->dnt_prt_like;
-			else if($lid == 2)
-				$dnt_prt_uname = $lang->dnt_prt_love;
-			else if($lid == 3)
-				$dnt_prt_uname = $lang->dnt_prt_wow;
-			else if($lid == 4)
-				$dnt_prt_uname = $lang->dnt_prt_smile;
-			else if($lid == 5)
-				$dnt_prt_uname = $lang->dnt_prt_cry;
-			else if($lid == 6)
-				$dnt_prt_uname = $lang->dnt_prt_angry;			
+				$dnt_prt_uname = "<b>{$lang->dnt_prt_like}</b><br />";
+			if($lid == 2)
+				$dnt_prt_uname = "<b>{$lang->dnt_prt_love}</b><br />";
+			if($lid == 3)
+				$dnt_prt_uname = "<b>{$lang->dnt_prt_wow}</b><br />";
+			if($lid == 4)
+				$dnt_prt_uname = "<b>{$lang->dnt_prt_smile}</b><br />";
+			if($lid == 5)
+				$dnt_prt_uname = "<b>{$lang->dnt_prt_cry}</b><br />";
+			if($lid == 6)
+				$dnt_prt_uname = "<b>{$lang->dnt_prt_angry}</b><br />";
 			eval("\$template = \"".$templates->get("dnt_prt_uname")."\";");
 			echo json_encode($template);
 			exit;			
