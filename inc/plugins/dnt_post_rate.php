@@ -45,9 +45,9 @@ function dnt_post_rate_info()
 
 	if(!isset($mybb->settings['dnt_post_rate_version']) && isset($mybb->settings['dnt_post_rate_active']))
 		$dpr_config .= '<div style="float: right;"><a href="index.php?module=config-plugins&amp;action=dnt_post_rate_verify_update" style="color:#035488; padding: 21px; text-decoration: none;">'.htmlspecialchars_uni($lang->dnt_prt_update_to_15).'</a></div>';
-	else if($mybb->settings['dnt_post_rate_version'] <= 160 && $mybb->settings['dnt_post_rate_active'])
+	else if($mybb->settings['dnt_post_rate_version'] <= 163 && $mybb->settings['dnt_post_rate_active'])
 		$dpr_config .= '<div style="float: right;"><a href="index.php?module=config-plugins&amp;action=dnt_post_rate_verify_update" style="color:#035488; padding: 21px; text-decoration: none;">'.htmlspecialchars_uni($lang->dnt_prt_update_to_16).'</a></div>';
-	else if($mybb->settings['dnt_post_rate_version'] > 160 && $mybb->settings['dnt_post_rate_active'])
+	else if($mybb->settings['dnt_post_rate_version'] < 164 && $mybb->settings['dnt_post_rate_active'])
 		$dpr_config .= "";
 	
 	return array(
@@ -404,14 +404,13 @@ function dnt_post_rate_activate()
 .clasify_post_rates_msg{background-color:rgba(102,189,218,0.3);margin:5px;color:#315284;font-weight:bold;font-size:11px;padding:10px;border-radius:3px}
 .clasify_post_rates_msg img{cursor:pointer}
 .clasify_post_rates_msg_span{font-size:8px;font-weight:bold;position:absolute;background:#ce5757;padding:1px 3px;color:#f0f0f0;border-radius:4px;border-radius:3px;margin-top:-5px}
-// Fix for Mozilla Firefox //
 @media screen and (-moz-min-device-pixel-ratio:0) {
 	.dnt_prt_div_rate img{margin-top: -12px}
 }
-// Fix for Chrome and Safari //
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 	.dnt_prt_div_rate img{margin-top: 0px}
 	.ptr_list{margin-top: 5px;}
+	.dnt_prt_div_rate img {margin-top: -1px}
 }';
 
 	$stylesheet = array(
@@ -2855,6 +2854,8 @@ function dnt_post_rate_verify_update()
 		dnt_post_rate_update16();
 	else if(isset($mybb->settings['dnt_post_rate_version']) && $mybb->settings['dnt_post_rate_version'] < 161)
 		dnt_post_rate_update161();
+	else if(isset($mybb->settings['dnt_post_rate_version']) && $mybb->settings['dnt_post_rate_version'] < 163)
+		dnt_post_rate_update163();	
 	else
 		dnt_post_rate_updated();
 }
