@@ -384,12 +384,12 @@ function dnt_post_rate_activate()
 	}
 	
 	// Creating stylesheet...
-	$stylesheet_css = '.post_rate_list{position:absolute;z-index:9999;background:#fff;margin: -95px 0px 0px 420px;border-radius: 40px}
+	$stylesheet_css = '.post_rate_list{position:absolute;z-index:9999;background:#fff;margin: -95px 0px 0px 225px;border-radius: 40px}
 .post_rate_button{color:#fff;text-shadow:1px 1px 1px #000;height:26px;line-height:26px;padding:0 10px;text-decoration:none;margin-left:4px;display:inline-block;cursor:pointer;border-radius:4px;font-size:13px;background:#0F5579}
 .post_rate_btn img{cursor:pointer;margin-top: 2px;transform: scale(1.00);transition: all 0.25s ease-in;}
 .post_rate_btn img:hover{transform: scale(1.25);transition: all 0.25s ease-in;background: #e6e6e6; border-radius: 40px;}
 .ptr_list{display:none;position:absolute;background:#0b0a0a;color:#e4dada;padding:6px;border-radius:3px;font-size:10px;margin-top: 20px;margin-left: 2px; z-index: 999999;width:auto;font-weight: normal;}
-.ptr_list_title {display: none;position: absolute;background: #0b0a0a;color: #fff;padding: 6px;border-radius: 12px;font-size: 9px;font-weight: bold;margin-left: -10px;z-index: 999999;text-align: center;min-width: 55px;width: auto;font-weight: normal;}
+.ptr_list_title {display: none;position: absolute;background: #0b0a0a;color: #fff;padding: 6px;border-radius: 12px;font-size: 9px;font-weight: bold;margin-left: -10px;z-index: 999999;text-align: center;min-width: 55px;width: auto;}
 .dnt_prt_list_span {padding: 0 40px;height: 40px;position: relative}
 .dnt_prt_ulist > span{display:block}
 .dnt_prt_list{padding:10px;font-size:13px;display:inline-block;width:98%}
