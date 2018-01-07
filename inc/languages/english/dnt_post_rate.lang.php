@@ -6,7 +6,7 @@
  */
 
 $l['dnt_prt_rate'] = "Rate Post";
-$l['dnt_prt_rated'] = "Post rated successfully";
+$l['dnt_prt_rated'] = "Post rated successfully\nClick your emoji to remove it";
 $l['dnt_prt_total'] = '<span style="display:block">This post has been rated {1} times.';
 $l['dnt_prt_view_all'] = '<span style="float:right;"><a href="{1}">View all</a></span>';
 $l['dnt_prt_total_best'] = "The best rated post of this user with {1} times is:<br />";
@@ -44,4 +44,6 @@ $l['dnt_prt_thread_dont_received'] = "There are no emojis yet in this post";
 $l['dnt_prt_dont_received'] = "There are no emojis received for this user";
 $l['dnt_prt_dont_given'] = "There are no emojis given for this user";
 $l['dnt_prt_antiflood'] = "You must wait {1} seconds to perform this action";
-$l['dnt_prt_total_items'] = "and {1} more...";
+$l['dnt_prt_total_items'] = "<i>and {1} more...</i>";
+$l['dnt_prt_guests'] = "You must <a href=\"member.php?action=register\">register to see this content</a>.";
+$l['dnt_prt_remove_rate_error'] = "You have no permissions to remove emojis";
