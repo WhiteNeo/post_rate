@@ -1156,6 +1156,7 @@ function dnt_post_rate_script()
 	var dnt_prt_success = \"{$lang->dnt_prt_rated}\";
 	var dnt_prt_remove_question = \"{$lang->dnt_prt_remove_rate_question}\";
 	var dnt_prt_remove_success = \"{$lang->dnt_prt_remove_rate}\";
+	var dnt_prt_remove_error = \"{$lang->dnt_prt_remove_rate_error}\";		
 </script>";
 		
 	}
