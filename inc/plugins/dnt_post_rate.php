@@ -1151,7 +1151,7 @@ function dnt_post_rate_script()
 			$dnt_prt_min = ".min.js";
 		else
 			$dnt_prt_min = ".js";
-		$dnt_prt_script = "<script type=\"text/javascript\" src=\"{$mybb->asset_url}/jscripts/dnt_prt{$dnt_prt_min}?ver=162\"></script>
+		$dnt_prt_script = "<script type=\"text/javascript\" src=\"{$mybb->asset_url}/jscripts/dnt_prt{$dnt_prt_min}?ver=163\"></script>
 <script type=\"text/javascript\">
 	var dnt_prt_success = \"{$lang->dnt_prt_rated}\";
 	var dnt_prt_remove_question = \"{$lang->dnt_prt_remove_rate_question}\";
@@ -1883,8 +1883,8 @@ function dnt_post_rate_xmlhttp()
 
 		if($mybb->settings['dnt_post_rate_remove'] == 1)
 			$post['dnt_prt_remove'] = "onclick=\"javascript:DNTRemoveRate({$lid},{$tid},{$pid})\"";
-			else
-		$post['dnt_prt_remove'] =  "";			
+		else
+			$post['dnt_prt_remove'] =  "onclick=\"javascript:DNTCantRemoveRate({$pid})\"";
 		if($lid == 1)
 			eval("\$dnt_prt_results .= \"".$templates->get("dnt_prt_results_1")."\";");
 		if($lid == 2)
@@ -2139,8 +2139,8 @@ function dnt_post_rate_xmlhttp()
 	
 		if($mybb->settings['dnt_post_rate_remove'] == 1)
 			$post['dnt_prt_remove'] = "onclick=\"javascript:DNTRemoveRate({$lid},{$tid},{$pid})\"";
-			else
-		$post['dnt_prt_remove'] =  "";	
+		else
+			$post['dnt_prt_remove'] =  "onclick=\"javascript:DNTCantRemoveRate({$pid})\"";
 		if($lid == 1)
 			eval("\$dnt_prt_results .= \"".$templates->get("dnt_prt_results_1")."\";");
 		if($lid == 2)
