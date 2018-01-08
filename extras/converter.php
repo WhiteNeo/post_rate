@@ -2,7 +2,7 @@
 /**
  * Autor: Dark Neo
  * Plugin: Post Rate
- * Versión: 1.6
+ * Versión: 1.5
  * Single Converter
  */
 define("IN_MYBB", 1);
@@ -85,14 +85,26 @@ $thx = array();
 		while ($post_likes = $db->fetch_array($query)) {
 			$pid = (int) $post_likes['post_id'];
 			$req = $db->simple_select('posts','tid,dateline,uid',"pid={$pid}");
-			$result = $db->fetch_array($req);
+			$result = $db->fetch_array($req);			
+			if(function_exists('simplelikes_info'))
+				$likes_info = simplelikes_info();
+			if($likes_info['version'] < '2.0.0')
+			{
+				$puid = $post_likes['user_uid'];
+				$date = $result['dateline'];
+			}
+			else
+			{
+				$date = $post_likes['created_at'];
+				$puid = $post_likes['user_id'];
+			}
 			$thx[] = array(
 				'dnt_prt_type'		=> 1,			
 				'dnt_prt_tid'		=> (int) $result['tid'],
 				'dnt_prt_pid'	 	=> (int) $post_likes['post_id'],
 				'dnt_prt_user'		=> (int) $result['uid'],				
-				'dnt_prt_sender'	=> (int) $post_likes['user_uid'],
-				'dnt_prt_date'		=> (int) $result['dateline'],
+				'dnt_prt_sender'	=> (int) $puid,
+				'dnt_prt_date'		=> (int) $date,
 				'dnt_prt_count'		=> 1
 			);
 			$batch++;
