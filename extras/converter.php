@@ -2,7 +2,7 @@
 /**
  * Autor: Dark Neo
  * Plugin: Post Rate
- * Versión: 1.5
+ * Versión: 1.6
  * Single Converter
  */
 define("IN_MYBB", 1);
@@ -17,7 +17,6 @@ if(!$mybb->usergroup['cancp'])
 ini_set('max_execution_time', 300);
 $batch = 0;
 $total = 0;
-$prefix = 'g33k_';
 $thx = array();
 	if($db->table_exists("thx") && $db->table_exists('dnt_post_rate'))
 	{
@@ -48,10 +47,10 @@ $thx = array();
 		$db->insert_query_multiple('dnt_post_rate', $thx);
 		echo "<span style=\"color: green;\">Done!!!</span><br />System has converted {$total} items from Thanks System to Post Rate<br/>Rememer to remove this file (converter.php) from your server...<br />Make a recount of post rates to retrieve all necesary data into your new dnt_post_rate database";
 	}
-	else if($db->table_exists($prefix.'thankyoulike_thankyoulike') && $db->table_exists('dnt_post_rate'))
+	else if($db->table_exists('g33k_thankyoulike_thankyoulike') && $db->table_exists('dnt_post_rate'))
 	{
 		$db->query("TRUNCATE TABLE `".TABLE_PREFIX."dnt_post_rate`");		
-		$query = $db->simple_select($prefix.'thankyoulike_thankyoulike', '*');
+		$query = $db->simple_select('g33k_thankyoulike_thankyoulike', '*');
 		while ($thanks = $db->fetch_array($query)) 
 		{
 			$pid = (int) $thanks['pid'];
@@ -79,22 +78,22 @@ $thx = array();
 	echo "<span style=\"color: green;\">Done!!!</span><br />System has converted {$total} items from TYL to Post Rate<br/>Rememer to remove this file (converter.php) from your server...<br />Make a recount of post rates to retrieve all necesary data into your new dnt_post_rate database";
 	}
 	
-	else if($db->table_exists("post_likes") && $db->table_exists('thx'))
+	else if($db->table_exists("post_likes") && $db->table_exists('dnt_post_rate'))
 	{
 		$db->query("TRUNCATE TABLE `".TABLE_PREFIX."dnt_post_rate`");		
 		$query = $db->simple_select('post_likes', '*');
-		while ($thanks = $db->fetch_array($query)) {
-			$pid = (int) $thanks['post_id'];
+		while ($post_likes = $db->fetch_array($query)) {
+			$pid = (int) $post_likes['post_id'];
 			$req = $db->simple_select('posts','tid,dateline,uid',"pid={$pid}");
 			$result = $db->fetch_array($req);
 			$thx[] = array(
 				'dnt_prt_type'		=> 1,			
 				'dnt_prt_tid'		=> (int) $result['tid'],
-				'dnt_prt_pid'	 	=> (int) $thanks['post_id'],
+				'dnt_prt_pid'	 	=> (int) $post_likes['post_id'],
 				'dnt_prt_user'		=> (int) $result['uid'],				
-				'dnt_prt_sender'	=> (int) $thanks['user_uid'],
+				'dnt_prt_sender'	=> (int) $post_likes['user_uid'],
 				'dnt_prt_date'		=> (int) $result['dateline'],
-				'dnt_prt_count'		=> 1				
+				'dnt_prt_count'		=> 1
 			);
 			$batch++;
 			$total++;
