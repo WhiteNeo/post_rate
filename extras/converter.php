@@ -88,15 +88,15 @@ $thx = array();
 			$result = $db->fetch_array($req);			
 			if(function_exists('simplelikes_info'))
 				$likes_info = simplelikes_info();
-			if($likes_info['version'] < '2.0.0')
-			{
-				$puid = $post_likes['user_uid'];
-				$date = $result['dateline'];
-			}
-			else
+			if($likes_info['version'] >= '2.0.0')
 			{
 				$date = $post_likes['created_at'];
 				$puid = $post_likes['user_id'];
+			}
+			else
+			{
+				$puid = $post_likes['user_uid'];
+				$date = $result['dateline'];
 			}
 			$thx[] = array(
 				'dnt_prt_type'		=> 1,			
