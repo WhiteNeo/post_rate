@@ -147,18 +147,9 @@ if($mybb->input['action'] == "get_thread_rates")
 		
 		if($dnt_prt_rows['dnt_prt_sender'] > 0)
 		{
-			if($dnt_prt_rows['dnt_prt_sender'] == $mybb->user['uid'])
-			{
-				$dnt_prt_rows['username'] = $lang->dnt_prt_you;
-				$dnt_prt_rows['username'] = format_name($dnt_prt_rows['username'], $mybb->user['usergroup'], $mybb->user['displaygroup']);
-				$dnt_prt_rows['username'] = build_profile_link($dnt_prt_rows['username'], $mybb->user['uid']);
-			}
-			else
-			{
-				$dnt_prt_rows['username'] = htmlspecialchars_uni($dnt_prt_rows['username']);
-				$dnt_prt_rows['username'] = format_name($dnt_prt_rows['username'], $dnt_prt_rows['usergroup'], $dnt_prt_rows['displaygroup']);
-				$dnt_prt_rows['username'] = build_profile_link($dnt_prt_rows['username'], $dnt_prt_rows['uid']);
-			}
+			$dnt_prt_rows['username'] = htmlspecialchars_uni($dnt_prt_rows['username']);
+			$dnt_prt_rows['username'] = format_name($dnt_prt_rows['username'], $dnt_prt_rows['usergroup'], $dnt_prt_rows['displaygroup']);
+			$dnt_prt_rows['username'] = build_profile_link($dnt_prt_rows['username'], $dnt_prt_rows['uid']);
 		}
 		else
 			$dnt_prt_rows['username'] = $lang->guest;		
@@ -191,18 +182,9 @@ if($mybb->input['action'] == "get_thread_rates")
 			$dnt_prt_rows['url'] = $mybb->settings['bburl'] ."/". get_post_link($dnt_prt_rows['pid'], $dnt_prt_rows['tid']) . "#pid" . $dnt_prt_rows['pid'];
 		if($dnt_prt_rows['dnt_prt_user'] > 0)
 		{
-			if($dnt_prt_rows['dnt_prt_user'] == $mybb->user['uid'])
-			{
-				$dnt_prt_rows['runame'] = $lang->dnt_prt_you;
-				$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $dnt_prt_rows['rug'], $dnt_prt_rows['rdg']);
-				$dnt_prt_rows['runame'] = build_profile_link($dnt_prt_rows['runame'], $mybb->user['uid']);
-			}			
-			else
-			{
-				$dnt_prt_rows['runame'] = htmlspecialchars_uni($dnt_prt_rows['runame']);
-				$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $dnt_prt_rows['rug'], $dnt_prt_rows['rdg']);
-				$dnt_prt_rows['runame'] = build_profile_link($dnt_prt_rows['runame'], $dnt_prt_rows['ruid']);
-			}
+			$dnt_prt_rows['runame'] = htmlspecialchars_uni($dnt_prt_rows['runame']);
+			$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $dnt_prt_rows['rug'], $dnt_prt_rows['rdg']);
+			$dnt_prt_rows['runame'] = build_profile_link($dnt_prt_rows['runame'], $dnt_prt_rows['ruid']);
 		}
 		else 		
 			$dnt_prt_rows['runame'] = $lang->guest;			
@@ -325,18 +307,9 @@ else if($mybb->input['action'] == "get_received_rates")
 		
 		if($dnt_prt_rows['dnt_prt_sender'] > 0)
 		{
-			if($dnt_prt_rows['dnt_prt_sender'] == $mybb->user['uid'])
-			{
-				$dnt_prt_rows['username'] = $lang->dnt_prt_you;
-				$dnt_prt_rows['username'] = format_name($dnt_prt_rows['username'], $mybb->user['usergroup'], $mybb->user['displaygroup']);
-				$dnt_prt_rows['username'] = build_profile_link($dnt_prt_rows['username'], $mybb->user['uid']);
-			}
-			else
-			{
-				$dnt_prt_rows['username'] = htmlspecialchars_uni($dnt_prt_rows['username']);
-				$dnt_prt_rows['username'] = format_name($dnt_prt_rows['username'], $dnt_prt_rows['usergroup'], $dnt_prt_rows['displaygroup']);
-				$dnt_prt_rows['username'] = build_profile_link($dnt_prt_rows['username'], $dnt_prt_rows['uid']);
-			}
+			$dnt_prt_rows['username'] = htmlspecialchars_uni($dnt_prt_rows['username']);
+			$dnt_prt_rows['username'] = format_name($dnt_prt_rows['username'], $dnt_prt_rows['usergroup'], $dnt_prt_rows['displaygroup']);
+			$dnt_prt_rows['username'] = build_profile_link($dnt_prt_rows['username'], $dnt_prt_rows['uid']);
 		}
 		else
 			$dnt_prt_rows['username'] = $lang->guest;		
@@ -366,18 +339,9 @@ else if($mybb->input['action'] == "get_received_rates")
 		$dnt_prt_rows['url'] = $mybb->settings['bburl'] ."/". get_post_link($dnt_prt_rows['pid'], $dnt_prt_rows['tid']) . "#pid" . $dnt_prt_rows['pid'];
 		if($dnt_prt_rows['dnt_prt_user'] > 0)
 		{		
-			if($dnt_prt_rows['ruid'] == $mybb->user['uid'])
-			{
-				$dnt_prt_rows['runame'] = $lang->dnt_prt_you;
-				$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $dnt_prt_rows['rug'], $dnt_prt_rows['rdg']);
-				$dnt_prt_rows['runame'] = build_profile_link($dnt_prt_rows['runame'], $mybb->user['uid']);
-			}			
-			else
-			{
-				$dnt_prt_rows['runame'] = htmlspecialchars_uni($dnt_prt_rows['runame']);
-				$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $dnt_prt_rows['rug'], $dnt_prt_rows['rdg']);
-				$dnt_prt_rows['runame'] = build_profile_link($dnt_prt_rows['runame'], $dnt_prt_rows['ruid']);
-			}
+			$dnt_prt_rows['runame'] = htmlspecialchars_uni($dnt_prt_rows['runame']);
+			$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $dnt_prt_rows['rug'], $dnt_prt_rows['rdg']);
+			$dnt_prt_rows['runame'] = build_profile_link($dnt_prt_rows['runame'], $dnt_prt_rows['ruid']);
 		}
 		else		
 			$dnt_prt_rows['runame'] = $lang->guest;
@@ -500,18 +464,9 @@ else if($mybb->input['action'] == "get_given_rates")
 		
 		if($dnt_prt_rows['dnt_prt_sender'] > 0)
 		{
-			if($dnt_prt_rows['dnt_prt_sender'] == $mybb->user['uid'])
-			{
-				$dnt_prt_rows['username'] = $lang->dnt_prt_you;
-				$dnt_prt_rows['username'] = format_name($dnt_prt_rows['username'], $mybb->user['usergroup'], $mybb->user['displaygroup']);
-				$dnt_prt_rows['username'] = build_profile_link($dnt_prt_rows['username'], $mybb->user['uid']);
-			}
-			else
-			{
-				$dnt_prt_rows['username'] = htmlspecialchars_uni($dnt_prt_rows['username']);
-				$dnt_prt_rows['username'] = format_name($dnt_prt_rows['username'], $dnt_prt_rows['usergroup'], $dnt_prt_rows['displaygroup']);
-				$dnt_prt_rows['username'] = build_profile_link($dnt_prt_rows['username'], $dnt_prt_rows['uid']);
-			}
+			$dnt_prt_rows['username'] = htmlspecialchars_uni($dnt_prt_rows['username']);
+			$dnt_prt_rows['username'] = format_name($dnt_prt_rows['username'], $dnt_prt_rows['usergroup'], $dnt_prt_rows['displaygroup']);
+			$dnt_prt_rows['username'] = build_profile_link($dnt_prt_rows['username'], $dnt_prt_rows['uid']);
 		}
 		else
 			$dnt_prt_rows['username'] = $lang->guest;		
@@ -541,18 +496,9 @@ else if($mybb->input['action'] == "get_given_rates")
 		$dnt_prt_rows['url'] = $mybb->settings['bburl'] ."/". get_post_link($dnt_prt_rows['pid'], $dnt_prt_rows['tid']) . "#pid" . $dnt_prt_rows['pid'];
 		if($dnt_prt_rows['dnt_prt_user'] > 0)
 		{
-			if($dnt_prt_rows['ruid'] == $mybb->user['uid'])
-			{
-				$dnt_prt_rows['runame'] = $lang->dnt_prt_you;
-				$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $dnt_prt_rows['rug'], $dnt_prt_rows['rdg']);
-				$dnt_prt_rows['runame'] = build_profile_link($dnt_prt_rows['runame'], $mybb->user['uid']);
-			}			
-			else
-			{
-				$dnt_prt_rows['runame'] = htmlspecialchars_uni($dnt_prt_rows['runame']);
-				$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $dnt_prt_rows['rug'], $dnt_prt_rows['rdg']);
-				$dnt_prt_rows['runame'] = build_profile_link($dnt_prt_rows['runame'], $dnt_prt_rows['ruid']);
-			}
+			$dnt_prt_rows['runame'] = htmlspecialchars_uni($dnt_prt_rows['runame']);
+			$dnt_prt_rows['runame'] = format_name($dnt_prt_rows['runame'], $dnt_prt_rows['rug'], $dnt_prt_rows['rdg']);
+			$dnt_prt_rows['runame'] = build_profile_link($dnt_prt_rows['runame'], $dnt_prt_rows['ruid']);
 		}
 		else		
 			$dnt_prt_rows['runame'] = $lang->guest;
