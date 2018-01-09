@@ -56,7 +56,7 @@ function dnt_post_rate_info()
 		"website" => "",
 		"author" => "Whiteneo",
 		"authorsite" => "https://soportemybb.es",
-		"version" => "1.6.3",
+		"version" => "1.6.4",
 		"codename" => "dnt_post_rate_",
 		"compatibility" => "18*"
 	);
@@ -375,7 +375,7 @@ function dnt_post_rate_activate()
 		'title' => 'Actual version of post rate plugin.',
 		'description' => 'This is the actual version of your post rate system installed',
 		'optionscode' => 'numeric',
-		'value' => 163,
+		'value' => 164,
 		'disporder' => 0,
 		'gid' => 0
 	);
@@ -878,7 +878,6 @@ function dnt_prt_templates_make()
 	<div class=\"clasify_post_rates_msg{\$dnt_prt_hl_class}\">
 		{\$post[\'dnt_prt_total\']}
 		{\$lang->dnt_prt_view_all}<br />
-		{\$lang->dnt_prt_rates}<br />
 		{\$clasify_post_rates_msg}
 	</div>
 </div>",
@@ -888,6 +887,22 @@ function dnt_prt_templates_make()
 	);	
 	$db->insert_query("templates", $templatearray);		
 
+	$templatearray = array(
+		'title' => 'dnt_prt_clasify_post_rates_msg_memprofile',
+		'template' => "<div id=\"clasify_post_rates_msgs_list\">
+	<div class=\"clasify_post_rates_msg{\$dnt_prt_hl_class}\">
+		{\$memprofile[\'dnt_prt_total\']}
+		{\$lang->dnt_prt_view_all}<br />
+		{\$lang->dnt_prt_rates}<br />
+		{\$clasify_post_rates_msg}
+	</div>
+</div>",
+		'sid' => '-2',
+		'version' => '1800',
+		'dateline' => TIME_NOW
+	);	
+	$db->insert_query("templates", $templatearray);	
+	
 	$templatearray = array(
 		'title' => 'dnt_prt_clasify_post_no_rates_msg',
 		'template' => "<div class=\"clasify_post_norates_msg\">{\$lang->dnt_prt_rates_removed}</div>",
@@ -2251,23 +2266,23 @@ function dnt_post_rate_member()
 			$angrys = (int)$memprofile['dnt_prt_rates']['angrys'];
 
 			if($likes > 0)
-				eval("\$post['dnt_likes'] = \"".$templates->get("dnt_prt_likes")."\";");
+				eval("\$memprofile['dnt_likes'] = \"".$templates->get("dnt_prt_likes")."\";");
 			if($loves > 0)
-				eval("\$post['dnt_loves'] = \"".$templates->get("dnt_prt_loves")."\";");
+				eval("\$memprofile['dnt_loves'] = \"".$templates->get("dnt_prt_loves")."\";");
 			if($wow > 0)
-				eval("\$post['dnt_wow'] = \"".$templates->get("dnt_prt_wow")."\";");
+				eval("\$memprofile['dnt_wow'] = \"".$templates->get("dnt_prt_wow")."\";");
 			if($smiles > 0)
-				eval("\$post['dnt_smiles'] = \"".$templates->get("dnt_prt_smiles")."\";");
+				eval("\$memprofile['dnt_smiles'] = \"".$templates->get("dnt_prt_smiles")."\";");
 			if($crys > 0)
-				eval("\$post['dnt_crys'] = \"".$templates->get("dnt_prt_crys")."\";");
+				eval("\$memprofile['dnt_crys'] = \"".$templates->get("dnt_prt_crys")."\";");
 			if($angrys > 0)
-				eval("\$post['dnt_angrys'] = \"".$templates->get("dnt_prt_angrys")."\";");
+				eval("\$memprofile['dnt_angrys'] = \"".$templates->get("dnt_prt_angrys")."\";");
 			$dnt_prt_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$tid}&amp;pid={$pid}";
 			$lang->dnt_prt_view_all = $lang->sprintf($lang->dnt_prt_view_all, $dnt_prt_url);
 			$lang->dnt_prt_rates = $subject."<br />";			
-			$clasify_post_rates_msg = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_wow'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_angrys'];				
-			$post['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total_best, $total);
-			eval("\$dnt_prt_templates = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
+			$clasify_post_rates_msg = $memprofile['dnt_likes'].$memprofile['dnt_loves'].$memprofile['dnt_wow'].$memprofile['dnt_smiles'].$memprofile['dnt_crys'].$memprofile['dnt_angrys'];				
+			$memprofile['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total_best, $total);
+			eval("\$dnt_prt_templates = \"".$templates->get("dnt_prt_clasify_post_rates_msg_memprofile")."\";");
 		}
 	}
 	
