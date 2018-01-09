@@ -32,7 +32,6 @@ $l['dnt_prt_error'] = "The request provided are wrong verify you have the right 
 $l['dnt_prt_rates_given'] = "<span style=\"display:block\">Emojis Given: <strong><a href=\"{2}\">{1}</a></strong></span>";
 $l['dnt_prt_rates_received'] = "<span style=\"display:block\">Emojis Received: <strong><a href=\"{2}\">{1}</a></strong></span>";
 $l['dnt_prt_has_rated_you'] = " has rated with {2} to {1} on this post <a href=\"{3}\">{4}</a> <span class=\"smalltext\" style=\"float:right\">{5} ({6})</span>";
-$l['dnt_prt_you'] = "You";
 $l['dnt_prt_top5_rates_rec'] = "List of emojis received<br />";
 $l['dnt_prt_top5_rates_giv'] = "List of emojis given<br />";
 $l['dnt_prt_stats'] = "Emojis given and received.";
