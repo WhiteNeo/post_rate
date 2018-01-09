@@ -32,7 +32,6 @@ $l['dnt_prt_error_title'] = "Error del sistema de emociones";
 $l['dnt_prt_error'] = "La petición que ha solicitado es incorrecta, por favor verifique que la dirección url sea correcta....";
 $l['dnt_prt_rates_given'] = "<span style=\"display:block\">Emociones Brindadas: <strong><a href=\"{2}\">{1}</a></strong></span>";
 $l['dnt_prt_rates_received'] = "<span style=\"display:block\">Emociones Recibidas: <strong><a href=\"{2}\">{1}</a></strong></span>";
-$l['dnt_prt_you'] = "Ti";
 $l['dnt_prt_top5_rates_rec'] = "Lista de emociones recibidas<br />";
 $l['dnt_prt_top5_rates_giv'] = "Lista de emociones brindadas<br />";
 $l['dnt_prt_stats'] = "Emociones dadas y recibidas.";
