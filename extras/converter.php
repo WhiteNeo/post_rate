@@ -2,7 +2,7 @@
 /**
  * Autor: Dark Neo
  * Plugin: Post Rate
- * Versión: 1.5
+ * Versión: 1.6
  * Single Converter
  */
 define("IN_MYBB", 1);
@@ -11,121 +11,156 @@ define('DNTPRT_CONVERSION_SCRIPT','converter.php');
 require_once "global.php";
 require_once "./inc/init.php";
 if(!$mybb->usergroup['cancp'])
-{
     error('You have no permissions to do this task','Post Rate Error');
-}
 ini_set('max_execution_time', 300);
 $batch = 0;
 $total = 0;
 $thx = array();
-	if($db->table_exists("thx") && $db->table_exists('dnt_post_rate'))
-	{
-		$db->query("TRUNCATE TABLE `".TABLE_PREFIX."dnt_post_rate`");
-		$query = $db->simple_select('thx', '*');
-		while ($thanks = $db->fetch_array($query)) {
-			$pid = (int) $thanks['pid'];
-			$req = $db->simple_select('posts','tid',"pid={$pid}");
-			$result = $db->fetch_array($req);			
+if($db->table_exists("thx") && $db->table_exists('dnt_post_rate'))
+{
+	$db->query("TRUNCATE TABLE `".TABLE_PREFIX."dnt_post_rate`");
+	$query = $db->simple_select('thx', '*');
+	while ($thanks = $db->fetch_array($query)) {
+		$pid = (int) $thanks['pid'];
+		$req = $db->simple_select('posts','tid',"pid={$pid}");
+		$result = $db->fetch_array($req);			
 			$thx[] = array(
-				'dnt_prt_type'		=> 1,
+			'dnt_prt_type'		=> 1,
+			'dnt_prt_tid'		=> (int) $result['tid'],
+			'dnt_prt_pid'	 	=> (int) $thanks['pid'],
+			'dnt_prt_sender'	=> (int) $thanks['adduid'],
+			'dnt_prt_user'		=> (int) $thanks['uid'],
+			'dnt_prt_date'		=> (int) $thanks['time'],
+			'dnt_prt_count'		=> 1
+		);
+		$batch++;
+		$total++;
+		if($batch == 1000) {
+			$db->insert_query_multiple('dnt_post_rate', $thx);
+			$thx = array();
+			$batch = 0;
+			echo "System has converted {$total} items from Thanks System to Post Rate<br/>";
+		}
+	}
+	$db->insert_query_multiple('dnt_post_rate', $thx);
+	echo "<span style=\"color: green;\">Done!!!</span><br />System has converted {$total} items from Thanks System to Post Rate<br/>Remember to remove this file (converter.php) from your server...<br />Make a recount of post rates to retrieve all necessary data into your new dnt_post_rate database<br />Now you can remove / Uninstall Thanks / ThankYou MyBB System from your board if you wish, but keep a backup of thx table if you wish to revert this process";
+}
+else if($db->table_exists('g33k_thankyoulike_thankyoulike') && $db->table_exists('dnt_post_rate'))
+{
+	$db->query("TRUNCATE TABLE `".TABLE_PREFIX."dnt_post_rate`");		
+	$query = $db->simple_select('g33k_thankyoulike_thankyoulike', '*');
+	while ($thanks = $db->fetch_array($query)) 
+	{
+		$pid = (int) $thanks['pid'];
+		$req = $db->simple_select('posts','tid',"pid={$pid}");
+		$result = $db->fetch_array($req);			
+		$thx[] = array(
+			'dnt_prt_type'		=> 1,			
+			'dnt_prt_tid'		=> (int) $result['tid'],
+			'dnt_prt_pid'	 	=> (int) $thanks['pid'],
+			'dnt_prt_sender'	=> (int) $thanks['uid'],
+			'dnt_prt_user'		=> (int) $thanks['puid'],
+			'dnt_prt_date'		=> (int) $thanks['dateline'],
+				'dnt_prt_count'		=> 1				
+		);
+		$batch++;
+		$total++;
+		if($batch == 1000) {
+			$db->insert_query_multiple('dnt_post_rate', $thx);
+			$thx = array();
+			$batch = 0;
+			echo "System has converted {$total} items from TYL to Post Rate<br/>";
+		}
+	}
+	$db->insert_query_multiple('dnt_post_rate', $thx);
+	echo "<span style=\"color: green;\">Done!!!</span><br />System has converted {$total} items from TYL to Post Rate<br/>Remember to remove this file (converter.php) from your server...<br />Make a recount of post rates to retrieve all necessary data into your new dnt_post_rate database<br />Now you can remove / Uninstall ThankYou Like System from your board if you wish, but keep a backup of g33k_thankyoulike_thankyoulike table if you wish to revert this process";
+}
+else if($db->table_exists("post_likes") && $db->table_exists('dnt_post_rate'))
+{
+	$db->query("TRUNCATE TABLE `".TABLE_PREFIX."dnt_post_rate`");		
+	$query = $db->simple_select('post_likes', '*');
+	while ($post_likes = $db->fetch_array($query)) {
+		$pid = (int) $post_likes['post_id'];
+		$req = $db->simple_select('posts','tid,dateline,uid',"pid={$pid}");
+		$result = $db->fetch_array($req);			
+		if(function_exists('simplelikes_info'))
+			$likes_info = simplelikes_info();
+		if($likes_info['version'] >= '2.0.0')
+		{
+			$date = strtotime($post_likes['created_at']);
+			$puid = $post_likes['user_id'];
+		}
+		else
+		{
+			$puid = $post_likes['user_uid'];
+			$date = $result['dateline'];
+		}
+		$thx[] = array(
+			'dnt_prt_type'		=> 1,			
+			'dnt_prt_tid'		=> (int) $result['tid'],
+			'dnt_prt_pid'	 	=> (int) $post_likes['post_id'],
+			'dnt_prt_user'		=> (int) $result['uid'],				
+			'dnt_prt_sender'	=> (int) $puid,
+			'dnt_prt_date'		=> (int) $date,
+			'dnt_prt_count'		=> 1
+		);
+		$batch++;
+		$total++;
+		if($batch == 1000) {
+			$db->insert_query_multiple('dnt_post_rate', $thx);
+			$thx = array();
+			$batch = 0;
+			echo "System has converted {$total} items from Simple Likes System to Post Rate<br/>";
+		}
+	}
+	$db->insert_query_multiple('dnt_post_rate', $thx);
+	echo  "<span style=\"color: green;\">Done!!!</span><br />System has converted {$total} items from Simple Likes System to Post Rate<br/>Rememer to remove this file (converter.php) from your server...<br />Make a recount of post rates to retrieve all necesary data into your new dnt_post_rate database";
+}
+else if($db->table_exists("reputation") && $db->table_exists('dnt_post_rate'))
+{
+	$db->query("TRUNCATE TABLE `".TABLE_PREFIX."dnt_post_rate`");
+	$query = $db->simple_select('reputation', '*', 'pid>0');
+	while ($thanks = $db->fetch_array($query)) 
+	{
+		$pid = (int) $thanks['pid'];
+		if($pid != 0)
+		{
+			if($thanks['reputation'] == 1)
+				$thanks['type'] = 1;			
+			else if($thanks['reputation'] > 1)
+				$thanks['type'] = 2;
+			else if($thanks['reputation'] == 0)
+				$thanks['type'] = 3;
+			else if($thanks['reputation'] == -1)
+				$thanks['type'] = 4;
+			else if($thanks['reputation'] < -1)
+				$thanks['type'] = 6;
+			$req = $db->simple_select('posts','tid',"pid={$pid}");
+			$result = $db->fetch_array($req);		
+			$thx[] = array(
+				'dnt_prt_type'		=> (int) $thanks['type'],
 				'dnt_prt_tid'		=> (int) $result['tid'],
 				'dnt_prt_pid'	 	=> (int) $thanks['pid'],
 				'dnt_prt_sender'	=> (int) $thanks['adduid'],
 				'dnt_prt_user'		=> (int) $thanks['uid'],
-				'dnt_prt_date'		=> (int) $thanks['time'],
-				'dnt_prt_count'		=> 1
-			);
-			$batch++;
-			$total++;
-			if($batch == 1000) {
-				$db->insert_query_multiple('dnt_post_rate', $thx);
-				$thx = array();
-				$batch = 0;
-				echo "System has converted {$total} items from Thanks System to Post Rate<br/>";
-			}
-		}
-		$db->insert_query_multiple('dnt_post_rate', $thx);
-		echo "<span style=\"color: green;\">Done!!!</span><br />System has converted {$total} items from Thanks System to Post Rate<br/>Rememer to remove this file (converter.php) from your server...<br />Make a recount of post rates to retrieve all necesary data into your new dnt_post_rate database";
-	}
-	else if($db->table_exists('g33k_thankyoulike_thankyoulike') && $db->table_exists('dnt_post_rate'))
-	{
-		$db->query("TRUNCATE TABLE `".TABLE_PREFIX."dnt_post_rate`");		
-		$query = $db->simple_select('g33k_thankyoulike_thankyoulike', '*');
-		while ($thanks = $db->fetch_array($query)) 
-		{
-			$pid = (int) $thanks['pid'];
-			$req = $db->simple_select('posts','tid',"pid={$pid}");
-			$result = $db->fetch_array($req);			
-			$thx[] = array(
-				'dnt_prt_type'		=> 1,			
-				'dnt_prt_tid'		=> (int) $result['tid'],
-				'dnt_prt_pid'	 	=> (int) $thanks['pid'],
-				'dnt_prt_sender'	=> (int) $thanks['uid'],
-				'dnt_prt_user'		=> (int) $thanks['puid'],
 				'dnt_prt_date'		=> (int) $thanks['dateline'],
-				'dnt_prt_count'		=> 1				
-			);
-			$batch++;
-			$total++;
-			if($batch == 1000) {
-				$db->insert_query_multiple('dnt_post_rate', $thx);
-				$thx = array();
-				$batch = 0;
-				echo "System has converted {$total} items from TYL to Post Rate<br/>";
-			}
-		}
-	$db->insert_query_multiple('dnt_post_rate', $thx);
-	echo "<span style=\"color: green;\">Done!!!</span><br />System has converted {$total} items from TYL to Post Rate<br/>Rememer to remove this file (converter.php) from your server...<br />Make a recount of post rates to retrieve all necesary data into your new dnt_post_rate database";
-	}
-	
-	else if($db->table_exists("post_likes") && $db->table_exists('dnt_post_rate'))
-	{
-		$db->query("TRUNCATE TABLE `".TABLE_PREFIX."dnt_post_rate`");		
-		$query = $db->simple_select('post_likes', '*');
-		while ($post_likes = $db->fetch_array($query)) {
-			$pid = (int) $post_likes['post_id'];
-			$req = $db->simple_select('posts','tid,dateline,uid',"pid={$pid}");
-			$result = $db->fetch_array($req);			
-			if(function_exists('simplelikes_info'))
-				$likes_info = simplelikes_info();
-			if($likes_info['version'] >= '2.0.0')
-			{
-				$date = strtotime($post_likes['created_at']);
-				$puid = $post_likes['user_id'];
-			}
-			else
-			{
-				$puid = $post_likes['user_uid'];
-				$date = $result['dateline'];
-			}
-			$thx[] = array(
-				'dnt_prt_type'		=> 1,			
-				'dnt_prt_tid'		=> (int) $result['tid'],
-				'dnt_prt_pid'	 	=> (int) $post_likes['post_id'],
-				'dnt_prt_user'		=> (int) $result['uid'],				
-				'dnt_prt_sender'	=> (int) $puid,
-				'dnt_prt_date'		=> (int) $date,
 				'dnt_prt_count'		=> 1
 			);
 			$batch++;
 			$total++;
-			if($batch == 1000) {
+			if($batch == 1000) 
+			{
 				$db->insert_query_multiple('dnt_post_rate', $thx);
 				$thx = array();
 				$batch = 0;
-				echo "System has converted {$total} items from Simple Likes System to Post Rate<br/>";
+				echo "System has converted {$total} items from MyBB Reputation System to Post Rate<br/>";
 			}
 		}
-		$db->insert_query_multiple('dnt_post_rate', $thx);
-		echo  "<span style=\"color: green;\">Done!!!</span><br />System has converted {$total} items from Simple Likes System to Post Rate<br/>Rememer to remove this file (converter.php) from your server...<br />Make a recount of post rates to retrieve all necesary data into your new dnt_post_rate database";
 	}
-	
-	else if (!$db->table_exists('dnt_post_rate'))
-	{
-		echo "<span style=\"color: red;\">Warning!!!</span><br />You must install Post Rate System before run this converter...";
-	}
-	
-	else
-	{
-		echo "<span style=\"color: red;\">Warning!!!</span><br />There are no items to convert from other compatible systems to Post Rate System...";
-	}
+	$db->insert_query_multiple('dnt_post_rate', $thx);
+	echo "<span style=\"color: green;\">Done!!!</span><br />System has converted {$total} items from MyBB Reputation System to Post Rate<br/>Remember to remove this file (converter.php) from your server...<br />Make a recount of post rates to retrieve all necessary data into your new dnt_post_rate database";
+}
+else if (!$db->table_exists('dnt_post_rate'))
+	echo "<span style=\"color: red;\">Warning!!!</span><br />You must install Post Rate System before run this converter...";
+else
+	echo "<span style=\"color: red;\">Warning!!!</span><br />There are no items to convert from other compatible systems to Post Rate System...";
