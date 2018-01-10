@@ -90,7 +90,7 @@ $thx = array();
 				$likes_info = simplelikes_info();
 			if($likes_info['version'] >= '2.0.0')
 			{
-				$date = $post_likes['created_at'];
+				$date = strtotime($post_likes['created_at']);
 				$puid = $post_likes['user_id'];
 			}
 			else
