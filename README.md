@@ -48,12 +48,18 @@ postbit and postbit_classic
 
 * If you need to convert from some other system (Only ThankYouMyBB System, Thankyoulike system and Simple Likes System are available)
 
-* Open extras folder and upload converter.php file to forum root.
+1.- Open extras folder and upload converter.php file to forum root. (If you experience problems with this that assumes all systems use individual ones, names are like own systems)
 
-* Install Post Rate System.
+-reputation.php for mybb reputation System
+-thankyoulike.php for Thankyou Like System
+-thanks.php for Thanks System
+-thankyoumybb.php for ThankyouMyBB System
+-simplelikes.php for Simple Likes System
 
-* Keep in mind all current data would be deleted, so is is necesary to follow the right stepts to do this
+2.- Install Post Rate System.
 
-* And then go to that url into your server. (Yourforum/converter.php), make sure you are logued in as admin.
+3.- Keep in mind all current data would be deleted, so is is necesary to follow the right stepts to do this
 
-* Once this process have end then remove this file.
+4.- And then go to that url into your server. (Yourforum/converter.php or file you have uploaded by step 1), make sure you are logued in as admin.
+
+5.- Once this process have end then remove this file from your ftp.
