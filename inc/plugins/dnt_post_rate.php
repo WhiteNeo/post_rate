@@ -2427,6 +2427,7 @@ function dnt_post_rate_insert_thread(&$data)
 {
 	global $db, $mybb;
 	$data->thread_insert_data['dnt_prt_rates_threads'] = "";
+	$data->thread_insert_data['dnt_prt_rates_threads_post'] = "";
 }
 
 function dnt_post_rate_insert_post(&$data)
