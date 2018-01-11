@@ -13,7 +13,7 @@ $l['dnt_prt_total_best'] = "The best rated post of this user with {1} times is:<
 $l['dnt_prt_rates_post'] = '<span style="display:block">Emojis for this post: {1}</span>';
 $l['dnt_prt_rates_thread'] = '<span style="display:block">Emojis in this thread: {1}</span>';
 $l['dnt_prt_rates_givenu'] = '<span style="display:block">Emojis Given: {1}</span>';
-$l['dnt_prt_rates_receivedu'] = '<span style="display:block">Emojis Received: {1}/span>';
+$l['dnt_prt_rates_receivedu'] = '<span style="display:block">Emojis Received: {1}</span>';
 $l['dnt_prt_dont_rates'] = "This user has not post emojis yet, be the first in rate it :) !!!";
 $l['dnt_prt_alert'] = '{1} has rated your message "{2}"';
 $l['myalerts_setting_dntprt'] = 'Receive an alert when someone rate one of my posts?';
