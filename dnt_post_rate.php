@@ -30,9 +30,9 @@ if($mybb->input['action'] == "get_thread_rates")
 		error($lang->dnt_prt_not_received, $lang->dnt_prt_error_title);
 	}	
 	// get forums user cannot view
-	$unviewable = get_unviewable_forums(true);
+	//$unviewable = get_unviewable_forums(true);
 	$uwp = "";
-	if(isset($fids) && !empty($fids) && !empty($unviewable)){
+	/*if(isset($fids) && !empty($fids) && !empty($unviewable)){
 	$unviewable .= "," . $fids;
 	}	
 	elseif(isset($fids) && empty($unviewable)){
@@ -45,7 +45,7 @@ if($mybb->input['action'] == "get_thread_rates")
 	if(!$mybb->user['ismoderator'])
 	{		
 		$unviewwhere .= " AND t.visible='1'";
-	}
+	}*/
 	
 	if($mybb->input['lid'] == "all")
 	{
@@ -215,9 +215,9 @@ else if($mybb->input['action'] == "get_received_rates")
 		error($lang->dnt_prt_not_received, $lang->dnt_prt_error_title);
 	}
 	// get forums user cannot view
-	$unviewable = get_unviewable_forums(true);	
+	//$unviewable = get_unviewable_forums(true);	
 	$uwp = "";	
-	if(isset($fids) && !empty($fids) && !empty($unviewable)){
+	/*if(isset($fids) && !empty($fids) && !empty($unviewable)){
 	$unviewable .= "," . $fids;
 	}	
 	elseif(isset($fids) && empty($unviewable)){
@@ -230,7 +230,7 @@ else if($mybb->input['action'] == "get_received_rates")
 	if(!$mybb->user['ismoderator'])
 	{
 		$unviewwhere .= " AND t.visible='1'";
-	}
+	}*/
 	
 	$mybb->input['uid'] = (int)$mybb->input['uid'];
 	$mybb->input['uid'] = $db->escape_string($mybb->input['uid']);
@@ -274,7 +274,7 @@ else if($mybb->input['action'] == "get_received_rates")
 	if($perpage == 0)
 		$perpage = 20;	
 	$items_founded = (int)$numtot;
-	$lang->dnt_prt_rates = $lang->sprintf($lang->dnt_prt_rates_received, $items_founded);
+	$lang->dnt_prt_rates = $lang->sprintf($lang->dnt_prt_rates_receivedu, $items_founded);
 	
 	$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_received_rates&amp;uid={$mybb->input['uid']}");
 		
@@ -372,9 +372,9 @@ else if($mybb->input['action'] == "get_given_rates")
 		error($lang->dnt_prt_not_received, $lang->dnt_prt_error_title);
 	}
 	// get forums user cannot view
-	$unviewable = get_unviewable_forums(true);	
+	//$unviewable = get_unviewable_forums(true);	
 	$uwp = "";	
-	if(isset($fids) && !empty($fids) && !empty($unviewable)){
+	/*if(isset($fids) && !empty($fids) && !empty($unviewable)){
 	$unviewable .= "," . $fids;
 	}	
 	elseif(isset($fids) && empty($unviewable)){
@@ -387,7 +387,7 @@ else if($mybb->input['action'] == "get_given_rates")
 	if(!$mybb->user['ismoderator'])
 	{
 		$unviewwhere .= " AND t.visible='1'";
-	}
+	}*/
 	
 	$mybb->input['uid'] = (int)$mybb->input['uid'];
 	$mybb->input['uid'] = $db->escape_string($mybb->input['uid']);
@@ -431,7 +431,7 @@ else if($mybb->input['action'] == "get_given_rates")
 	if($perpage == 0)
 		$perpage = 20;	
 	$items_founded = (int)$numtot;
-	$lang->dnt_prt_rates = $lang->sprintf($lang->dnt_prt_rates_given, $items_founded);
+	$lang->dnt_prt_rates = $lang->sprintf($lang->dnt_prt_rates_givenu, $items_founded);
 	
 	$multipage = multipage($numtot, $perpage, $page, $_SERVER['PHP_SELF']."?action=get_given_rates&amp;uid={$mybb->input['uid']}");
 		
