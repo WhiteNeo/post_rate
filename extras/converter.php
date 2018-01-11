@@ -13,11 +13,11 @@ require_once "./inc/init.php";
 if(!$mybb->usergroup['cancp'])
     error('You have no permissions to do this task','Post Rate Error');
 ini_set('max_execution_time', 300);
-$batch = 0;
-$total = 0;
-$thx = array();
 if($db->table_exists("thx") && $db->table_exists('dnt_post_rate'))
 {
+	$batch = 0;
+	$total = 0;
+	$thx = array();	
 	$db->query("TRUNCATE TABLE `".TABLE_PREFIX."dnt_post_rate`");
 	$query = $db->simple_select('thx', '*');
 	while ($thanks = $db->fetch_array($query)) {
@@ -47,13 +47,16 @@ if($db->table_exists("thx") && $db->table_exists('dnt_post_rate'))
 }
 else if($db->table_exists('g33k_thankyoulike_thankyoulike') && $db->table_exists('dnt_post_rate'))
 {
+	$batch = 0;
+	$total = 0;
+	$thx = array();	
 	$db->query("TRUNCATE TABLE `".TABLE_PREFIX."dnt_post_rate`");		
 	$query = $db->simple_select('g33k_thankyoulike_thankyoulike', '*');
 	while ($thanks = $db->fetch_array($query)) 
 	{
 		$pid = (int) $thanks['pid'];
 		$req = $db->simple_select('posts','tid',"pid={$pid}");
-		$result = $db->fetch_array($req);			
+		$result = $db->fetch_array($req);		
 		$thx[] = array(
 			'dnt_prt_type'		=> 1,			
 			'dnt_prt_tid'		=> (int) $result['tid'],
@@ -66,17 +69,20 @@ else if($db->table_exists('g33k_thankyoulike_thankyoulike') && $db->table_exists
 		$batch++;
 		$total++;
 		if($batch == 1000) {
-			$db->insert_query_multiple('dnt_post_rate', $thx);
+			$db->insert_query_multiple('dnt_post_rate', $thx, '');
 			$thx = array();
 			$batch = 0;
 			echo "System has converted {$total} items from TYL to Post Rate<br/>";
 		}
 	}
-	$db->insert_query_multiple('dnt_post_rate', $thx);
+	$db->insert_query_multiple('dnt_post_rate', $thx, '');
 	echo "<span style=\"color: green;\">Done!!!</span><br />System has converted {$total} items from TYL to Post Rate<br/>Remember to remove this file (converter.php) from your server...<br />Make a recount of post rates to retrieve all necessary data into your new dnt_post_rate database<br />Now you can remove / Uninstall ThankYou Like System from your board if you wish, but keep a backup of g33k_thankyoulike_thankyoulike table if you wish to revert this process";
 }
 else if($db->table_exists("post_likes") && $db->table_exists('dnt_post_rate'))
 {
+	$batch = 0;
+	$total = 0;
+	$thx = array();	
 	$db->query("TRUNCATE TABLE `".TABLE_PREFIX."dnt_post_rate`");		
 	$query = $db->simple_select('post_likes', '*');
 	while ($post_likes = $db->fetch_array($query)) {
@@ -118,6 +124,9 @@ else if($db->table_exists("post_likes") && $db->table_exists('dnt_post_rate'))
 }
 else if($db->table_exists("reputation") && $db->table_exists('dnt_post_rate'))
 {
+	$batch = 0;
+	$total = 0;
+	$thx = array();		
 	$db->query("TRUNCATE TABLE `".TABLE_PREFIX."dnt_post_rate`");
 	$query = $db->simple_select('reputation', '*', 'pid>0');
 	while ($thanks = $db->fetch_array($query)) 
