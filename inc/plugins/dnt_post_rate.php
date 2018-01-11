@@ -1460,8 +1460,8 @@ function dnt_post_rate_post_rates(&$post)
 				$post['dnt_prt_hl_post'] = " dnt_popular_post";		
 			}
 		}
-		$dnt_prt_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$post['tid']}&amp;pid={$post['pid']}";
-		$lang->dnt_prt_view_all = $lang->sprintf($lang->dnt_prt_view_all, $dnt_prt_url);
+		$post['dnt_prt_url'] = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$post['tid']}&amp;pid={$post['pid']}";
+		$lang->dnt_prt_view_all = $lang->sprintf($lang->dnt_prt_view_all, $post['dnt_prt_url']);
 		$clasify_post_rates_msg = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_wow'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_angrys'];
 		$post['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total, $total);
 		eval("\$post['clasify_post_rates_msg'] = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
