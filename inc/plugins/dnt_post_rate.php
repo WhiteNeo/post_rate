@@ -1683,6 +1683,7 @@ function dnt_post_rate_xmlhttp()
 		$button = "";
 		$touid = (int)$post['uid'];
 		$uid = (int)$mybb->user['uid'];
+		$post['uid'] = (int)$post['uid'];
 		$dnt_prt_total = (int)$thread['dnt_prt_total']+1;
 		$limit_search = (int)$mybb->settings['dnt_post_rate_limit'];	
 		$dnt_prt_date_limit = time() - ($limit_search * 60 * 60 * 24);
@@ -1947,6 +1948,7 @@ function dnt_post_rate_xmlhttp()
 		$pid = (int)$mybb->input['pid'];
 		$post = get_post($pid);		
 		$uid = (int)$mybb->user['uid'];
+		$post['uid'] = (int)$post['uid'];		
 		$limit_search = (int)$mybb->settings['dnt_post_rate_limit'];	
 		$dnt_prt_date_limit = time() - ($limit_search * 60 * 60 * 24);		
 		if($limit_search > 0)
@@ -2202,6 +2204,7 @@ function dnt_post_rate_member()
 	$dnt_prt_templates = "";
 	$dnt_prt_templatesg = "";
 	$dnt_prt_templatesr = "";
+	$memprofile['uid'] = (int)$memprofile['uid'];
 	if ($mybb->settings['dnt_post_rate_memprofile'] == 1)
 	{
 		$url_given = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_given_rates&amp;uid='.(int)$memprofile['uid'];
