@@ -21,7 +21,9 @@ else
 	$plugins->add_hook('forumdisplay_thread', 'dnt_post_rates');
 	$plugins->add_hook('datahandler_post_insert_thread','dnt_post_rate_insert_thread');
 	$plugins->add_hook('datahandler_post_insert_post','dnt_post_rate_insert_post');	
-	$plugins->add_hook('datahandler_post_insert_thread_post','dnt_post_rate_insert_post');		
+	$plugins->add_hook('datahandler_post_insert_thread_post','dnt_post_rate_insert_post');
+	$plugins->add_hook("fetch_wol_activity_end", "dnt_post_rate_wol_activity");
+	$plugins->add_hook("build_friendly_wol_location_end", "dnt_post_rate_friendly_wol_activity");	
 }
 
 function dnt_post_rate_info()
@@ -192,8 +194,6 @@ function dnt_post_rate_activate()
 		'disporder' => $item_rows+1,
 		'isdefault' => 0
 	);
-	
-	$group['gid'] = $db->insert_query("settinggroups", $new_groupconfig);
 	
 	$group['gid'] = $db->insert_query("settinggroups", $new_groupconfig);
 
@@ -407,6 +407,10 @@ function dnt_post_rate_activate()
 .clasify_post_rates_msg {background-color: rgba(102,189,218,0.3); margin: 5px; color: #315284; font-weight: bold; font-size: 11px; padding: 10px; border-radius: 3px; display: block; width: 95%}
 .clasify_post_rates_msg_span {font-size: 8px; font-weight: bold; position: absolute; background: #ce5757; padding: 1px 3px; color: #f0f0f0; border-radius: 4px; border-radius: 3px; margin-top: -5px}
 .clasify_post_rates_msg img {cursor: pointer}
+.clasify_post_rates_mp {background-color: rgba(102,189,218,0.3); margin: 5px; color: #315284; font-weight: bold; font-size: 11px; padding: 10px; border-radius: 3px; display: block; width: 95%}
+.clasify_post_rates_mp_span {font-size: 8px; font-weight: bold; position: absolute; background: #ce5757; padding: 1px 3px; color: #f0f0f0; border-radius: 4px; border-radius: 3px; margin-top: -5px}
+.clasify_post_rates_mp img {cursor: pointer}
+.dnt_post_hl_mp {background-color: rgba(25,119,150,0.3); margin: 5px; border-radius: 3px; border-left: 2px solid #4d5e77}
 @media screen and (-moz-min-device-pixel-ratio: 0) {
 	.dnt_prt_div_rate img {margin-top: -12px;}
 }
@@ -877,8 +881,8 @@ function dnt_prt_templates_make()
 		'template' => "<div id=\"clasify_post_rates_msgs_list{\$pid}\">
 	<div class=\"clasify_post_rates_msg{\$dnt_prt_hl_class}\">
 		{\$post[\'dnt_prt_total\']}
-		{\$lang->dnt_prt_view_all}<br />
-		{\$clasify_post_rates_msg}
+		{\$post[\'dnt_prt_view_all\']}<br />
+		{\$post[\'clasify_post_rates_msg\']}
 	</div>
 </div>",
 		'sid' => '-2',
@@ -889,13 +893,11 @@ function dnt_prt_templates_make()
 
 	$templatearray = array(
 		'title' => 'dnt_prt_clasify_post_rates_msg_memprofile',
-		'template' => "<div id=\"clasify_post_rates_msgs_list\">
-	<div class=\"clasify_post_rates_msg{\$dnt_prt_hl_class}\">
-		{\$memprofile[\'dnt_prt_total\']}
-		{\$lang->dnt_prt_view_all}<br />
-		{\$lang->dnt_prt_rates}<br />
-		{\$clasify_post_rates_msg}
-	</div>
+		'template' => "<div class=\"clasify_post_rates_mp\">
+	{\$memprofile[\'dnt_prt_total\']}
+	{\$memprofile[\'dnt_prt_view_all\']}<br />
+	{\$memprofile[\'dnt_prt_rates\']}<br />
+	{\$memprofile[\'clasify_post_rates_msg\']}
 </div>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -1461,8 +1463,8 @@ function dnt_post_rate_post_rates(&$post)
 			}
 		}
 		$post['dnt_prt_url'] = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$post['tid']}&amp;pid={$post['pid']}";
-		$lang->dnt_prt_view_all = $lang->sprintf($lang->dnt_prt_view_all, $post['dnt_prt_url']);
-		$clasify_post_rates_msg = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_wow'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_angrys'];
+		$post['dnt_prt_view_all'] = $lang->sprintf($lang->dnt_prt_view_all, $post['dnt_prt_url']);
+		$post['clasify_post_rates_msg'] = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_wow'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_angrys'];
 		$post['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total, $total);
 		eval("\$post['clasify_post_rates_msg'] = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
 		$post['message'] .= '<div id="clasify_post_rates_msgs_list'.$pid.'">'.$post['clasify_post_rates_msg']."</div>";
@@ -1901,8 +1903,8 @@ function dnt_post_rate_xmlhttp()
 				$is_popular = 0;			
 		}
 		$dnt_prt_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$tid}&amp;pid={$pid}";
-		$lang->dnt_prt_view_all = $lang->sprintf($lang->dnt_prt_view_all, $dnt_prt_url);
-		$clasify_post_rates_msg = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_wow'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_angrys'];	
+		$post['dnt_prt_view_all'] = $lang->sprintf($lang->dnt_prt_view_all, $dnt_prt_url);
+		$post['clasify_post_rates_msg'] = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_wow'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_angrys'];	
 		$post['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total, $clasify_post_rates_total);		
 		eval("\$template = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
 
@@ -2156,8 +2158,8 @@ function dnt_post_rate_xmlhttp()
 				$is_popular = 0;			
 		}
 		$dnt_prt_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$post['tid']}&amp;pid={$post['pid']}";
-		$lang->dnt_prt_view_all = $lang->sprintf($lang->dnt_prt_view_all, $dnt_prt_url);		
-		$clasify_post_rates_msg = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_wow'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_angrys'];	
+		$post['dnt_prt_view_all'] = $lang->sprintf($lang->dnt_prt_view_all, $dnt_prt_url);		
+		$post['clasify_post_rates_msg'] = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_wow'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_angrys'];	
 		$post['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total, $clasify_post_rates_total);		
 		if($clasify_post_rates_total > 0)		
 			eval("\$template = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
@@ -2209,8 +2211,8 @@ function dnt_post_rate_member()
 	{
 		$url_given = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_given_rates&amp;uid='.(int)$memprofile['uid'];
 		$url_received = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_received_rates&amp;uid='.(int)$memprofile['uid'];	
-		$memprofile['dnt_prt_rates_given'] = $lang->sprintf($lang->dnt_prt_rates_given,(int)$memprofile['dnt_prt_rates_given'], $url_given);
-		$memprofile['dnt_prt_rates_received'] = $lang->sprintf($lang->dnt_prt_rates_received,(int)$memprofile['dnt_prt_rates_received'], $url_received);
+		$memprofile['dnt_prt_rates_given'] = $lang->sprintf($lang->dnt_prt_rates_given_mp,(int)$memprofile['dnt_prt_rates_given'], $url_given);
+		$memprofile['dnt_prt_rates_received'] = $lang->sprintf($lang->dnt_prt_rates_received_mp,(int)$memprofile['dnt_prt_rates_received'], $url_received);
 		if($mybb->settings['dnt_post_rate_showthread_all'] == 1)
 		{
 			$dnt_query = $db->simple_select('dnt_post_rate','COUNT(*) AS bestid, dnt_prt_tid',"dnt_prt_user='{$memprofile['uid']}' GROUP BY dnt_prt_tid HAVING bestid > 0 ORDER BY bestid DESC LIMIT 1");
@@ -2281,10 +2283,10 @@ function dnt_post_rate_member()
 			if($angrys > 0)
 				eval("\$memprofile['dnt_angrys'] = \"".$templates->get("dnt_prt_angrys")."\";");
 			$dnt_prt_url = $mybb->settings['bburl']."/dnt_post_rate.php?action=get_thread_rates&lid=all&amp;tid={$tid}&amp;pid={$pid}";
-			$lang->dnt_prt_view_all = $lang->sprintf($lang->dnt_prt_view_all, $dnt_prt_url);
-			$lang->dnt_prt_rates = $subject."<br />";			
-			$clasify_post_rates_msg = $memprofile['dnt_likes'].$memprofile['dnt_loves'].$memprofile['dnt_wow'].$memprofile['dnt_smiles'].$memprofile['dnt_crys'].$memprofile['dnt_angrys'];				
-			$memprofile['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total_best, $total);
+			$memprofile['dnt_prt_view_all'] = $lang->sprintf($lang->dnt_prt_view_all_mp, $dnt_prt_url);
+			$memprofile['dnt_prt_rates'] = $subject."<br />";
+			$memprofile['clasify_post_rates_msg'] = $memprofile['dnt_likes'].$memprofile['dnt_loves'].$memprofile['dnt_wow'].$memprofile['dnt_smiles'].$memprofile['dnt_crys'].$memprofile['dnt_angrys'];				
+			$memprofile['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total_best_mp, $total);
 			eval("\$dnt_prt_templates = \"".$templates->get("dnt_prt_clasify_post_rates_msg_memprofile")."\";");
 		}
 	}
@@ -2426,9 +2428,60 @@ function dnt_post_rates()
 	}
 }
 
+function dnt_post_rate_wol_activity($user_activity)
+{
+	global $mybb, $user, $session;
+
+	if(!$mybb->settings['dnt_post_rate_active'] || !empty($session->is_spider))
+	{
+		return false;
+	}
+	
+	$split_loc = explode(".php", $user_activity['location']);
+	if($split_loc[0] == $user['location'])
+	{
+		$filename = '';
+	}
+	else
+	{
+		$filename = my_substr($split_loc[0], -my_strpos(strrev($split_loc[0]), "/"));
+	}
+	
+	if ($filename == "dnt_post_rate")
+	{
+		$user_activity['activity'] = "dnt_post_rate";
+	}
+	
+	return $user_activity;
+}
+
+function dnt_post_rate_friendly_wol_activity($plugin_array)
+{
+	global $mybb, $lang, $session;
+
+	if(!$mybb->settings['dnt_post_rate_active'] || !empty($session->is_spider))
+	{
+		return false;
+	}
+	
+	$lang->load('dnt_post_rate', false, true);
+	
+	if ($plugin_array['user_activity']['activity'] == "dnt_post_rate")
+	{
+		$uid = (int)$mybb->user['uid'];
+		$plugin_array['location_name'] = $lang->sprintf($lang->dnt_prt_wol, "dnt_post_rate.php?action=get_received_rates&uid=".$uid, $lang->dnt_prt_rate);
+	}
+	
+	return $plugin_array;
+}
+
 function dnt_post_rate_insert_thread(&$data)
 {
 	global $db, $mybb;
+	if(!$mybb->settings['dnt_post_rate_active'] || !empty($session->is_spider))
+	{
+		return false;
+	}	
 	$data->thread_insert_data['dnt_prt_rates_threads'] = "";
 	$data->thread_insert_data['dnt_prt_rates_threads_post'] = "";
 }
@@ -2436,6 +2489,10 @@ function dnt_post_rate_insert_thread(&$data)
 function dnt_post_rate_insert_post(&$data)
 {
 	global $db, $mybb;	
+	if(!$mybb->settings['dnt_post_rate_active'] || !empty($session->is_spider))
+	{
+		return false;
+	}	
 	$data->post_insert_data['dnt_prt_rates_posts'] = "";
 }
 
