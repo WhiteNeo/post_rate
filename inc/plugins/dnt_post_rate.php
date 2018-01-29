@@ -1095,6 +1095,28 @@ function dnt_prt_templates_make()
 		'dateline' => TIME_NOW
 	);	
 	$db->insert_query("templates", $templatearray);	
+
+	$templatearray = array(
+		'title' => 'dnt_prt_rates_given',
+		'template' => "<div class=\"dnt_prt_rates_given\">
+	<span style=\"display:block\"><strong>{\$lang->dnt_prt_rates_given}: <strong><a href=\"{\$url_given}\"><span id=\"dnt_prt_giva{\$post[\'pid\']}\">{\$post[\'dnt_prt_rates_given\']}</span></a></strong></span>
+</div>",
+		'sid' => '-2',
+		'version' => '1800',
+		'dateline' => TIME_NOW
+	);	
+	$db->insert_query("templates", $templatearray);	
+
+	$templatearray = array(
+		'title' => 'dnt_prt_rates_received',
+		'template' => "<div class=\"dnt_prt_rates_received\">
+	<span style=\"display:block\"><strong>{\$lang->dnt_prt_rates_received}: <strong><a href=\"{\$url_received}\"><span id=\"dnt_prt_reca{\$post[\'pid\']}\">{\$post[\'dnt_prt_rates_received\']}</span></a></strong></span>
+</div>",
+		'sid' => '-2',
+		'version' => '1800',
+		'dateline' => TIME_NOW
+	);	
+	$db->insert_query("templates", $templatearray);	
 }
 
 function dnt_prt_templates_remove()
@@ -1150,9 +1172,9 @@ function dnt_post_rate_templates()
 		if(isset($templatelist))
 		{
 			if(THIS_SCRIPT == "showthread.php")
-				$templatelist .= 'dnt_prt_uname,dnt_prt_uname_rows,dnt_prt_results_1,dnt_prt_results_2,dnt_prt_results_3,dnt_prt_results_4,dnt_prt_results_5,dnt_prt_results_6,dnt_prt_post_clasify_post_rates,dnt_prt_results1,dnt_prt_results2,dnt_prt_results3,dnt_prt_results4,dnt_prt_results5,dnt_prt_results6,dnt_prt_likes,dnt_prt_loves,dnt_prt_wow,dnt_prt_smiles,dnt_prt_crys,dnt_prt_angrys,dnt_prt_clasify_post_rates_msg,dnt_prt_clasify_post_no_rates_msg';
+				$templatelist .= 'dnt_prt_uname,dnt_prt_uname_rows,dnt_prt_results_1,dnt_prt_results_2,dnt_prt_results_3,dnt_prt_results_4,dnt_prt_results_5,dnt_prt_results_6,dnt_prt_post_clasify_post_rates,dnt_prt_results1,dnt_prt_results2,dnt_prt_results3,dnt_prt_results4,dnt_prt_results5,dnt_prt_results6,dnt_prt_likes,dnt_prt_loves,dnt_prt_wow,dnt_prt_smiles,dnt_prt_crys,dnt_prt_angrys,dnt_prt_clasify_post_rates_msg,dnt_prt_clasify_post_no_rates_msg,dnt_prt_rates_given,dnt_prt_rates_received';
 			else if(THIS_SCRIPT == "member.php")
-				$templatelist .= 'dnt_prt_thread_rates1, dnt_prt_thread_rates2, dnt_prt_thread_rates3, dnt_prt_thread_rates4, dnt_prt_thread_rates5, dnt_prt_thread_rates6, dnt_prt_loves, dnt_prt_wow, dnt_prt_smiles, dnt_prt_crys, dnt_prt_clasify_post_rates_msg, dnt_prt_memprofile2, dnt_prt_memprofile1, dnt_prt_memprofile3, dnt_prt_memprofile4, dnt_prt_memprofile5, dnt_prt_memprofile6, dnt_prt_templates';
+				$templatelist .= 'dnt_prt_thread_rates1, dnt_prt_thread_rates2, dnt_prt_thread_rates3, dnt_prt_thread_rates4, dnt_prt_thread_rates5, dnt_prt_thread_rates6, dnt_prt_loves, dnt_prt_wow, dnt_prt_smiles, dnt_prt_crys, dnt_prt_clasify_post_rates_msg_memprofile, dnt_prt_memprofile2, dnt_prt_memprofile1, dnt_prt_memprofile3, dnt_prt_memprofile4, dnt_prt_memprofile5, dnt_prt_memprofile6, dnt_prt_templates';
 			else if(THIS_SCRIPT == "forumdisplay.php")
 				$templatelist .= 'dnt_prt_thread_rates1, dnt_prt_thread_rates2, dnt_prt_thread_rates3, dnt_prt_thread_rates4, dnt_prt_thread_rates5, dnt_prt_thread_rates6, dnt_prt_loves, dnt_prt_wow, dnt_prt_smiles, dnt_prt_crys, dnt_prt_angrys, dnt_prt_likes';
 			else if(THIS_SCRIPT == "dnt_post_rate.php")
@@ -1355,19 +1377,23 @@ function dnt_post_rate_post_rates(&$post)
 
 	if($dnt_prt_firstpost == 0 && $mybb->settings['dnt_post_rate_postbit'])
 	{
+		$post['dnt_prt_rates_given'] = (int)$post['dnt_prt_rates_given'];
+		$post['dnt_prt_rates_received'] = (int)$post['dnt_prt_rates_received'];
 		$url_given = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_given_rates&amp;uid='.(int)$post['uid'];
 		$url_received = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_received_rates&amp;uid='.(int)$post['uid'];	
-		$post['rates_given'] = $lang->sprintf($lang->dnt_prt_rates_given,'<span id="dnt_prt_giva'.$post['pid'].'">'.(int)$post['dnt_prt_rates_given']."</span>", $url_given);
-		$post['rates_received'] = $lang->sprintf($lang->dnt_prt_rates_received,'<span id="dnt_prt_reca'.$post['pid'].'">'.(int)$post['dnt_prt_rates_received']."</span>", $url_received);
+		eval("\$post['rates_given'] = \"".$templates->get("dnt_prt_rates_given")."\";");
+		eval("\$post['rates_received'] = \"".$templates->get("dnt_prt_rates_received")."\";");
 	}
 	else if($dnt_prt_firstpost == 1 && $mybb->settings['dnt_post_rate_postbit'] == 1)
 	{
 		if($thread['firstpost'] == $post['pid'])
 		{
+			$post['dnt_prt_rates_given'] = (int)$post['dnt_prt_rates_given'];
+			$post['dnt_prt_rates_received'] = (int)$post['dnt_prt_rates_received'];			
 			$url_given = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_given_rates&amp;uid='.(int)$post['uid'];
 			$url_received = $mybb->settings['bburl'].'/dnt_post_rate.php?action=get_received_rates&amp;uid='.(int)$post['uid'];	
-			$post['rates_given'] = $lang->sprintf($lang->dnt_prt_rates_given,'<span id="dnt_prt_giva'.$post['pid'].'">'.(int)$post['dnt_prt_rates_given']."</span>", $url_given);
-			$post['rates_received'] = $lang->sprintf($lang->dnt_prt_rates_received,'<span id="dnt_prt_reca'.$post['pid'].'">'.(int)$post['dnt_prt_rates_received']."</span>", $url_received);
+			eval("\$post['rates_given'] = \"".$templates->get("dnt_prt_rates_given")."\";");
+			eval("\$post['rates_received'] = \"".$templates->get("dnt_prt_rates_received")."\";");
 		}
 		else
 		{
