@@ -26,6 +26,12 @@ else
 	$plugins->add_hook("build_friendly_wol_location_end", "dnt_post_rate_friendly_wol_activity");	
 }
 
+//Fix broken templates...
+if(isset($GLOBALS['templatelist']))
+{
+	if(THIS_SCRIPT == "member.php")
+	$GLOBALS['templatelist'] .= "dnt_prt_results1, dnt_prt_results2, dnt_prt_results3, dnt_prt_results4, dnt_prt_results5, dnt_prt_results6, dnt_prt_likes, dnt_prt_clasify_post_rates_msg_memprofile, dnt_prt_stats, dnt_prt_templatesg, dnt_prt_templatesr";
+}
 function dnt_post_rate_info()
 {
 	global $mybb, $lang, $dpr_config, $dpr_integrate;
