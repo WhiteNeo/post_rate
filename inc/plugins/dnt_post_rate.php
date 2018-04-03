@@ -1105,7 +1105,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_rates_given',
 		'template' => "<div class=\"dnt_prt_rates_given\">
-	<span style=\"display:block\"><strong>{\$lang->dnt_prt_rates_given}: <strong><a href=\"{\$url_given}\"><span id=\"dnt_prt_giva{\$post[\'pid\']}\">{\$post[\'dnt_prt_rates_given\']}</span></a></strong></span>
+	<span style=\"display:block\">{\$lang->dnt_prt_rates_given}: <a href=\"{\$url_given}\"><span id=\"dnt_prt_giva{\$post[\'pid\']}\" style=\"font-weight:bold\">{\$post[\'dnt_prt_rates_given\']}</span></a></span>
 </div>",
 		'sid' => '-2',
 		'version' => '1800',
@@ -1116,7 +1116,7 @@ function dnt_prt_templates_make()
 	$templatearray = array(
 		'title' => 'dnt_prt_rates_received',
 		'template' => "<div class=\"dnt_prt_rates_received\">
-	<span style=\"display:block\"><strong>{\$lang->dnt_prt_rates_received}: <strong><a href=\"{\$url_received}\"><span id=\"dnt_prt_reca{\$post[\'pid\']}\">{\$post[\'dnt_prt_rates_received\']}</span></a></strong></span>
+	<span style=\"display:block\">{\$lang->dnt_prt_rates_received}: <a href=\"{\$url_received}\"><span id=\"dnt_prt_reca{\$post[\'pid\']}\" style=\"font-weight:bold\">{\$post[\'dnt_prt_rates_received\']}</span></a></span>
 </div>",
 		'sid' => '-2',
 		'version' => '1800',
