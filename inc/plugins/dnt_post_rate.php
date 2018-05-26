@@ -64,7 +64,7 @@ function dnt_post_rate_info()
 		"website" => "",
 		"author" => "Whiteneo",
 		"authorsite" => "https://soportemybb.es",
-		"version" => "1.6.4",
+		"version" => "1.6.5",
 		"codename" => "dnt_post_rate_",
 		"compatibility" => "18*"
 	);
@@ -426,7 +426,7 @@ function dnt_post_rate_activate()
 	.dnt_prt_div_rate img {margin-top: -1px}
 }
 @media only screen and (min-device-width: 320px) and (max-device-width: 550px) {
-	.post_rate_list {position: absolute; z-index: 9999; background: #fff; right: 90px; margin-top: -65px; border-radius: 35px}
+	.post_rate_list {position: absolute; z-index: 9999; background: #fff; right: 90px; margin: auto auto !important; border-radius: 35px}
 	.post_rate_button {color: #fff; text-shadow: 1px 1px 1px #000; height: 27px; line-height: 25px; padding: 0 6px; text-decoration: none; display: inline-block; cursor: pointer; border-radius: 4px; font-size: 12px; background: #0F5579 !important; position: absolute; margin: -29px 0px 0px 32px}
 	.post_rate_btn img {cursor:pointer; margin-top: 2px; transform: scale(1.00); transition: all 0.25s ease-in; width: 35px; height: 35px}
 	.post_rate_btn img:hover {transform: scale(1.25); transition: all 0.25s ease-in; background: #e6e6e6; border-radius: 40px}	
@@ -457,6 +457,8 @@ function dnt_post_rate_activate()
 	require_once MYBB_ROOT."/inc/adminfunctions_templates.php";
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'button_edit\']}').'#', '{$post[\'clasify_post_rates\']}{$post[\'button_edit\']}');
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'button_edit\']}').'#', '{$post[\'clasify_post_rates\']}{$post[\'button_edit\']}');	
+	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'message\']}').'#', '{$post[\'message\']}{$post[\'clasify_post_rates_msgs\']}');
+	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'message\']}').'#', '{$post[\'message\']}{$post[\'clasify_post_rates_msgs\']}');	
 	find_replace_templatesets("headerinclude", '#'.preg_quote('{$stylesheets}').'#', '{$stylesheets}{$dnt_prt_script}');
 	find_replace_templatesets("forumdisplay_thread", '#'.preg_quote('{$attachment_count}').'#', '{$attachment_count}{$dnt_prt_rates}');		
 	find_replace_templatesets("member_profile", '#'.preg_quote('{$profilefields}').'#', '{$profilefields}{$memprofile[\'dnt_prt\']}{$memprofile[\'top5_given\']}{$memprofile[\'top5_received\']}');
@@ -493,6 +495,8 @@ function dnt_post_rate_deactivate()
 	find_replace_templatesets("headerinclude", '#'.preg_quote('{$dnt_prt_script}').'#', '', 0);	
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'clasify_post_rates\']}').'#', '', 0);
 	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'clasify_post_rates\']}').'#', '', 0);	
+	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'clasify_post_rates_msgs\']}').'#', '', 0);
+	find_replace_templatesets("postbit_classic", '#'.preg_quote('{$post[\'clasify_post_rates_msgs\']}').'#', '', 0);	
 	find_replace_templatesets("forumdisplay_thread", '#'.preg_quote('{$dnt_prt_rates}').'#', '', 0);	
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'dnt_prt_rates_given\']}').'#', '', 0);
 	find_replace_templatesets("postbit", '#'.preg_quote('{$post[\'dnt_prt_rates_received\']}').'#', '', 0);
@@ -1499,11 +1503,11 @@ function dnt_post_rate_post_rates(&$post)
 		$post['clasify_post_rates_msg'] = $post['dnt_likes'].$post['dnt_loves'].$post['dnt_wow'].$post['dnt_smiles'].$post['dnt_crys'].$post['dnt_angrys'];
 		$post['dnt_prt_total'] = $lang->sprintf($lang->dnt_prt_total, $total);
 		eval("\$post['clasify_post_rates_msg'] = \"".$templates->get("dnt_prt_clasify_post_rates_msg")."\";");
-		$post['message'] .= '<div id="clasify_post_rates_msgs_list'.$pid.'">'.$post['clasify_post_rates_msg']."</div>";
+		$post['clasify_post_rates_msgs'] = '<div id="clasify_post_rates_msgs_list'.$pid.'">'.$post['clasify_post_rates_msg']."</div>";
 	}
 	else
 	{
-		$post['message'] .= '<div id="clasify_post_rates_msgs_list'.$pid.'">'.$post['clasify_post_rates_msg'].'</div>';		
+		$post['clasify_post_rates_msgs'] = '<div id="clasify_post_rates_msgs_list'.$pid.'">'.$post['clasify_post_rates_msg'].'</div>';		
 	}	
 }
 
