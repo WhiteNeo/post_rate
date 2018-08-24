@@ -7,7 +7,7 @@
 
 $l['dnt_prt_rate'] = "Rate Post";
 $l['dnt_prt_rated'] = "Post rated successfully.Click your emoji to remove it";
-$l['dnt_prt_total'] = '<span style="display:block">This post has been rated {1} times.';
+$l['dnt_prt_total'] = '<span style="display:block">This post has been rated {1} times.</span>';
 $l['dnt_prt_view_all'] = '<span style="float:right;"><a href="{1}">View all</a></span>';
 $l['dnt_prt_total_best'] = "The best rated post of this user with {1} times is:<br />";
 $l['dnt_prt_view_all_mp'] = '<span style="float:right;"><a href="{1}">View all</a></span>';
