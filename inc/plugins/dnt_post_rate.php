@@ -318,8 +318,8 @@ function dnt_post_rate_activate()
 
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_showthread',
-		'title' => 'Show rates into threalist',
-		'description' => 'Set this to No to not show in threalist all rates used into every thread, that contains all posts inside threads too.',
+		'title' => 'Show rates into threadlist',
+		'description' => 'Set this to No to not show in threadlist all rates used into every thread, that contains all posts inside threads too.',
 		'optionscode' => 'yesno',
 		'value' => 1,
 		'disporder' => 12,
@@ -329,7 +329,7 @@ function dnt_post_rate_activate()
 	$new_config[] = array(
 		'name' => 'dnt_post_rate_showthread_all',
 		'title' => 'Show all rates into threalist',
-		'description' => 'Set this to No to not show only the first post count into thread lists(Otherwise all posts must be counted for every thread)',
+		'description' => 'Set this to No to not show only the first post count into thread lists (Otherwise all posts must be counted for every thread)',
 		'optionscode' => 'yesno',
 		'value' => 1,
 		'disporder' => 13,
