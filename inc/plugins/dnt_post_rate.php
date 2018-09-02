@@ -98,17 +98,17 @@ function dnt_post_rate_install()
 	
 	if(!$db->field_exists("dnt_prt_rates_threads", "threads"))
 	{
-		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` ADD `dnt_prt_rates_threads` text NOT NULL");
+		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` ADD `dnt_prt_rates_threads` text NULL");
 	}	
 
 	if(!$db->field_exists("dnt_prt_rates_threads_post", "threads"))
 	{
-		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` ADD `dnt_prt_rates_threads_post` text NOT NULL");
+		$db->write_query("ALTER TABLE `".TABLE_PREFIX."threads` ADD `dnt_prt_rates_threads_post` text NULL");
 	}
 	
 	if(!$db->field_exists("dnt_prt_rates_posts", "posts"))
 	{
-		$db->write_query("ALTER TABLE `".TABLE_PREFIX."posts` ADD `dnt_prt_rates_posts` text NOT NULL");
+		$db->write_query("ALTER TABLE `".TABLE_PREFIX."posts` ADD `dnt_prt_rates_posts` text NULL");
 	}
 
 	if(!$db->field_exists("dnt_prt_rates_given", "users"))
